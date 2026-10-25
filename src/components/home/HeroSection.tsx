@@ -10,7 +10,7 @@ import {
   Grid2X2
 } from 'lucide-react';
 import { CategoryType } from '../../types/rental';
-import { getPopularCategories } from '../../data/categories';
+import { getPopularCategories, getAllCategories } from '../../data/categories';
 import { CategoryIcon } from '../common/CategoryIcon';
 
 interface HeroSectionProps {
@@ -31,6 +31,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   onOpenAllCategories,
 }) => {
   const popularCategories = getPopularCategories().slice(0, 7);
+  const allCategoriesCount = getAllCategories().length;
 
   return (
     <div className="relative pt-6 pb-12 sm:pt-10 sm:pb-16 overflow-hidden">
@@ -55,7 +56,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             </span>
           </h1>
           <p className="text-base sm:text-xl text-slate-300 max-w-3xl mx-auto font-normal leading-relaxed">
-            From cricket gear and designer wedding lehengas to 4K cameras, power tools, academic books, and wheelchairs — access 20 categories of useful physical goods from trusted locals.
+            From cricket gear and designer wedding lehengas to 4K cameras, power tools, academic books, and wheelchairs — access {allCategoriesCount} categories of useful physical goods from trusted locals.
           </p>
         </div>
 
@@ -112,7 +113,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 className="px-2.5 py-1 rounded-lg bg-emerald-950/40 hover:bg-emerald-900/40 border border-emerald-500/40 text-emerald-300 font-semibold flex items-center gap-1 transition-colors cursor-pointer"
               >
                 <Grid2X2 className="w-3 h-3 text-emerald-400" />
-                <span>All 20 Categories &rarr;</span>
+                <span>All {allCategoriesCount} Categories &rarr;</span>
               </button>
             )}
           </div>
@@ -155,7 +156,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               <Sparkles className="w-5 h-5" />
             </div>
             <div>
-              <span className="text-xs sm:text-sm font-extrabold text-white block">20 Categories</span>
+              <span className="text-xs sm:text-sm font-extrabold text-white block">{allCategoriesCount} Categories</span>
               <span className="text-[11px] text-slate-400">Daily to enterprise</span>
             </div>
           </div>

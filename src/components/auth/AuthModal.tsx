@@ -64,14 +64,19 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     submittedName?: string;
   } | null>(null);
 
-  // Sync mode whenever initialMode changes or modal opens
-  useEffect(() => {
+  // Track previous prop values to reset/sync mode when opened or mode changed
+  const [prevIsOpen, setPrevIsOpen] = useState(isOpen);
+  const [prevInitialMode, setPrevInitialMode] = useState(initialMode);
+
+  if (isOpen !== prevIsOpen || initialMode !== prevInitialMode) {
+    setPrevIsOpen(isOpen);
+    setPrevInitialMode(initialMode);
     if (isOpen) {
       setMode(initialMode);
       setErrors({});
       setBackendNotice(null);
     }
-  }, [isOpen, initialMode]);
+  }
 
   // Handle ESC key to close modal
   useEffect(() => {

@@ -39,10 +39,12 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   const [prevItemId, setPrevItemId] = useState(item?.id);
   const [isFavorited, setIsFavorited] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
+  const [imgError, setImgError] = useState(false);
 
   if (item?.id !== prevItemId) {
     setPrevItemId(item?.id);
     setSelectedImageIndex(0);
+    setImgError(false);
   }
 
   useEffect(() => {
@@ -131,16 +133,25 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               {/* Main Image Gallery Preview */}
               <div className="space-y-3">
                 <div className="relative w-full h-72 sm:h-96 rounded-2xl overflow-hidden bg-slate-950 border border-slate-800">
-                  <img
-                    src={getOptimizedImageUrl(item.images[selectedImageIndex] || item.images[0], {
-                      width: 900,
-                      height: 600,
-                      crop: 'fill',
-                      quality: 'auto',
-                    })}
-                    alt={item.title}
-                    className="w-full h-full object-cover object-center"
-                  />
+                  {!imgError ? (
+                    <img
+                      src={getOptimizedImageUrl(item.images[selectedImageIndex] || item.images[0], {
+                        width: 900,
+                        height: 600,
+                        crop: 'fill',
+                        quality: 'auto',
+                      })}
+                      alt={item.title}
+                      className="w-full h-full object-cover object-center"
+                      onError={() => setImgError(true)}
+                    />
+                  ) : (
+                    <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 p-6 text-center">
+                      <Package className="w-12 h-12 text-emerald-400/80 mb-3" />
+                      <span className="text-sm font-bold text-slate-200">{item.title}</span>
+                      <span className="text-xs text-emerald-400 mt-1">{item.subcategory || categoryName}</span>
+                    </div>
+                  )}
                   <div className="absolute top-3 left-3 flex items-center gap-2">
                     <span className="px-3 py-1 rounded-full text-xs font-bold bg-slate-950/80 backdrop-blur-md text-emerald-400 border border-emerald-500/30">
                       {item.condition}
@@ -169,7 +180,10 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                     {item.images.map((img, idx) => (
                       <button
                         key={idx}
-                        onClick={() => setSelectedImageIndex(idx)}
+                        onClick={() => {
+                          setSelectedImageIndex(idx);
+                          setImgError(false);
+                        }}
                         className={`relative w-20 h-16 rounded-xl overflow-hidden border-2 transition-all shrink-0 ${
                           selectedImageIndex === idx
                             ? 'border-emerald-500 scale-105 shadow-md shadow-emerald-500/20'

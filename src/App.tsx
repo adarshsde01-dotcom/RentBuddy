@@ -488,7 +488,7 @@ export function App() {
         }}
       />
 
-      {/* Explore All 20 Categories Directory Modal */}
+      {/* Explore All Categories Directory Modal */}
       <AllCategoriesModal
         isOpen={isAllCategoriesModalOpen}
         onClose={() => setIsAllCategoriesModalOpen(false)}

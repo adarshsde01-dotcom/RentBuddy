@@ -43,7 +43,7 @@ export const CategoryDiscoverySection: React.FC<CategoryDiscoverySectionProps> =
           className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700/80 text-emerald-300 hover:text-emerald-200 text-xs sm:text-sm font-bold transition-all shadow-md group shrink-0 active:scale-95"
         >
           <Grid2X2 className="w-4 h-4 text-emerald-400 group-hover:rotate-12 transition-transform" />
-          <span>Explore All 20 Categories</span>
+          <span>Explore All Categories</span>
           <ArrowRight className="w-4 h-4 text-emerald-400 group-hover:translate-x-1 transition-transform" />
         </button>
       </div>

@@ -298,8 +298,12 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({
                 >
                   <div className="flex items-center gap-4 min-w-0">
                     <img
-                      src={b.itemImage}
+                      src={getOptimizedImageUrl(b.itemImage, { width: 160, height: 160, crop: 'thumb', quality: 'auto', format: 'auto' })}
                       alt={b.itemTitle}
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = 'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&fit=crop&w=160&q=80';
+                      }}
                       className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl object-cover border border-slate-800 shrink-0"
                     />
                     <div className="min-w-0">
@@ -399,8 +403,12 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({
                   >
                     <div className="flex items-start gap-4">
                       <img
-                        src={req.itemImage}
+                        src={getOptimizedImageUrl(req.itemImage, { width: 140, height: 140, crop: 'thumb', quality: 'auto', format: 'auto' })}
                         alt={req.itemTitle}
+                        onError={(e) => {
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src = 'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&fit=crop&w=140&q=80';
+                        }}
                         className="w-16 h-16 rounded-xl object-cover border border-slate-800 shrink-0"
                       />
                       <div>
@@ -472,6 +480,10 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({
                     <img
                       src={getOptimizedImageUrl(item.images[0] || '', { width: 140, height: 140, crop: 'thumb', quality: 'auto', format: 'auto' })}
                       alt={item.title}
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = 'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&fit=crop&w=140&q=80';
+                      }}
                       className="w-16 h-16 rounded-xl object-cover border border-slate-800 shrink-0"
                     />
                     <div className="min-w-0 flex-1">

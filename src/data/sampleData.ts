@@ -1746,6 +1746,7 @@ export const SAMPLE_ITEMS: RentalItem[] = [
     ],
     tags: ['Health', 'Wheelchair', 'Mobility', 'Wellness', 'Senior Care', 'Accessibility'],
     createdAt: '2026-04-25'
+  },
   // --- Cloudinary CDN Hosted Assets (Verified on dqczk3bz) ---
   {
     id: 'item-shoes-nike',

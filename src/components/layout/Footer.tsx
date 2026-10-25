@@ -71,7 +71,7 @@ export const Footer: React.FC<FooterProps> = ({
                     className="text-emerald-400 font-bold hover:underline flex items-center gap-1 cursor-pointer"
                   >
                     <Grid2X2 className="w-3.5 h-3.5" />
-                    <span>All 20 Categories &rarr;</span>
+                    <span>Explore All Categories &rarr;</span>
                   </button>
                 </li>
               )}

@@ -153,6 +153,10 @@ export const BookingRequestModal: React.FC<BookingRequestModalProps> = ({
           <img
             src={getOptimizedImageUrl(item.images[0] || '', { width: 160, height: 160, crop: 'thumb', quality: 'auto', format: 'auto' })}
             alt={item.title}
+            onError={(e) => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = 'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&fit=crop&w=160&q=80';
+            }}
             className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl object-cover border border-slate-700 shrink-0"
           />
           <div className="flex-1 min-w-0">

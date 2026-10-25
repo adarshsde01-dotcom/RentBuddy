@@ -53,6 +53,7 @@ export const CategoryIcon: React.FC<CategoryIconProps> = ({ name, className = 'w
     case 'UtensilsCrossed':
       return <UtensilsCrossed className={className} />;
     case 'Glasses':
+      return <Glasses className={className} />;
     case 'Watch':
       return <Watch className={className} />;
     case 'Sparkles':

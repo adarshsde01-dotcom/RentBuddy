@@ -123,7 +123,7 @@ export const CategoryFilterBar: React.FC<CategoryFilterBarProps> = ({
           );
         })}
 
-        {/* Explore All 20 Categories Button */}
+        {/* Explore All Categories Directory Modal Button */}
         {onOpenAllCategories && (
           <button
             onClick={onOpenAllCategories}
