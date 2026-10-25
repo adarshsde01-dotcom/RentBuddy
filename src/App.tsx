@@ -25,13 +25,14 @@ import { ProductDetailModal } from './components/marketplace/ProductDetailModal'
 import { BookingRequestModal } from './components/marketplace/BookingRequestModal';
 import { ListItemModal } from './components/listing/ListItemModal';
 import { UserDashboard } from './components/dashboard/UserDashboard';
+import { CustomerSupportSection } from './components/support/CustomerSupportSection';
 import { CloudinarySettingsModal } from './components/common/CloudinarySettingsModal';
 import { Toast, ToastProps } from './components/common/Toast';
 import { PackageOpen, Sparkles, PlusCircle } from 'lucide-react';
 
 export function App() {
   // Navigation
-  const [currentView, setCurrentView] = useState<'marketplace' | 'dashboard' | 'how-it-works' | 'impact'>('marketplace');
+  const [currentView, setCurrentView] = useState<'marketplace' | 'dashboard' | 'how-it-works' | 'impact' | 'support'>('marketplace');
 
   // Core Data
   const [items, setItems] = useState<RentalItem[]>([]);
@@ -316,6 +317,10 @@ export function App() {
               onOpenListItem={() => setIsListItemModalOpen(true)}
               onNavigateMarketplace={() => setCurrentView('marketplace')}
               onShowToast={addToast}
+              onNavigateSupport={() => {
+                setCurrentView('support');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
             />
           </div>
         )}
@@ -336,6 +341,12 @@ export function App() {
             />
           </div>
         )}
+
+        {currentView === 'support' && (
+          <div className="py-6">
+            <CustomerSupportSection onShowToast={addToast} />
+          </div>
+        )}
       </main>
 
       {/* Global Footer */}
@@ -347,6 +358,10 @@ export function App() {
         }}
         onOpenCloudinarySettings={() => setIsCloudinaryModalOpen(true)}
         onOpenListItem={() => setIsListItemModalOpen(true)}
+        onNavigateSupport={() => {
+          setCurrentView('support');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
       />
 
       {/* Product Detail Modal */}

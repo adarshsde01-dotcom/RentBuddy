@@ -1,17 +1,19 @@
 import React from 'react';
-import { Repeat, ShieldCheck, Leaf, Cloud } from 'lucide-react';
+import { Repeat, ShieldCheck, Leaf, Cloud, Headphones } from 'lucide-react';
 import { CategoryType } from '../../types/rental';
 
 interface FooterProps {
   onSelectCategory: (cat: CategoryType) => void;
   onOpenCloudinarySettings: () => void;
   onOpenListItem: () => void;
+  onNavigateSupport?: () => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({
   onSelectCategory,
   onOpenCloudinarySettings,
   onOpenListItem,
+  onNavigateSupport,
 }) => {
   return (
     <footer className="mt-20 border-t border-slate-800 bg-slate-950/90 text-slate-400 text-xs">
@@ -101,7 +103,7 @@ export const Footer: React.FC<FooterProps> = ({
           {/* Col 4: Trust & Platform */}
           <div className="space-y-3">
             <h4 className="text-xs font-bold uppercase tracking-wider text-white font-heading">
-              Trust & Community
+              Trust, Escrow & Care
             </h4>
             <ul className="space-y-2">
               <li className="flex items-center gap-1.5 text-slate-300">
@@ -110,12 +112,19 @@ export const Footer: React.FC<FooterProps> = ({
               </li>
               <li className="flex items-center gap-1.5 text-slate-300">
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Damage Protection</span>
+                <span>₹2,00,000 Damage Cover</span>
               </li>
-              <li className="flex items-center gap-1.5 text-slate-300">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Verified Borrower IDs</span>
-              </li>
+              {onNavigateSupport && (
+                <li>
+                  <button
+                    onClick={onNavigateSupport}
+                    className="flex items-center gap-1.5 text-teal-300 hover:text-white font-semibold transition-colors"
+                  >
+                    <Headphones className="w-3.5 h-3.5 text-teal-400" />
+                    <span>24/7 Customer Care Desk &rarr;</span>
+                  </button>
+                </li>
+              )}
               <li>
                 <button
                   onClick={onOpenListItem}

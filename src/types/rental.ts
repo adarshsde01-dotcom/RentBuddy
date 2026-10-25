@@ -93,3 +93,17 @@ export interface FilterOptions {
   onlyAvailable: boolean;
   sortBy: 'recommended' | 'price_low' | 'price_high' | 'rating' | 'popular';
 }
+
+export interface SupportTicket {
+  id: string;
+  role: 'receiver' | 'renter'; // receiver (borrower) vs renter (owner/lender)
+  category: string;
+  subject: string;
+  message: string;
+  bookingId?: string;
+  userEmail: string;
+  userName: string;
+  urgency: 'normal' | 'high' | 'urgent';
+  status: 'open' | 'in_progress' | 'resolved';
+  createdAt: string;
+}

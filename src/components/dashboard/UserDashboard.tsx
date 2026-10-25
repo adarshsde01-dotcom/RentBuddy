@@ -16,7 +16,8 @@ import {
   PlusCircle, 
   FileText,
   UserCheck,
-  Check
+  Check,
+  Headphones
 } from 'lucide-react';
 import { RentalBooking, RentalItem, BookingStatus } from '../../types/rental';
 import { 
@@ -33,6 +34,7 @@ interface UserDashboardProps {
   onOpenListItem: () => void;
   onNavigateMarketplace: () => void;
   onShowToast: (message: string, type?: 'success' | 'info' | 'error') => void;
+  onNavigateSupport?: () => void;
 }
 
 export const UserDashboard: React.FC<UserDashboardProps> = ({
@@ -42,6 +44,7 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({
   onOpenListItem,
   onNavigateMarketplace,
   onShowToast,
+  onNavigateSupport,
 }) => {
   const [activeTab, setActiveTab] = useState<'renter' | 'owner' | 'impact'>('renter');
   const [selectedReceiptBooking, setSelectedReceiptBooking] = useState<RentalBooking | null>(null);
@@ -551,6 +554,30 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({
               </div>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* 24/7 Customer Care Assistance Banner */}
+      {onNavigateSupport && (
+        <div className="p-6 rounded-3xl bg-slate-900 border border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-3.5">
+            <div className="p-3 rounded-2xl bg-teal-500/10 text-teal-400 border border-teal-500/20 shrink-0">
+              <Headphones className="w-6 h-6" />
+            </div>
+            <div>
+              <h4 className="text-sm font-bold text-white">Need help with an active rental or deposit?</h4>
+              <p className="text-xs text-slate-400 mt-0.5">
+                Our 24/7 Care Desk provides dedicated assistance for both Borrowers (Receivers) and Lenders (Renters).
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={onNavigateSupport}
+            className="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-teal-300 hover:text-white text-xs font-bold transition-colors shrink-0 flex items-center gap-1.5"
+          >
+            <span>Open Customer Care Desk</span>
+            <ArrowUpRight className="w-3.5 h-3.5" />
+          </button>
         </div>
       )}
 

@@ -10,13 +10,14 @@ import {
   Search, 
   Compass, 
   HelpCircle, 
-  Leaf
+  Leaf,
+  Headphones
 } from 'lucide-react';
 import { CloudinaryConfig } from '../../types/rental';
 
 interface NavbarProps {
-  currentView: 'marketplace' | 'dashboard' | 'how-it-works' | 'impact';
-  onNavigate: (view: 'marketplace' | 'dashboard' | 'how-it-works' | 'impact') => void;
+  currentView: 'marketplace' | 'dashboard' | 'how-it-works' | 'impact' | 'support';
+  onNavigate: (view: 'marketplace' | 'dashboard' | 'how-it-works' | 'impact' | 'support') => void;
   onOpenListItem: () => void;
   onOpenCloudinarySettings: () => void;
   cloudinaryConfig: CloudinaryConfig;
@@ -131,6 +132,18 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <Leaf className="w-4 h-4 text-emerald-400" />
               Social Impact
+            </button>
+
+            <button
+              onClick={() => onNavigate('support')}
+              className={`px-3 py-2 rounded-lg transition-colors flex items-center gap-1.5 ${
+                currentView === 'support'
+                  ? 'text-emerald-400 bg-emerald-500/10 font-semibold'
+                  : 'hover:text-white hover:bg-slate-900'
+              }`}
+            >
+              <Headphones className="w-4 h-4 text-teal-400" />
+              Customer Care
             </button>
 
             <button
@@ -267,6 +280,18 @@ export const Navbar: React.FC<NavbarProps> = ({
               }`}
             >
               <Leaf className="w-4 h-4 text-emerald-400" /> Social & Eco Impact
+            </button>
+
+            <button
+              onClick={() => {
+                onNavigate('support');
+                setMobileMenuOpen(false);
+              }}
+              className={`w-full flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm ${
+                currentView === 'support' ? 'bg-emerald-500/10 text-emerald-400 font-semibold' : 'text-slate-300'
+              }`}
+            >
+              <Headphones className="w-4 h-4 text-teal-400" /> 24/7 Customer Care (Receiver & Renter)
             </button>
 
             <div className="pt-2 border-t border-slate-800">
