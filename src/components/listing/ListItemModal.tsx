@@ -44,11 +44,12 @@ export const ListItemModal: React.FC<ListItemModalProps> = ({
 }) => {
   const categories = getAllCategories();
   const initialDates = getInitialDates();
-  const defaultSubcats = getSubcategoriesForCategory('daily-essentials');
+  const defaultCat = (categories[0]?.id as CategoryType) || 'clothing';
+  const defaultSubcats = getSubcategoriesForCategory(defaultCat);
 
   // Form State
   const [title, setTitle] = useState('');
-  const [category, setCategory] = useState<CategoryType>('daily-essentials');
+  const [category, setCategory] = useState<CategoryType>(defaultCat);
   const [subcategory, setSubcategory] = useState(defaultSubcats[0] || '');
   const [description, setDescription] = useState('');
   const [dailyPrice, setDailyPrice] = useState<number | ''>(499);
@@ -275,7 +276,7 @@ export const ListItemModal: React.FC<ListItemModalProps> = ({
                 List an Item for Rent
               </h2>
               <p className="text-xs text-slate-400">
-                Share your gear across 20 supported categories • Earn recurring income safely
+                Share your gear across {categories.length} supported categories • Earn recurring income safely
               </p>
             </div>
           </div>
@@ -610,7 +611,7 @@ export const ListItemModal: React.FC<ListItemModalProps> = ({
                     onChange={() => setContactPreference('in_app')}
                     className="accent-emerald-500"
                   />
-                  <span>RentLoop In-App Messaging (Recommended for privacy)</span>
+                  <span>RentBuddy In-App Messaging (Recommended for privacy)</span>
                 </label>
                 <label className="flex items-center gap-2 text-xs text-slate-300 cursor-pointer">
                   <input
@@ -810,7 +811,7 @@ export const ListItemModal: React.FC<ListItemModalProps> = ({
                   className="mt-0.5 w-4 h-4 rounded text-emerald-500 accent-emerald-500"
                 />
                 <span className="text-xs text-slate-400 leading-relaxed">
-                  I confirm this item is in safe, fully operational condition. I understand that RentLoop holds refundable borrower security deposits in escrow and covers damages up to ₹2,00,000 under verified platform policy.
+                  I confirm this item is in safe, fully operational condition. I understand that RentBuddy holds refundable borrower security deposits in escrow and covers damages up to ₹2,00,000 under verified platform policy.
                 </span>
               </label>
             </div>

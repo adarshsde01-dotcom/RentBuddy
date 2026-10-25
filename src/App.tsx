@@ -31,6 +31,7 @@ import { ListItemModal } from './components/listing/ListItemModal';
 import { UserDashboard } from './components/dashboard/UserDashboard';
 import { CustomerSupportSection } from './components/support/CustomerSupportSection';
 import { CloudinarySettingsModal } from './components/common/CloudinarySettingsModal';
+import { AuthModal, AuthMode } from './components/auth/AuthModal';
 import { Toast } from './components/common/Toast';
 import { PackageOpen, PlusCircle, RotateCcw } from 'lucide-react';
 
@@ -65,6 +66,18 @@ export function App() {
   const [isListItemModalOpen, setIsListItemModalOpen] = useState(false);
   const [isCloudinaryModalOpen, setIsCloudinaryModalOpen] = useState(false);
   const [isAllCategoriesModalOpen, setIsAllCategoriesModalOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authModalMode, setAuthModalMode] = useState<AuthMode>('login');
+
+  const handleOpenLogin = () => {
+    setAuthModalMode('login');
+    setIsAuthModalOpen(true);
+  };
+
+  const handleOpenSignUp = () => {
+    setAuthModalMode('signup');
+    setIsAuthModalOpen(true);
+  };
 
   // Toasts
   const [toasts, setToasts] = useState<Array<{ id: string; message: string; type: 'success' | 'info' | 'error' }>>([]);
@@ -288,6 +301,8 @@ export function App() {
         onOpenListItem={() => setIsListItemModalOpen(true)}
         onOpenCloudinarySettings={() => setIsCloudinaryModalOpen(true)}
         onOpenAllCategories={() => setIsAllCategoriesModalOpen(true)}
+        onOpenLogin={handleOpenLogin}
+        onOpenSignUp={handleOpenSignUp}
         cloudinaryConfig={cloudinaryConfig}
         pendingRequestsCount={pendingRequestsCount}
         searchQuery={filters.searchQuery}
@@ -517,6 +532,13 @@ export function App() {
           setCloudinaryConfig(cfg);
           addToast('Cloudinary configuration updated successfully', 'success');
         }}
+      />
+
+      {/* Login & Sign Up Modal */}
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        initialMode={authModalMode}
+        onClose={() => setIsAuthModalOpen(false)}
       />
     </div>
   );

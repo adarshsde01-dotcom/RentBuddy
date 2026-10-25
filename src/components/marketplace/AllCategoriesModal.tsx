@@ -59,7 +59,7 @@ export const AllCategoriesModal: React.FC<AllCategoriesModalProps> = ({
             <div>
               <div className="flex items-center gap-2">
                 <h2 className="text-xl sm:text-2xl font-black text-white font-heading">
-                  All 20 Rental Categories & Subcategories
+                  All {allCategories.length} Rental Categories & Subcategories
                 </h2>
                 <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-bold">
                   {allCategories.length} Categories
@@ -232,7 +232,7 @@ export const AllCategoriesModal: React.FC<AllCategoriesModalProps> = ({
         <div className="pt-4 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400 shrink-0">
           <div className="flex items-center gap-2">
             <ShieldCheck className="w-4 h-4 text-emerald-400" />
-            <span>All 20 categories are covered by verified escrow & ₹2,00,000 damage protection.</span>
+            <span>All {allCategories.length} categories are covered by verified escrow & ₹2,00,000 damage protection.</span>
           </div>
           <button
             onClick={() => {

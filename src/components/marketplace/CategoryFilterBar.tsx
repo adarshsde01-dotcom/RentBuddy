@@ -130,7 +130,7 @@ export const CategoryFilterBar: React.FC<CategoryFilterBarProps> = ({
             className="flex items-center gap-1.5 px-3 py-2.5 rounded-xl border border-dashed border-emerald-500/40 bg-emerald-950/20 text-emerald-300 hover:bg-emerald-900/30 hover:border-emerald-500 text-xs sm:text-sm font-semibold whitespace-nowrap transition-all shrink-0"
           >
             <Grid2X2 className="w-3.5 h-3.5 text-emerald-400" />
-            <span>All 20 Categories ({allCategories.length})</span>
+            <span>All Categories ({allCategories.length})</span>
           </button>
         )}
       </div>

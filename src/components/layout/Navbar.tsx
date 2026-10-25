@@ -11,7 +11,9 @@ import {
   HelpCircle, 
   Leaf,
   Headphones,
-  Grid2X2
+  Grid2X2,
+  LogIn,
+  UserPlus
 } from 'lucide-react';
 import { CloudinaryConfig } from '../../types/rental';
 
@@ -21,6 +23,8 @@ interface NavbarProps {
   onOpenListItem: () => void;
   onOpenCloudinarySettings: () => void;
   onOpenAllCategories?: () => void;
+  onOpenLogin: () => void;
+  onOpenSignUp: () => void;
   cloudinaryConfig: CloudinaryConfig;
   pendingRequestsCount: number;
   searchQuery: string;
@@ -33,6 +37,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenListItem,
   onOpenCloudinarySettings,
   onOpenAllCategories,
+  onOpenLogin,
+  onOpenSignUp,
   cloudinaryConfig,
   pendingRequestsCount,
   searchQuery,
@@ -63,7 +69,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               </div>
               <div>
                 <span className="text-2xl font-black font-heading tracking-tight text-white flex items-center gap-1">
-                  Rent<span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">Loop</span>
+                  Rent<span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">Buddy</span>
                 </span>
                 <span className="hidden sm:block text-[10px] uppercase font-bold tracking-widest text-emerald-400/80 -mt-1">
                   Universal Rental Marketplace
@@ -177,11 +183,29 @@ export const Navbar: React.FC<NavbarProps> = ({
           </nav>
 
           {/* Right Action buttons */}
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2 sm:gap-2.5">
+            {/* Log In Button */}
+            <button
+              onClick={onOpenLogin}
+              className="px-3 py-2 text-xs sm:text-sm font-semibold text-slate-300 hover:text-white rounded-xl hover:bg-slate-900 border border-transparent hover:border-slate-800 transition-all flex items-center gap-1.5 cursor-pointer"
+            >
+              <LogIn className="w-4 h-4 text-emerald-400" />
+              <span>Log In</span>
+            </button>
+
+            {/* Sign Up Button */}
+            <button
+              onClick={onOpenSignUp}
+              className="hidden sm:flex items-center gap-1.5 px-3.5 py-2 text-xs sm:text-sm font-semibold text-emerald-300 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 hover:border-emerald-500/60 rounded-xl transition-all cursor-pointer"
+            >
+              <UserPlus className="w-4 h-4 text-emerald-400" />
+              <span>Sign Up</span>
+            </button>
+
             {/* Cloudinary Integration Status Pill */}
             <button
               onClick={onOpenCloudinarySettings}
-              className={`hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border text-xs font-medium transition-all cursor-pointer ${
+              className={`hidden md:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border text-xs font-medium transition-all cursor-pointer ${
                 isCloudinaryConnected
                   ? 'bg-emerald-950/40 border-emerald-500/40 text-emerald-300 hover:bg-emerald-900/40'
                   : 'bg-slate-900/80 border-slate-700/80 text-slate-300 hover:border-slate-600'
@@ -222,6 +246,30 @@ export const Navbar: React.FC<NavbarProps> = ({
         {/* Mobile menu dropdown */}
         {mobileMenuOpen && (
           <div className="lg:hidden py-4 border-t border-slate-800/80 space-y-2 animate-fade-in">
+            {/* Mobile Auth Bar */}
+            <div className="grid grid-cols-2 gap-2 pb-2 border-b border-slate-800/80">
+              <button
+                onClick={() => {
+                  onOpenLogin();
+                  setMobileMenuOpen(false);
+                }}
+                className="flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-slate-900 border border-slate-700/80 text-xs font-semibold text-slate-200 hover:text-white hover:bg-slate-800 transition-colors"
+              >
+                <LogIn className="w-3.5 h-3.5 text-emerald-400" />
+                <span>Log In</span>
+              </button>
+              <button
+                onClick={() => {
+                  onOpenSignUp();
+                  setMobileMenuOpen(false);
+                }}
+                className="flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-emerald-500/15 border border-emerald-500/40 text-xs font-semibold text-emerald-300 hover:bg-emerald-500/25 transition-colors"
+              >
+                <UserPlus className="w-3.5 h-3.5 text-emerald-400" />
+                <span>Sign Up</span>
+              </button>
+            </div>
+
             {/* Mobile search */}
             <div className="relative mb-3">
               <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
@@ -260,9 +308,9 @@ export const Navbar: React.FC<NavbarProps> = ({
                 className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm text-slate-300 hover:bg-slate-900"
               >
                 <span className="flex items-center gap-2">
-                  <Grid2X2 className="w-4 h-4 text-emerald-400" /> All 20 Categories
+                  <Grid2X2 className="w-4 h-4 text-emerald-400" /> All Categories
                 </span>
-                <span className="text-xs text-emerald-400 font-bold">200+ subcategories</span>
+                <span className="text-xs text-emerald-400 font-bold">Browse All</span>
               </button>
             )}
 
