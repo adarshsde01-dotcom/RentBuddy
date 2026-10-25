@@ -166,7 +166,11 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                         <Check className="w-3.5 h-3.5" /> Sanitized
                       </span>
                     )}
-                    {(item.images[selectedImageIndex] || item.images[0])?.includes('res.cloudinary.com') && (
+                    {Boolean(
+                      (item.images[selectedImageIndex] || item.images[0])?.includes('res.cloudinary.com') ||
+                      (item.images[selectedImageIndex] || item.images[0])?.startsWith('samples/') ||
+                      (item.images[selectedImageIndex] || item.images[0])?.startsWith('cld-sample')
+                    ) && (
                       <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-sky-950/90 text-sky-300 border border-sky-500/40 backdrop-blur-md flex items-center gap-1">
                         <Cloud className="w-3.5 h-3.5 text-sky-400" /> Cloudinary CDN
                       </span>

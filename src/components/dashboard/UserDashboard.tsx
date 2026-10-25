@@ -22,7 +22,8 @@ import {
   updateBookingStatusInStore, 
   toggleItemAvailabilityInStore, 
   calculateImpactStats,
-  resetStoreToDefaults 
+  resetStoreToDefaults,
+  getCurrentUser
 } from '../../services/storage';
 import { getOptimizedImageUrl } from '../../services/cloudinary';
 
@@ -49,6 +50,7 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({
   const [selectedReceiptBooking, setSelectedReceiptBooking] = useState<RentalBooking | null>(null);
 
   const impact = calculateImpactStats();
+  const currentUser = getCurrentUser();
 
   // Renter view bookings
   const renterBookings = bookings;
@@ -143,7 +145,7 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({
               Verified Community Member Dashboard
             </div>
             <h1 className="text-2xl sm:text-4xl font-black text-white font-heading tracking-tight">
-              Welcome back, <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">Alex</span>
+              Welcome back, <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">{currentUser.name.split(' ')[0]}</span>
             </h1>
             <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-xl">
               Track your borrowed equipment, manage incoming borrower requests, and monitor your personal financial and sustainability impact.

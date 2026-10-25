@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { RentalItem, RentalBooking } from '../../types/rental';
-import { createNewBooking } from '../../services/storage';
+import { createNewBooking, getCurrentUser } from '../../services/storage';
 import { getOptimizedImageUrl } from '../../services/cloudinary';
 
 interface BookingRequestModalProps {
@@ -41,8 +41,9 @@ export const BookingRequestModal: React.FC<BookingRequestModalProps> = ({
   onClose,
   onBookingConfirmed,
 }) => {
-  const [renterName, setRenterName] = useState('Alex Rivera');
-  const [renterEmail, setRenterEmail] = useState('alex.rivera@example.com');
+  const currentUser = getCurrentUser();
+  const [renterName, setRenterName] = useState(currentUser.name);
+  const [renterEmail, setRenterEmail] = useState(currentUser.email);
   const [pickupType, setPickupType] = useState<'local_pickup' | 'delivery'>('local_pickup');
   const [renterMessage, setRenterMessage] = useState(
     'Hi! I will take great care of your equipment. Excited to use this for my upcoming project.'

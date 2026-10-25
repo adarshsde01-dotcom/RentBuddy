@@ -13,7 +13,7 @@ import {
 import confetti from 'canvas-confetti';
 import { CategoryType, ItemCondition, RentalItem } from '../../types/rental';
 import { getAllCategories, getSubcategoriesForCategory, normalizeCategoryId } from '../../data/categories';
-import { createNewItem } from '../../services/storage';
+import { createNewItem, getCurrentUser } from '../../services/storage';
 import { CloudinaryUploader } from './CloudinaryUploader';
 
 interface ListItemModalProps {
@@ -214,17 +214,20 @@ export const ListItemModal: React.FC<ListItemModalProps> = ({
           preference: contactPreference,
         },
         termsAndInstructions: termsAndInstructions ? [termsAndInstructions] : undefined,
-        owner: {
-          id: 'owner-current-user',
-          name: 'You (Lender)',
-          avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80',
-          rating: 5.0,
-          reviewsCount: 1,
-          joinedDate: 'October 2026',
-          responseTime: 'Under 15 mins',
-          verified: true,
-          location: `${city}, KA`,
-        },
+        owner: (() => {
+          const user = getCurrentUser();
+          return {
+            id: user.id,
+            name: `${user.name} (You)`,
+            avatar: user.avatar,
+            rating: user.rating,
+            reviewsCount: user.reviewsCount,
+            joinedDate: user.joinedDate,
+            responseTime: user.responseTime,
+            verified: user.verified,
+            location: `${city}, ${pickupLocation.trim()}`,
+          };
+        })(),
         isAvailable: true,
         rating: 5.0,
         reviewCount: 0,

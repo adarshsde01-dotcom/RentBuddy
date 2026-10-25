@@ -50,7 +50,7 @@ export const CloudinaryUploader: React.FC<CloudinaryUploaderProps> = ({
       const file = files[i];
       setUploadStatusMsg(`Processing ${file.name} (${i + 1}/${files.length})...`);
 
-      const result = await uploadImageToCloudinary(file, config, (percent) => {
+      const result = await uploadImageToCloudinary(file, config, (percent: number) => {
         setUploadProgress(percent);
       });
 

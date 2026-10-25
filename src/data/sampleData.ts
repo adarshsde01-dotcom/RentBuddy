@@ -219,7 +219,7 @@ export const SAMPLE_ITEMS: RentalItem[] = [
     subcategory: 'Coffee Machines',
     description: 'Iconic all-in-one bean-to-cup espresso maker. Features integrated conical burr grinder, 15-bar Italian pump, PID temperature control, and microfoam steam wand for barista-quality latte art at weekend parties or special brunch hosting.',
     images: [
-      'https://images.unsplash.com/photo-1517668808822-9ebb02ae2a0e?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?auto=format&fit=crop&w=1000&q=80',
       'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=1000&q=80'
     ],
     dailyPrice: 699,
@@ -1332,7 +1332,7 @@ export const SAMPLE_ITEMS: RentalItem[] = [
     subcategory: 'Academic Textbooks',
     description: 'Gold standard medical neuroscience and physiology hardcovers for MBBS, AIIMS PG, and biomedical graduate students. Completely unmarked crisp pages with high-definition anatomical color plates.',
     images: [
-      'https://images.unsplash.com/photo-1532012164546-f432f2e3777a?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=1000&q=80',
       'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=1000&q=80'
     ],
     dailyPrice: 69,
@@ -1595,7 +1595,7 @@ export const SAMPLE_ITEMS: RentalItem[] = [
     subcategory: 'Office Furniture',
     description: 'The world\'s most revered ergonomic office chair. Features 8Z Pellicle breathable suspension mesh, dual PostureFit SL sacral/lumbar support, fully adjustable arms, and forward tilt limiter for optimal work-from-home posture.',
     images: [
-      'https://images.unsplash.com/photo-1580481077195-c3a82105e3b5?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1592078615290-033ee584e267?auto=format&fit=crop&w=1000&q=80',
       'https://images.unsplash.com/photo-1505797149-43b0069ec26b?auto=format&fit=crop&w=1000&q=80'
     ],
     dailyPrice: 449,

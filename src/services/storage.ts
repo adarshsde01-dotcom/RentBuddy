@@ -1,4 +1,4 @@
-import { RentalItem, RentalBooking, BookingStatus } from '../types/rental';
+import { RentalItem, RentalBooking, BookingStatus, OwnerProfile } from '../types/rental';
 import { SAMPLE_ITEMS, INITIAL_BOOKINGS } from '../data/sampleData';
 
 const ITEMS_STORAGE_KEY = 'rentbuddy_items_v3';
@@ -7,6 +7,7 @@ const LEGACY_V1_KEY = 'rentbuddy_items_v1';
 const LEGACY_ITEMS_STORAGE_KEY = 'rentloop_items_v1';
 const BOOKINGS_STORAGE_KEY = 'rentbuddy_bookings_v2';
 const LEGACY_BOOKINGS_STORAGE_KEY = 'rentbuddy_bookings_v1';
+const CURRENT_USER_STORAGE_KEY = 'rentbuddy_current_user_v1';
 
 export const getStoredItems = (): RentalItem[] => {
   try {
@@ -152,8 +153,46 @@ export const calculateImpactStats = () => {
   };
 };
 
+export interface CurrentUser extends OwnerProfile {
+  email: string;
+}
+
+export const DEFAULT_CURRENT_USER: CurrentUser = {
+  id: 'owner-current-user',
+  name: 'Alex Rivera',
+  email: 'alex.rivera@example.com',
+  avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80',
+  rating: 5.0,
+  reviewsCount: 1,
+  joinedDate: 'October 2026',
+  responseTime: 'Within an hour',
+  verified: true,
+  location: 'Bengaluru, KA',
+};
+
+export const getCurrentUser = (): CurrentUser => {
+  try {
+    const raw = localStorage.getItem(CURRENT_USER_STORAGE_KEY);
+    if (raw) {
+      return JSON.parse(raw);
+    }
+  } catch (err) {
+    console.error('Failed to read current user from storage', err);
+  }
+  return DEFAULT_CURRENT_USER;
+};
+
+export const saveCurrentUser = (user: CurrentUser): void => {
+  try {
+    localStorage.setItem(CURRENT_USER_STORAGE_KEY, JSON.stringify(user));
+  } catch (err) {
+    console.error('Failed to write current user to storage', err);
+  }
+};
+
 export const resetStoreToDefaults = (): void => {
   localStorage.removeItem(ITEMS_STORAGE_KEY);
   localStorage.removeItem(LEGACY_V1_KEY);
   localStorage.removeItem(BOOKINGS_STORAGE_KEY);
+  localStorage.removeItem(CURRENT_USER_STORAGE_KEY);
 };
