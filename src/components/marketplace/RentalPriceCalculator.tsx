@@ -1,6 +1,7 @@
 import React, { useState, useId } from 'react';
-import { Calendar, ShieldAlert, Sparkles, CheckCircle2, ArrowRight } from 'lucide-react';
+import { Calendar, ShieldAlert, Sparkles, CheckCircle2, ArrowRight, AlertTriangle } from 'lucide-react';
 import { RentalItem } from '../../types/rental';
+import { calculateRentalPricing } from '../../utils/pricing';
 
 interface RentalPriceCalculatorProps {
   item: RentalItem;
@@ -55,22 +56,8 @@ export const RentalPriceCalculator: React.FC<RentalPriceCalculatorProps> = ({
   const diffTime = end.getTime() - start.getTime();
   const calculatedDays = Math.max(1, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
 
-  const baseTotal = calculatedDays * item.dailyPrice;
-
-  // Multi-day discount calculation
-  let discountPercent = 0;
-  if (calculatedDays >= 7) {
-    discountPercent = item.weeklyDiscountPercent || 20;
-  } else if (calculatedDays >= 3) {
-    discountPercent = 10;
-  }
-
-  const discountAmount = Math.round((baseTotal * (discountPercent / 100)) * 100) / 100;
-  const discountedRental = baseTotal - discountAmount;
-  const serviceFee = Math.round((discountedRental * 0.05) * 100) / 100; // 5% community insurance fee
-  const securityDeposit = item.securityDeposit;
-  const totalPayable = Math.round((discountedRental + serviceFee + securityDeposit) * 100) / 100;
-  const savingsVsRetail = Math.max(0, item.replacementValue - (discountedRental + serviceFee));
+  // Unified transparent pricing calculation
+  const pricing = calculateRentalPricing(item, calculatedDays);
 
   const handleStartChange = (val: string) => {
     setStartDate(val);
@@ -94,13 +81,13 @@ export const RentalPriceCalculator: React.FC<RentalPriceCalculatorProps> = ({
       startDate,
       endDate,
       totalDays: calculatedDays,
-      dailyRate: item.dailyPrice,
-      baseTotal,
-      discountAmount,
-      serviceFee,
-      securityDeposit,
-      totalPayable,
-      savingsVsRetail,
+      dailyRate: pricing.dailyRate,
+      baseTotal: pricing.baseTotal,
+      discountAmount: pricing.discountAmount,
+      serviceFee: pricing.serviceFee,
+      securityDeposit: pricing.securityDeposit,
+      totalPayable: pricing.totalPayable,
+      savingsVsRetail: pricing.savingsVsRetail,
     });
   };
 
@@ -162,15 +149,19 @@ export const RentalPriceCalculator: React.FC<RentalPriceCalculatorProps> = ({
         {/* Duration notification banner */}
         <div className="px-3 py-2 rounded-xl bg-slate-950/80 border border-slate-800 flex items-center justify-between text-xs">
           <span className="text-slate-300 font-medium">
-            Selected Duration: <strong className="text-emerald-400 font-bold">{calculatedDays} {calculatedDays === 1 ? 'day' : 'days'}</strong>
+            Selected Duration: <strong className="text-emerald-400 font-bold">{pricing.totalDays} {pricing.totalDays === 1 ? 'day' : 'days'}</strong>
           </span>
-          {discountPercent > 0 ? (
+          {pricing.discountTier === 'monthly' ? (
             <span className="text-teal-300 font-bold flex items-center gap-1 bg-teal-950/80 px-2 py-0.5 rounded-md border border-teal-500/30">
-              <Sparkles className="w-3 h-3 text-teal-300" /> {discountPercent}% multi-day discount unlocked!
+              <Sparkles className="w-3 h-3 text-teal-300" /> {pricing.discountPercent}% monthly discount applied!
+            </span>
+          ) : pricing.discountTier === 'weekly' ? (
+            <span className="text-teal-300 font-bold flex items-center gap-1 bg-teal-950/80 px-2 py-0.5 rounded-md border border-teal-500/30">
+              <Sparkles className="w-3 h-3 text-teal-300" /> {pricing.discountPercent}% weekly discount unlocked!
             </span>
           ) : (
             <span className="text-slate-400 text-[11px]">
-              Tip: Rent 3+ days for 10% off
+              Tip: Rent 7+ days for {item.weeklyDiscountPercent || 15}% off
             </span>
           )}
         </div>
@@ -179,72 +170,93 @@ export const RentalPriceCalculator: React.FC<RentalPriceCalculatorProps> = ({
         <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800/80 space-y-2.5 text-xs text-slate-300">
           <div className="flex justify-between items-center">
             <span>
-              ₹{item.dailyPrice.toLocaleString('en-IN')} × {calculatedDays} {calculatedDays === 1 ? 'day' : 'days'}
+              ₹{pricing.dailyRate.toLocaleString('en-IN')} × {pricing.totalDays} {pricing.totalDays === 1 ? 'day' : 'days'}
             </span>
-            <span className="font-semibold text-slate-100">₹{baseTotal.toFixed(2)}</span>
+            <span className="font-semibold text-slate-100">₹{pricing.baseTotal.toFixed(2)}</span>
           </div>
 
-          {discountAmount > 0 && (
+          {pricing.discountAmount > 0 && (
             <div className="flex justify-between items-center text-teal-400">
-              <span>Multi-Day Discount ({discountPercent}%)</span>
-              <span className="font-semibold">-₹{discountAmount.toFixed(2)}</span>
+              <span>{pricing.discountTier === 'monthly' ? 'Monthly' : 'Weekly'} Long-Term Discount ({pricing.discountPercent}%)</span>
+              <span className="font-semibold">-₹{pricing.discountAmount.toFixed(2)}</span>
             </div>
           )}
 
           <div className="flex justify-between items-center">
-            <span className="flex items-center gap-1">
-              Community Protection & Platform Fee (5%)
+            <span className="flex items-center gap-1 text-slate-300">
+              Platform & Community Protection Fee (5%)
             </span>
-            <span className="font-semibold text-slate-100">₹{serviceFee.toFixed(2)}</span>
+            <span className="font-semibold text-slate-100">₹{pricing.serviceFee.toFixed(2)}</span>
+          </div>
+
+          <div className="flex justify-between items-center pt-2 border-t border-slate-800/80">
+            <span className="font-medium text-slate-300">
+              Subtotal Rental Charges
+            </span>
+            <span className="font-bold text-emerald-400">₹{pricing.rentalCost.toFixed(2)}</span>
           </div>
 
           <div className="flex justify-between items-center pt-2 border-t border-slate-800">
             <div className="flex flex-col">
               <span className="font-semibold text-slate-200">Refundable Security Deposit</span>
-              <span className="text-[10px] text-emerald-400">100% refunded within 24h of return</span>
+              <span className="text-[10px] text-emerald-400">100% refunded after return • Escrow hold, not a rental charge</span>
             </div>
-            <span className="font-semibold text-slate-100">₹{securityDeposit.toFixed(2)}</span>
+            <span className="font-semibold text-slate-100">₹{pricing.securityDeposit.toFixed(2)}</span>
           </div>
 
           {/* Upfront Total */}
           <div className="flex justify-between items-center pt-3 border-t border-slate-700/80 text-sm">
             <div>
               <span className="font-black text-white text-base">Total Due at Checkout</span>
-              <span className="text-[10px] text-slate-400 block">Includes refundable deposit</span>
+              <span className="text-[10px] text-slate-400 block">Rental fee + refundable deposit hold</span>
             </div>
             <div className="text-right">
               <span className="text-xl font-black text-emerald-400 font-heading">
-                ₹{totalPayable.toFixed(2)}
+                ₹{pricing.totalPayable.toFixed(2)}
               </span>
             </div>
           </div>
         </div>
 
-        {/* Social impact / circular economy comparison badge */}
-        <div className="p-3.5 rounded-xl bg-gradient-to-r from-emerald-950/60 to-teal-950/60 border border-emerald-500/30 flex items-start gap-3 text-xs">
-          <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-          <div>
-            <p className="font-bold text-emerald-300">
-              You save ₹{Math.round(savingsVsRetail).toLocaleString('en-IN')} by borrowing smart!
-            </p>
-            <p className="text-slate-300 text-[11px] mt-0.5">
-              Retail price is ~₹{item.replacementValue.toLocaleString('en-IN')}. Renting saves cash and keeps manufacturing emissions out of the atmosphere.
-            </p>
+        {/* Social impact / Save vs Buying comparison badge */}
+        {pricing.isSavingsPositive ? (
+          <div className="p-3.5 rounded-xl bg-gradient-to-r from-emerald-950/60 to-teal-950/60 border border-emerald-500/30 flex items-start gap-3 text-xs">
+            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+            <div>
+              <p className="font-bold text-emerald-300">
+                You save ₹{Math.round(pricing.savingsVsRetail).toLocaleString('en-IN')} vs buying new ({pricing.savingsPercentage}% savings)!
+              </p>
+              <p className="text-slate-300 text-[11px] mt-0.5 leading-relaxed">
+                Estimated retail purchase price is ~₹{pricing.estimatedPurchasePrice.toLocaleString('en-IN')}. Total rental cost for {pricing.totalDays} {pricing.totalDays === 1 ? 'day' : 'days'} is ₹{pricing.rentalCost.toFixed(2)} (incl. 5% platform fee). Refundable deposit (₹{pricing.securityDeposit.toFixed(2)}) is held in escrow and returned after inspection.
+              </p>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="p-3.5 rounded-xl bg-amber-950/40 border border-amber-500/30 flex items-start gap-3 text-xs">
+            <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+            <div>
+              <p className="font-bold text-amber-300">
+                Rental charges (₹{pricing.rentalCost.toFixed(2)}) exceed ~₹{pricing.estimatedPurchasePrice.toLocaleString('en-IN')} estimated retail purchase price.
+              </p>
+              <p className="text-slate-300 text-[11px] mt-0.5 leading-relaxed">
+                For a duration of {pricing.totalDays} days, purchasing the item may be more economical than renting if you intend to keep it permanently.
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* Submit Booking Request Button */}
         <button
           type="submit"
-          className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-400 hover:from-emerald-400 hover:to-teal-300 text-slate-950 font-black text-sm tracking-wide shadow-lg shadow-emerald-500/25 transition-all flex items-center justify-center gap-2 active:scale-[0.99]"
+          className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-400 hover:from-emerald-400 hover:to-teal-300 text-slate-950 font-black text-sm tracking-wide shadow-lg shadow-emerald-500/25 transition-all flex items-center justify-center gap-2 active:scale-[0.99] cursor-pointer"
         >
-          <span>Request Rental for ₹{totalPayable.toFixed(2)}</span>
+          <span>Request Rental for ₹{pricing.totalPayable.toFixed(2)}</span>
           <ArrowRight className="w-4 h-4" />
         </button>
 
         <p className="text-center text-[11px] text-slate-400 flex items-center justify-center gap-1">
           <ShieldAlert className="w-3.5 h-3.5 text-slate-400" />
-          No credit card charged until lender confirms reservation.
+          No payment processed until lender confirms availability.
         </p>
       </form>
     </div>

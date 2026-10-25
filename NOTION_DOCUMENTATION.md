@@ -95,12 +95,12 @@ graph TD
 ## 💻 5. Implementation Highlights
 
 ### 1. Dynamic Rental Price & Discount Calculator
-Calculates duration between pickup and return dates, applying progressive multi-day discount tiers:
-- **Duration = 1 to 2 days:** Standard daily rate.
-- **Duration = 3 to 6 days:** 10% multi-day community discount.
-- **Duration = 7+ days:** Full weekly discount (15% to 33% depending on item).
-- **Deposit & Fees:** 5% platform protection fee + 100% refundable security deposit held in escrow.
-- **Impact Counter:** Displays live comparison against purchasing the item retail.
+Calculates duration between pickup and return dates, applying progressive, non-stacking multi-day discount tiers:
+- **Duration = 1 to 6 days:** Accessible standard daily rate (no penalty or arbitrary minimum duration).
+- **Duration = 7 to 29 days:** 15% weekly discount automatically applied.
+- **Duration = 30+ days:** 25% long-term monthly discount for extended study, work, or seasonal usage.
+- **Deposit & Fees:** 5% platform & community protection fee + 100% refundable security deposit held in escrow (never counted as a rental expense).
+- **Save vs Buying Engine:** Mathematically compares approximate retail purchase price against actual rental cost for the selected duration; clearly distinguishes refundable deposits and handles long durations transparently.
 
 ### 2. Dual-Perspective Dashboard
 - **Renter Tab ("My Borrowings"):** Track ongoing rentals, pickup verification, view escrow details, and mark items returned.

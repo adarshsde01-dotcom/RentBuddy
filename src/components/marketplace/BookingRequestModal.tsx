@@ -290,31 +290,46 @@ export const BookingRequestModal: React.FC<BookingRequestModalProps> = ({
           </div>
 
           {/* Pricing Summary Final */}
-          <div className="p-4 rounded-xl bg-slate-950/80 border border-slate-800 space-y-1.5 text-xs text-slate-300">
+          <div className="p-4 rounded-xl bg-slate-950/80 border border-slate-800 space-y-2 text-xs text-slate-300">
             <div className="flex justify-between">
-              <span>Rental Fee ({calculation.totalDays} days):</span>
+              <span>Rental Charges ({calculation.totalDays} {calculation.totalDays === 1 ? 'day' : 'days'}):</span>
               <span className="font-semibold text-slate-100">
                 ₹{(calculation.baseTotal - calculation.discountAmount).toFixed(2)}
               </span>
             </div>
+
+            <div className="flex justify-between">
+              <span>Platform & Community Protection Fee (5%):</span>
+              <span className="font-semibold text-slate-100">₹{calculation.serviceFee.toFixed(2)}</span>
+            </div>
+
             {deliverySurcharge > 0 && (
               <div className="flex justify-between text-teal-300">
-                <span>Courier Delivery Surcharge:</span>
+                <span>Doorstep Delivery Surcharge:</span>
                 <span className="font-semibold">₹{deliverySurcharge.toFixed(2)}</span>
               </div>
             )}
-            <div className="flex justify-between">
-              <span>Refundable Deposit (Returned after handback):</span>
+
+            <div className="flex justify-between pt-1.5 border-t border-slate-800/80 text-emerald-400 font-medium">
+              <span>Subtotal Non-Refundable Rental Cost:</span>
+              <span>₹{((calculation.baseTotal - calculation.discountAmount) + calculation.serviceFee + deliverySurcharge).toFixed(2)}</span>
+            </div>
+
+            <div className="flex justify-between items-center pt-1.5 border-t border-slate-800/80">
+              <div className="flex flex-col">
+                <span className="font-semibold text-slate-200">Refundable Security Deposit</span>
+                <span className="text-[10px] text-emerald-400">100% refunded after return • Escrow hold, not a rental fee</span>
+              </div>
               <span className="font-semibold text-slate-100">
                 ₹{calculation.securityDeposit.toFixed(2)}
               </span>
             </div>
-            <div className="flex justify-between">
-              <span>Protection & Community Fee:</span>
-              <span className="font-semibold text-slate-100">₹{calculation.serviceFee.toFixed(2)}</span>
-            </div>
-            <div className="flex justify-between items-center pt-2 border-t border-slate-800 text-sm font-bold text-white">
-              <span>Total Payable</span>
+
+            <div className="flex justify-between items-center pt-2.5 border-t border-slate-700/80 text-sm font-bold text-white">
+              <div>
+                <span>Total Due at Checkout</span>
+                <span className="text-[10px] text-slate-400 block font-normal">Rental cost + refundable deposit hold</span>
+              </div>
               <span className="text-emerald-400 font-heading text-lg">₹{finalTotal.toFixed(2)}</span>
             </div>
           </div>

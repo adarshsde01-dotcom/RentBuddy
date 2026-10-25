@@ -60,7 +60,9 @@ export interface RentalItem {
   images: string[];
   dailyPrice: number;
   weeklyPrice?: number;
-  weeklyDiscountPercent: number; // e.g. 20 for 20% off
+  weeklyDiscountPercent: number; // e.g. 15 for 15% off (7+ days)
+  monthlyPrice?: number;
+  monthlyDiscountPercent?: number; // e.g. 25 for 25% off (30+ days)
   securityDeposit: number;
   replacementValue: number;
   condition: ItemCondition;

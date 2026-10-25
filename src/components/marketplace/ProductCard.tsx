@@ -3,6 +3,7 @@ import { Star, MapPin, ShieldCheck, Sparkles, Check, ArrowRight, PackageOpen, Cl
 import { RentalItem } from '../../types/rental';
 import { getOptimizedImageUrl } from '../../services/cloudinary';
 import { getCategoryName } from '../../data/categories';
+import { calculateBenchmarkSavings } from '../../utils/pricing';
 
 interface ProductCardProps {
   item: RentalItem;
@@ -24,7 +25,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     quality: 'auto',
   });
 
-  const estimatedSavings = Math.max(0, item.replacementValue - item.dailyPrice * 3);
+  const benchmark = calculateBenchmarkSavings(item, 7);
   const categoryDisplayName = getCategoryName(item.category);
 
   return (
@@ -168,12 +169,20 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             </div>
           </div>
 
-          {/* Social Impact / Savings Tag */}
-          <div className="px-2.5 py-1.5 rounded-lg bg-emerald-950/40 border border-emerald-500/20 flex items-center justify-between text-[11px]">
+          <div className="flex items-center justify-between text-[10px] text-slate-400 px-0.5">
+            <span>Est. Retail: ~₹{item.replacementValue.toLocaleString('en-IN')}</span>
+            <span className="text-emerald-400/90 font-medium">100% deposit refund</span>
+          </div>
+
+          {/* Social Impact / Savings Tag with transparent duration disclosure */}
+          <div 
+            className="px-2.5 py-1.5 rounded-lg bg-emerald-950/40 border border-emerald-500/20 flex items-center justify-between text-[11px]"
+            title={`Based on ~₹${benchmark.estimatedPurchasePrice.toLocaleString('en-IN')} estimated retail purchase price minus ~₹${benchmark.rentalCost.toLocaleString('en-IN')} 7-day rental charges (incl. 5% platform fee). Refundable deposit (₹${item.securityDeposit.toLocaleString('en-IN')}) is held in escrow and is not an expense.`}
+          >
             <span className="text-emerald-400 font-medium flex items-center gap-1">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> Save vs Buying:
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" /> Save vs Buying (7d):
             </span>
-            <span className="font-bold text-emerald-300">~₹{estimatedSavings.toLocaleString('en-IN')}</span>
+            <span className="font-bold text-emerald-300">~₹{benchmark.savings.toLocaleString('en-IN')}</span>
           </div>
 
           {/* Owner info & Action button */}

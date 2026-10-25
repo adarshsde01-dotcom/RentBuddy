@@ -52,9 +52,9 @@ export const ListItemModal: React.FC<ListItemModalProps> = ({
   const [category, setCategory] = useState<CategoryType>(defaultCat);
   const [subcategory, setSubcategory] = useState(defaultSubcats[0] || '');
   const [description, setDescription] = useState('');
-  const [dailyPrice, setDailyPrice] = useState<number | ''>(499);
-  const [weeklyPrice, setWeeklyPrice] = useState<number | ''>(2499);
-  const [securityDeposit, setSecurityDeposit] = useState<number | ''>(2000);
+  const [dailyPrice, setDailyPrice] = useState<number | ''>(149);
+  const [weeklyPrice, setWeeklyPrice] = useState<number | ''>(885);
+  const [securityDeposit, setSecurityDeposit] = useState<number | ''>(1000);
   const [replacementValue, setReplacementValue] = useState<number | ''>(15000);
   const [condition, setCondition] = useState<ItemCondition>('Like New');
   const [quantity, setQuantity] = useState<number>(1);
@@ -179,8 +179,9 @@ export const ListItemModal: React.FC<ListItemModalProps> = ({
       : [selectedCatDef?.bannerImage || 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=1000&q=80'];
 
     const numDailyPrice = Number(dailyPrice);
-    const numWeeklyPrice = weeklyPrice ? Number(weeklyPrice) : Math.round(numDailyPrice * 7 * 0.8);
-    const calculatedDiscount = Math.max(0, Math.round(((numDailyPrice * 7 - numWeeklyPrice) / (numDailyPrice * 7)) * 100));
+    const numWeeklyPrice = weeklyPrice ? Number(weeklyPrice) : Math.round(numDailyPrice * 7 * 0.85);
+    const calculatedDiscount = Math.max(0, Math.round(((numDailyPrice * 7 - numWeeklyPrice) / (numDailyPrice * 7)) * 100)) || 15;
+    const numMonthlyPrice = Math.round(numDailyPrice * 30 * 0.75);
 
     const selectedDeliveryOptions: string[] = [];
     if (pickupOption) selectedDeliveryOptions.push('local_pickup');
@@ -197,6 +198,8 @@ export const ListItemModal: React.FC<ListItemModalProps> = ({
         dailyPrice: numDailyPrice,
         weeklyPrice: numWeeklyPrice,
         weeklyDiscountPercent: calculatedDiscount,
+        monthlyPrice: numMonthlyPrice,
+        monthlyDiscountPercent: 25,
         securityDeposit: Number(securityDeposit),
         replacementValue: Number(replacementValue),
         condition,

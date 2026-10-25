@@ -33,9 +33,9 @@ export const CuratedCollectionsRibbon: React.FC<CuratedCollectionsRibbonProps> =
       case 'recent':
         return list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).slice(0, 6);
       case 'budget':
-        return list.filter((i) => i.dailyPrice <= 499).sort((a, b) => a.dailyPrice - b.dailyPrice).slice(0, 6);
+        return list.filter((i) => i.dailyPrice <= 199).sort((a, b) => a.dailyPrice - b.dailyPrice).slice(0, 6);
       case 'longer_value':
-        return list.filter((i) => i.weeklyDiscountPercent >= 25).sort((a, b) => b.weeklyDiscountPercent - a.weeklyDiscountPercent).slice(0, 6);
+        return list.filter((i) => i.weeklyDiscountPercent >= 15).sort((a, b) => (b.monthlyDiscountPercent || 25) - (a.monthlyDiscountPercent || 25)).slice(0, 6);
       default:
         return list.slice(0, 6);
     }
@@ -90,7 +90,7 @@ export const CuratedCollectionsRibbon: React.FC<CuratedCollectionsRibbonProps> =
             }`}
           >
             <Tag className="w-3.5 h-3.5 text-sky-400" />
-            <span>Budget-Friendly (&lt;₹500/day)</span>
+            <span>Budget-Friendly (&lt;₹200/day)</span>
           </button>
 
           <button
@@ -136,7 +136,7 @@ export const CuratedCollectionsRibbon: React.FC<CuratedCollectionsRibbonProps> =
                   {item.condition}
                 </span>
               </div>
-              {item.weeklyDiscountPercent >= 20 && (
+              {item.weeklyDiscountPercent >= 15 && (
                 <div className="absolute bottom-2 right-2">
                   <span className="text-[9px] px-1.5 py-0.5 rounded bg-teal-950/90 border border-teal-500/40 text-teal-300 font-bold backdrop-blur-sm">
                     -{item.weeklyDiscountPercent}% week

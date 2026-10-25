@@ -15,7 +15,9 @@ import {
   Truck,
   Package,
   Info,
-  Cloud
+  Cloud,
+  IndianRupee,
+  Tag
 } from 'lucide-react';
 import { RentalItem } from '../../types/rental';
 import { RentalPriceCalculator } from './RentalPriceCalculator';
@@ -255,6 +257,31 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                       ? item.deliveryOptions.map(opt => opt.replace('_', ' ')).join(' • ')
                       : 'Local Pickup & Direct Handover'}
                   </span>
+                </div>
+              </div>
+
+              {/* Market Value & Escrow Protection Strip */}
+              <div className="p-3.5 rounded-2xl bg-slate-950/70 border border-slate-800 grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                <div>
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-1 flex items-center gap-1">
+                    <IndianRupee className="w-3.5 h-3.5 text-emerald-400" /> Estimated Retail
+                  </span>
+                  <span className="text-slate-200 font-bold">~₹{item.replacementValue.toLocaleString('en-IN')}</span>
+                  <span className="text-[10px] text-slate-400 block mt-0.5">Approx. purchase price</span>
+                </div>
+                <div>
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-1 flex items-center gap-1">
+                    <ShieldCheck className="w-3.5 h-3.5 text-teal-400" /> Refundable Deposit
+                  </span>
+                  <span className="text-emerald-400 font-bold">₹{item.securityDeposit.toLocaleString('en-IN')}</span>
+                  <span className="text-[10px] text-emerald-400/90 block mt-0.5">100% refunded after return</span>
+                </div>
+                <div>
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-1 flex items-center gap-1">
+                    <Tag className="w-3.5 h-3.5 text-sky-400" /> Long-Term Savings
+                  </span>
+                  <span className="text-teal-300 font-bold">{item.weeklyDiscountPercent || 15}% (7d+) • {item.monthlyDiscountPercent || 25}% (30d+)</span>
+                  <span className="text-[10px] text-slate-400 block mt-0.5">Applied automatically</span>
                 </div>
               </div>
 

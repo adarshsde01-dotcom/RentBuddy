@@ -1,11 +1,13 @@
 import { RentalItem, RentalBooking, BookingStatus, OwnerProfile } from '../types/rental';
 import { SAMPLE_ITEMS, INITIAL_BOOKINGS } from '../data/sampleData';
 
-const ITEMS_STORAGE_KEY = 'rentbuddy_items_v3';
+const ITEMS_STORAGE_KEY = 'rentbuddy_items_v4';
+const LEGACY_V3_KEY = 'rentbuddy_items_v3';
 const LEGACY_V2_KEY = 'rentbuddy_items_v2';
 const LEGACY_V1_KEY = 'rentbuddy_items_v1';
 const LEGACY_ITEMS_STORAGE_KEY = 'rentloop_items_v1';
-const BOOKINGS_STORAGE_KEY = 'rentbuddy_bookings_v2';
+const BOOKINGS_STORAGE_KEY = 'rentbuddy_bookings_v3';
+const LEGACY_BOOKINGS_V2_KEY = 'rentbuddy_bookings_v2';
 const LEGACY_BOOKINGS_STORAGE_KEY = 'rentbuddy_bookings_v1';
 const CURRENT_USER_STORAGE_KEY = 'rentbuddy_current_user_v1';
 
@@ -28,12 +30,13 @@ export const getStoredItems = (): RentalItem[] => {
       }
     }
 
-    // Check v2 & v1 legacy
-    const legacyRaw = localStorage.getItem(LEGACY_V2_KEY) || localStorage.getItem(LEGACY_V1_KEY) || localStorage.getItem(LEGACY_ITEMS_STORAGE_KEY);
+    // Check v3 & legacy versions to migrate user-created items
+    const legacyRaw = localStorage.getItem(LEGACY_V3_KEY) || localStorage.getItem(LEGACY_V2_KEY) || localStorage.getItem(LEGACY_V1_KEY) || localStorage.getItem(LEGACY_ITEMS_STORAGE_KEY);
     if (legacyRaw) {
       const legacyItems: RentalItem[] = JSON.parse(legacyRaw);
       const sampleIds = new Set(SAMPLE_ITEMS.map((s) => s.id));
       const customItems = legacyItems.filter((item) => !sampleIds.has(item.id));
+      // Seamlessly merge any custom user-created items on top of updated sample catalog
       const merged = [...customItems, ...SAMPLE_ITEMS];
       saveStoredItems(merged);
       return merged;
@@ -54,7 +57,7 @@ export const saveStoredItems = (items: RentalItem[]): void => {
 
 export const getStoredBookings = (): RentalBooking[] => {
   try {
-    const raw = localStorage.getItem(BOOKINGS_STORAGE_KEY) || localStorage.getItem(LEGACY_BOOKINGS_STORAGE_KEY);
+    const raw = localStorage.getItem(BOOKINGS_STORAGE_KEY) || localStorage.getItem(LEGACY_BOOKINGS_V2_KEY) || localStorage.getItem(LEGACY_BOOKINGS_STORAGE_KEY);
     if (raw) {
       return JSON.parse(raw);
     }
@@ -76,8 +79,19 @@ export const createNewItem = (
   itemData: Omit<RentalItem, 'id' | 'createdAt'>
 ): RentalItem => {
   const items = getStoredItems();
+  const dailyPrice = Number(itemData.dailyPrice) || 100;
+  const weeklyDiscountPercent = itemData.weeklyDiscountPercent ?? 15;
+  const monthlyDiscountPercent = itemData.monthlyDiscountPercent ?? 25;
+  const weeklyPrice = itemData.weeklyPrice ?? Math.round(dailyPrice * 7 * (1 - weeklyDiscountPercent / 100));
+  const monthlyPrice = itemData.monthlyPrice ?? Math.round(dailyPrice * 30 * (1 - monthlyDiscountPercent / 100));
+
   const newItem: RentalItem = {
     ...itemData,
+    dailyPrice,
+    weeklyPrice,
+    weeklyDiscountPercent,
+    monthlyPrice,
+    monthlyDiscountPercent,
     id: `item-${Date.now()}`,
     createdAt: new Date().toISOString().split('T')[0],
   };
@@ -144,8 +158,10 @@ export const calculateImpactStats = () => {
   const co2AvoidedKg = Math.round(relevantBookings.length * 12.8);
   const wasteDivertedKg = Math.round(relevantBookings.length * 4.6);
 
+  const initialBenchmarkSavings = INITIAL_BOOKINGS.reduce((acc, b) => acc + (b.savingsVsRetail > 0 ? b.savingsVsRetail : 0), 0);
+
   return {
-    totalSavedDollars: totalSavedDollars || 428000,
+    totalSavedDollars: totalSavedDollars || initialBenchmarkSavings || 332886,
     co2AvoidedKg: co2AvoidedKg || 410,
     wasteDivertedKg: wasteDivertedKg || 140,
     activeListingsCount: items.length,
@@ -192,7 +208,10 @@ export const saveCurrentUser = (user: CurrentUser): void => {
 
 export const resetStoreToDefaults = (): void => {
   localStorage.removeItem(ITEMS_STORAGE_KEY);
+  localStorage.removeItem(LEGACY_V3_KEY);
+  localStorage.removeItem(LEGACY_V2_KEY);
   localStorage.removeItem(LEGACY_V1_KEY);
   localStorage.removeItem(BOOKINGS_STORAGE_KEY);
+  localStorage.removeItem(LEGACY_BOOKINGS_V2_KEY);
   localStorage.removeItem(CURRENT_USER_STORAGE_KEY);
 };
