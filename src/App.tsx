@@ -3,31 +3,36 @@ import {
   RentalItem, 
   RentalBooking, 
   FilterOptions, 
-  CloudinaryConfig 
+  CloudinaryConfig,
+  CategoryType
 } from './types/rental';
 import { 
   getStoredItems, 
   getStoredBookings 
 } from './services/storage';
 import { getStoredCloudinaryConfig } from './services/cloudinary';
+import { normalizeCategoryId } from './data/categories';
 
 // Components
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 import { HeroSection } from './components/home/HeroSection';
+import { CategoryDiscoverySection } from './components/home/CategoryDiscoverySection';
+import { CuratedCollectionsRibbon } from './components/home/CuratedCollectionsRibbon';
 import { HowItWorks } from './components/home/HowItWorks';
 import { SocialImpactSection } from './components/home/SocialImpactSection';
 import { CategoryFilterBar } from './components/marketplace/CategoryFilterBar';
 import { SearchBarAndFilters } from './components/marketplace/SearchBarAndFilters';
 import { ProductCard } from './components/marketplace/ProductCard';
 import { ProductDetailModal } from './components/marketplace/ProductDetailModal';
+import { AllCategoriesModal } from './components/marketplace/AllCategoriesModal';
 import { BookingRequestModal } from './components/marketplace/BookingRequestModal';
 import { ListItemModal } from './components/listing/ListItemModal';
 import { UserDashboard } from './components/dashboard/UserDashboard';
 import { CustomerSupportSection } from './components/support/CustomerSupportSection';
 import { CloudinarySettingsModal } from './components/common/CloudinarySettingsModal';
 import { Toast } from './components/common/Toast';
-import { PackageOpen, PlusCircle } from 'lucide-react';
+import { PackageOpen, PlusCircle, RotateCcw } from 'lucide-react';
 
 export function App() {
   // Navigation
@@ -41,10 +46,14 @@ export function App() {
   // Filter & Search State
   const [filters, setFilters] = useState<FilterOptions>({
     category: 'all',
+    subcategory: undefined,
     searchQuery: '',
     minPrice: 0,
     maxPrice: 3000,
     condition: 'all',
+    city: undefined,
+    availableFrom: undefined,
+    availableUntil: undefined,
     onlyAvailable: false,
     sortBy: 'recommended',
   });
@@ -55,6 +64,7 @@ export function App() {
   const [bookingCalculation, setBookingCalculation] = useState<any>(null);
   const [isListItemModalOpen, setIsListItemModalOpen] = useState(false);
   const [isCloudinaryModalOpen, setIsCloudinaryModalOpen] = useState(false);
+  const [isAllCategoriesModalOpen, setIsAllCategoriesModalOpen] = useState(false);
 
   // Toasts
   const [toasts, setToasts] = useState<Array<{ id: string; message: string; type: 'success' | 'info' | 'error' }>>([]);
@@ -77,37 +87,85 @@ export function App() {
 
   // Filter Engine
   const filteredItems = useMemo(() => {
+    const activeNormalizedCategory = normalizeCategoryId(filters.category);
+
     return items.filter((item) => {
-      // Category filter
-      if (filters.category !== 'all' && item.category !== filters.category) {
+      const itemNormalizedCategory = normalizeCategoryId(item.category);
+
+      // 1. Main Category filter
+      if (activeNormalizedCategory !== 'all' && itemNormalizedCategory !== activeNormalizedCategory) {
         return false;
       }
 
-      // Max price filter (when slider is at maximum 3000, it represents "₹3,000+ / Any price")
+      // 2. Subcategory filter
+      if (
+        filters.subcategory &&
+        item.subcategory?.toLowerCase().trim() !== filters.subcategory.toLowerCase().trim()
+      ) {
+        return false;
+      }
+
+      // 3. Min price filter
+      if (filters.minPrice > 0 && item.dailyPrice < filters.minPrice) {
+        return false;
+      }
+
+      // 4. Max price filter (when slider is at maximum 3000, it represents "₹3,000+ / Any price")
       if (filters.maxPrice < 3000 && item.dailyPrice > filters.maxPrice) {
         return false;
       }
 
-      // Condition filter
-      if (filters.condition !== 'all' && item.condition !== filters.condition) {
+      // 5. Condition filter
+      if (
+        filters.condition !== 'all' &&
+        item.condition.toLowerCase().trim() !== filters.condition.toLowerCase().trim()
+      ) {
         return false;
       }
 
-      // Availability filter
+      // 6. City / Location filter
+      if (filters.city && filters.city !== 'All Cities') {
+        const cityQuery = filters.city.toLowerCase().trim();
+        const matchItemCity = item.city?.toLowerCase().includes(cityQuery);
+        const matchItemLoc = item.location.toLowerCase().includes(cityQuery);
+        if (!matchItemCity && !matchItemLoc) {
+          return false;
+        }
+      }
+
+      // 7. Date Window filter
+      if (filters.availableFrom && item.availableUntil && item.availableUntil < filters.availableFrom) {
+        return false;
+      }
+      if (filters.availableUntil && item.availableFrom && item.availableFrom > filters.availableUntil) {
+        return false;
+      }
+
+      // 8. Availability status filter
       if (filters.onlyAvailable && !item.isAvailable) {
         return false;
       }
 
-      // Search query filter (matches title, description, tags, location)
+      // 9. Comprehensive Search query filter (matches title, description, category, subcategory, location, city, tags)
       if (filters.searchQuery.trim() !== '') {
         const query = filters.searchQuery.toLowerCase().trim();
         const matchTitle = item.title.toLowerCase().includes(query);
         const matchDesc = item.description.toLowerCase().includes(query);
         const matchLoc = item.location.toLowerCase().includes(query);
+        const matchCity = item.city ? item.city.toLowerCase().includes(query) : false;
         const matchCategory = item.category.toLowerCase().includes(query);
+        const matchSubcategory = item.subcategory ? item.subcategory.toLowerCase().includes(query) : false;
         const matchTags = item.tags.some((tag) => tag.toLowerCase().includes(query));
 
-        if (!matchTitle && !matchDesc && !matchLoc && !matchCategory && !matchTags) {
+        if (
+          !matchTitle &&
+          !matchDesc &&
+          !matchLoc &&
+          !matchCity &&
+          !matchCategory &&
+          !matchSubcategory &&
+          !matchTags
+        ) {
           return false;
         }
       }
@@ -119,6 +177,8 @@ export function App() {
           return a.dailyPrice - b.dailyPrice;
         case 'price_high':
           return b.dailyPrice - a.dailyPrice;
+        case 'recently_added':
+          return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
         case 'rating':
           return b.rating - a.rating;
         case 'popular':
@@ -163,6 +223,42 @@ export function App() {
     addToast(`"${newItem.title}" has been published to the rental catalog!`, 'success');
   };
 
+  // Select Category + Subcategory navigation handler
+  const handleSelectCategoryAndSubcategory = (catId: CategoryType, subcat?: string) => {
+    setFilters((prev) => ({
+      ...prev,
+      category: catId,
+      subcategory: subcat,
+    }));
+    if (currentView !== 'marketplace') {
+      setCurrentView('marketplace');
+    }
+    setTimeout(() => {
+      const element = document.getElementById('catalog-section');
+      element?.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
+  };
+
+  // Handle Curated Tab Filters
+  const handleCuratedFilter = (type: 'trending' | 'recent' | 'budget' | 'longer_value') => {
+    switch (type) {
+      case 'trending':
+        setFilters((prev) => ({ ...prev, sortBy: 'popular' }));
+        break;
+      case 'recent':
+        setFilters((prev) => ({ ...prev, sortBy: 'recently_added' }));
+        break;
+      case 'budget':
+        setFilters((prev) => ({ ...prev, maxPrice: 499, sortBy: 'price_low' }));
+        break;
+      case 'longer_value':
+        setFilters((prev) => ({ ...prev, sortBy: 'recommended' }));
+        break;
+    }
+    const element = document.getElementById('catalog-section');
+    element?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   const pendingRequestsCount = bookings.filter((b) => b.status === 'pending').length;
 
   return (
@@ -191,6 +287,7 @@ export function App() {
         }}
         onOpenListItem={() => setIsListItemModalOpen(true)}
         onOpenCloudinarySettings={() => setIsCloudinaryModalOpen(true)}
+        onOpenAllCategories={() => setIsAllCategoriesModalOpen(true)}
         cloudinaryConfig={cloudinaryConfig}
         pendingRequestsCount={pendingRequestsCount}
         searchQuery={filters.searchQuery}
@@ -205,26 +302,40 @@ export function App() {
             <HeroSection
               searchQuery={filters.searchQuery}
               onSearchChange={(q) => setFilters((prev) => ({ ...prev, searchQuery: q }))}
-              onSelectCategory={(cat) => {
-                setFilters((prev) => ({ ...prev, category: cat }));
-                const element = document.getElementById('catalog-section');
-                element?.scrollIntoView({ behavior: 'smooth' });
-              }}
+              onSelectCategory={(cat) => handleSelectCategoryAndSubcategory(cat)}
               onOpenListItem={() => setIsListItemModalOpen(true)}
+              onOpenAllCategories={() => setIsAllCategoriesModalOpen(true)}
               onExploreClick={() => {
                 const element = document.getElementById('catalog-section');
                 element?.scrollIntoView({ behavior: 'smooth' });
               }}
             />
 
+            {/* Popular Category Discovery Section (10 Popular Categories with Subcategories) */}
+            <CategoryDiscoverySection
+              items={items}
+              onSelectCategory={handleSelectCategoryAndSubcategory}
+              onOpenAllCategories={() => setIsAllCategoriesModalOpen(true)}
+            />
+
+            {/* Curated Collections Ribbon (Trending, Recent, Budget, Long Value) */}
+            <CuratedCollectionsRibbon
+              items={items}
+              onSelectItem={handleQuickRent}
+              onExploreFilter={handleCuratedFilter}
+            />
+
             {/* Catalog Grid Anchor Section */}
             <div id="catalog-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 pt-4">
               
-              {/* Category Pills Slider */}
+              {/* Category Pills Slider & Dynamic Subcategory Bar */}
               <CategoryFilterBar
                 selectedCategory={filters.category}
-                onSelectCategory={(cat) => setFilters((prev) => ({ ...prev, category: cat }))}
+                selectedSubcategory={filters.subcategory}
+                onSelectCategory={(cat) => setFilters((prev) => ({ ...prev, category: cat, subcategory: undefined }))}
+                onSelectSubcategory={(subcat) => setFilters((prev) => ({ ...prev, subcategory: subcat }))}
                 items={items}
+                onOpenAllCategories={() => setIsAllCategoriesModalOpen(true)}
               />
 
               {/* Advanced Search & Filtering Controls */}
@@ -241,34 +352,39 @@ export function App() {
                     <PackageOpen className="w-10 h-10" />
                   </div>
                   <h3 className="text-xl font-bold text-white font-heading">
-                    No items match your criteria
+                    No rental items match your criteria
                   </h3>
                   <p className="text-xs sm:text-sm text-slate-400 max-w-md mx-auto leading-relaxed">
-                    Try adjusting your maximum price slider, clearing your search keywords, or switching categories.
+                    Try clearing specific subcategories, expanding your rate slider, switching cities, or clearing keywords.
                   </p>
                   <div className="flex items-center justify-center gap-3 pt-2">
                     <button
                       onClick={() =>
                         setFilters({
                           category: 'all',
+                          subcategory: undefined,
                           searchQuery: '',
                           minPrice: 0,
                           maxPrice: 3000,
                           condition: 'all',
+                          city: undefined,
+                          availableFrom: undefined,
+                          availableUntil: undefined,
                           onlyAvailable: false,
                           sortBy: 'recommended',
                         })
                       }
-                      className="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-semibold text-xs transition-colors"
+                      className="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-semibold text-xs transition-colors flex items-center gap-1.5 cursor-pointer"
                     >
-                      Clear All Filters
+                      <RotateCcw className="w-3.5 h-3.5" />
+                      <span>Clear All Filters</span>
                     </button>
                     <button
                       onClick={() => setIsListItemModalOpen(true)}
-                      className="px-4 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs transition-colors flex items-center gap-1.5"
+                      className="px-4 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs transition-colors flex items-center gap-1.5 cursor-pointer"
                     >
                       <PlusCircle className="w-4 h-4" />
-                      <span>List This Item First</span>
+                      <span>List an Item in this Category</span>
                     </button>
                   </div>
                 </div>
@@ -347,17 +463,22 @@ export function App() {
 
       {/* Global Footer */}
       <Footer
-        onSelectCategory={(cat) => {
-          setFilters((prev) => ({ ...prev, category: cat }));
-          setCurrentView('marketplace');
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }}
+        onSelectCategory={(cat) => handleSelectCategoryAndSubcategory(cat)}
         onOpenCloudinarySettings={() => setIsCloudinaryModalOpen(true)}
         onOpenListItem={() => setIsListItemModalOpen(true)}
+        onOpenAllCategories={() => setIsAllCategoriesModalOpen(true)}
         onNavigateSupport={() => {
           setCurrentView('support');
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }}
+      />
+
+      {/* Explore All 20 Categories Directory Modal */}
+      <AllCategoriesModal
+        isOpen={isAllCategoriesModalOpen}
+        onClose={() => setIsAllCategoriesModalOpen(false)}
+        items={items}
+        onSelectCategoryAndSubcategory={handleSelectCategoryAndSubcategory}
       />
 
       {/* Product Detail Modal */}

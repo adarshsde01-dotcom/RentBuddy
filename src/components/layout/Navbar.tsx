@@ -10,7 +10,8 @@ import {
   Compass, 
   HelpCircle, 
   Leaf,
-  Headphones
+  Headphones,
+  Grid2X2
 } from 'lucide-react';
 import { CloudinaryConfig } from '../../types/rental';
 
@@ -19,6 +20,7 @@ interface NavbarProps {
   onNavigate: (view: 'marketplace' | 'dashboard' | 'how-it-works' | 'impact' | 'support') => void;
   onOpenListItem: () => void;
   onOpenCloudinarySettings: () => void;
+  onOpenAllCategories?: () => void;
   cloudinaryConfig: CloudinaryConfig;
   pendingRequestsCount: number;
   searchQuery: string;
@@ -30,6 +32,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onNavigate,
   onOpenListItem,
   onOpenCloudinarySettings,
+  onOpenAllCategories,
   cloudinaryConfig,
   pendingRequestsCount,
   searchQuery,
@@ -51,7 +54,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 onNavigate('marketplace');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
-              className="flex items-center gap-2.5 text-left group"
+              className="flex items-center gap-2.5 text-left group cursor-pointer"
             >
               <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 p-0.5 shadow-lg shadow-emerald-500/20 group-hover:shadow-emerald-500/30 transition-all">
                 <div className="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center">
@@ -60,10 +63,10 @@ export const Navbar: React.FC<NavbarProps> = ({
               </div>
               <div>
                 <span className="text-2xl font-black font-heading tracking-tight text-white flex items-center gap-1">
-                  Rent<span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">Buddy</span>
+                  Rent<span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">Loop</span>
                 </span>
                 <span className="hidden sm:block text-[10px] uppercase font-bold tracking-widest text-emerald-400/80 -mt-1">
-                  Borrow Smart • Save More
+                  Universal Rental Marketplace
                 </span>
               </div>
             </button>
@@ -80,7 +83,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   onSearchChange(e.target.value);
                   if (currentView !== 'marketplace') onNavigate('marketplace');
                 }}
-                placeholder="Search cameras, drones, tools, books, gear..."
+                placeholder="Search cameras, cricket bats, drones, sarees, tools..."
                 className="w-full pl-10 pr-4 py-2 bg-slate-900/90 border border-slate-700/80 rounded-xl text-xs text-slate-100 placeholder-slate-400 focus:outline-none focus:border-emerald-500/80 focus:ring-1 focus:ring-emerald-500/80 transition-all"
               />
               {searchQuery && (
@@ -99,7 +102,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <nav className="hidden lg:flex items-center gap-1 text-sm font-medium text-slate-300">
             <button
               onClick={() => onNavigate('marketplace')}
-              className={`px-3 py-2 rounded-lg transition-colors flex items-center gap-1.5 ${
+              className={`px-3 py-2 rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer ${
                 currentView === 'marketplace'
                   ? 'text-emerald-400 bg-emerald-500/10 font-semibold'
                   : 'hover:text-white hover:bg-slate-900'
@@ -109,9 +112,19 @@ export const Navbar: React.FC<NavbarProps> = ({
               Explore
             </button>
 
+            {onOpenAllCategories && (
+              <button
+                onClick={onOpenAllCategories}
+                className="px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors flex items-center gap-1.5 cursor-pointer"
+              >
+                <Grid2X2 className="w-4 h-4 text-emerald-400" />
+                Categories
+              </button>
+            )}
+
             <button
               onClick={() => onNavigate('how-it-works')}
-              className={`px-3 py-2 rounded-lg transition-colors flex items-center gap-1.5 ${
+              className={`px-3 py-2 rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer ${
                 currentView === 'how-it-works'
                   ? 'text-emerald-400 bg-emerald-500/10 font-semibold'
                   : 'hover:text-white hover:bg-slate-900'
@@ -123,31 +136,31 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             <button
               onClick={() => onNavigate('impact')}
-              className={`px-3 py-2 rounded-lg transition-colors flex items-center gap-1.5 ${
+              className={`px-3 py-2 rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer ${
                 currentView === 'impact'
                   ? 'text-emerald-400 bg-emerald-500/10 font-semibold'
                   : 'hover:text-white hover:bg-slate-900'
               }`}
             >
               <Leaf className="w-4 h-4 text-emerald-400" />
-              Social Impact
+              Impact
             </button>
 
             <button
               onClick={() => onNavigate('support')}
-              className={`px-3 py-2 rounded-lg transition-colors flex items-center gap-1.5 ${
+              className={`px-3 py-2 rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer ${
                 currentView === 'support'
                   ? 'text-emerald-400 bg-emerald-500/10 font-semibold'
                   : 'hover:text-white hover:bg-slate-900'
               }`}
             >
               <Headphones className="w-4 h-4 text-teal-400" />
-              Customer Care
+              Care
             </button>
 
             <button
               onClick={() => onNavigate('dashboard')}
-              className={`relative px-3 py-2 rounded-lg transition-colors flex items-center gap-1.5 ${
+              className={`relative px-3 py-2 rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer ${
                 currentView === 'dashboard'
                   ? 'text-emerald-400 bg-emerald-500/10 font-semibold'
                   : 'hover:text-white hover:bg-slate-900'
@@ -168,7 +181,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Cloudinary Integration Status Pill */}
             <button
               onClick={onOpenCloudinarySettings}
-              className={`hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border text-xs font-medium transition-all ${
+              className={`hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border text-xs font-medium transition-all cursor-pointer ${
                 isCloudinaryConnected
                   ? 'bg-emerald-950/40 border-emerald-500/40 text-emerald-300 hover:bg-emerald-900/40'
                   : 'bg-slate-900/80 border-slate-700/80 text-slate-300 hover:border-slate-600'
@@ -189,7 +202,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* List an Item CTA */}
             <button
               onClick={onOpenListItem}
-              className="px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-bold text-xs sm:text-sm shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30 transition-all flex items-center gap-1.5 active:scale-95"
+              className="px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-bold text-xs sm:text-sm shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30 transition-all flex items-center gap-1.5 active:scale-95 cursor-pointer"
             >
               <PlusCircle className="w-4 h-4 shrink-0" />
               <span>List an Item</span>
@@ -237,6 +250,21 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <Compass className="w-4 h-4" /> Explore Marketplace
               </span>
             </button>
+
+            {onOpenAllCategories && (
+              <button
+                onClick={() => {
+                  onOpenAllCategories();
+                  setMobileMenuOpen(false);
+                }}
+                className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm text-slate-300 hover:bg-slate-900"
+              >
+                <span className="flex items-center gap-2">
+                  <Grid2X2 className="w-4 h-4 text-emerald-400" /> All 20 Categories
+                </span>
+                <span className="text-xs text-emerald-400 font-bold">200+ subcategories</span>
+              </button>
+            )}
 
             <button
               onClick={() => {
@@ -290,7 +318,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 currentView === 'support' ? 'bg-emerald-500/10 text-emerald-400 font-semibold' : 'text-slate-300'
               }`}
             >
-              <Headphones className="w-4 h-4 text-teal-400" /> 24/7 Customer Care (Receiver & Renter)
+              <Headphones className="w-4 h-4 text-teal-400" /> Customer Care
             </button>
 
             <div className="pt-2 border-t border-slate-800">

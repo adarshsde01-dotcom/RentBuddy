@@ -1,7 +1,8 @@
-import React from 'react';
-import { Star, MapPin, ShieldCheck, Sparkles, Check, ArrowRight } from 'lucide-react';
+import React, { useState } from 'react';
+import { Star, MapPin, ShieldCheck, Sparkles, Check, ArrowRight, PackageOpen } from 'lucide-react';
 import { RentalItem } from '../../types/rental';
 import { getOptimizedImageUrl } from '../../services/cloudinary';
+import { getCategoryName } from '../../data/categories';
 
 interface ProductCardProps {
   item: RentalItem;
@@ -14,6 +15,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   onSelect,
   onRentClick,
 }) => {
+  const [imgError, setImgError] = useState(false);
+
   const optimizedImage = getOptimizedImageUrl(item.images[0] || '', {
     width: 600,
     height: 400,
@@ -22,6 +25,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   });
 
   const estimatedSavings = Math.max(0, item.replacementValue - item.dailyPrice * 3);
+  const categoryDisplayName = getCategoryName(item.category);
 
   return (
     <div className="group relative bg-slate-900/80 border border-slate-800 rounded-2xl overflow-hidden shadow-xl hover:border-emerald-500/40 hover:shadow-2xl hover:shadow-emerald-500/10 transition-all duration-300 flex flex-col justify-between">
@@ -30,16 +34,21 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         onClick={() => onSelect(item)}
         className="relative w-full h-52 sm:h-56 overflow-hidden bg-slate-950 cursor-pointer"
       >
-        <img
-          src={optimizedImage}
-          alt={item.title}
-          loading="lazy"
-          className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
-          onError={(e) => {
-            // fallback to a clean gradient if image fails to load
-            (e.target as HTMLElement).style.display = 'none';
-          }}
-        />
+        {!imgError ? (
+          <img
+            src={optimizedImage}
+            alt={item.title}
+            loading="lazy"
+            className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+            onError={() => setImgError(true)}
+          />
+        ) : (
+          <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 p-4 text-center">
+            <PackageOpen className="w-10 h-10 text-emerald-400/80 mb-2" />
+            <span className="text-xs font-bold text-slate-300">{item.title}</span>
+            <span className="text-[10px] text-emerald-400 mt-1">{item.subcategory || categoryDisplayName}</span>
+          </div>
+        )}
         
         {/* Top Badges */}
         <div className="absolute top-3 left-3 right-3 flex items-center justify-between pointer-events-none">
@@ -70,11 +79,20 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           </span>
         </div>
 
-        {/* Weekly Discount Ribbon */}
+        {/* Weekly Discount / Savings Ribbon */}
         {item.weeklyDiscountPercent > 0 && (
           <div className="absolute bottom-3 left-3">
             <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-teal-950/90 border border-teal-500/40 text-teal-300 backdrop-blur-sm">
               Save {item.weeklyDiscountPercent}% for 7+ days
+            </span>
+          </div>
+        )}
+
+        {/* Hygiene / Sanitized tag */}
+        {item.hygieneCleaned && (
+          <div className="absolute bottom-3 right-3">
+            <span className="px-2 py-0.5 rounded-md text-[9px] font-bold bg-emerald-950/90 border border-emerald-500/40 text-emerald-300 backdrop-blur-sm flex items-center gap-0.5">
+              <Check className="w-3 h-3" /> Sanitized
             </span>
           </div>
         )}
@@ -83,16 +101,15 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       {/* Details Container */}
       <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-3">
         <div>
-          {/* Location and Category */}
-          <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
-            <span className="flex items-center gap-1 truncate max-w-[180px]">
-              <MapPin className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-              {item.location}
+          {/* Subcategory & Category breadcrumb */}
+          <div className="flex items-center justify-between text-[11px] text-slate-400 mb-1">
+            <span className="font-semibold text-emerald-400 truncate max-w-[170px]">
+              {item.subcategory || categoryDisplayName}
             </span>
             <div className="flex items-center gap-1 text-amber-400 font-semibold">
               <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
               <span>{item.rating.toFixed(1)}</span>
-              <span className="text-slate-400 text-[11px]">({item.reviewCount})</span>
+              <span className="text-slate-400 text-[10px]">({item.reviewCount})</span>
             </div>
           </div>
 
@@ -104,6 +121,19 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           >
             {item.title}
           </h3>
+
+          {/* Location and available quantity */}
+          <div className="flex items-center justify-between text-xs text-slate-400 mt-1.5">
+            <span className="flex items-center gap-1 truncate max-w-[190px]">
+              <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+              <span className="truncate">{item.city ? `${item.city} • ${item.pickupLocation || item.location}` : item.location}</span>
+            </span>
+            {item.availableQuantity && item.availableQuantity > 1 && (
+              <span className="text-[10px] text-slate-400 font-medium">
+                {item.availableQuantity} units
+              </span>
+            )}
+          </div>
 
           {/* Short description */}
           <p className="text-xs text-slate-400 line-clamp-2 mt-1 leading-relaxed">
@@ -148,7 +178,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                   {item.owner.name}
                 </span>
                 <span className="text-[10px] text-emerald-400 flex items-center gap-0.5">
-                  <Check className="w-3 h-3" /> Verified Owner
+                  <Check className="w-3 h-3" /> Verified
                 </span>
               </div>
             </div>

@@ -1,16 +1,40 @@
 import { RentalItem, RentalBooking, BookingStatus } from '../types/rental';
 import { SAMPLE_ITEMS, INITIAL_BOOKINGS } from '../data/sampleData';
 
-const ITEMS_STORAGE_KEY = 'rentbuddy_items_v1';
+const ITEMS_STORAGE_KEY = 'rentbuddy_items_v2';
+const LEGACY_V1_KEY = 'rentbuddy_items_v1';
 const LEGACY_ITEMS_STORAGE_KEY = 'rentloop_items_v1';
-const BOOKINGS_STORAGE_KEY = 'rentbuddy_bookings_v1';
-const LEGACY_BOOKINGS_STORAGE_KEY = 'rentloop_bookings_v1';
+const BOOKINGS_STORAGE_KEY = 'rentbuddy_bookings_v2';
+const LEGACY_BOOKINGS_STORAGE_KEY = 'rentbuddy_bookings_v1';
 
 export const getStoredItems = (): RentalItem[] => {
   try {
-    const raw = localStorage.getItem(ITEMS_STORAGE_KEY) || localStorage.getItem(LEGACY_ITEMS_STORAGE_KEY);
+    const raw = localStorage.getItem(ITEMS_STORAGE_KEY);
     if (raw) {
-      return JSON.parse(raw);
+      const parsed: RentalItem[] = JSON.parse(raw);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        // Ensure new demo items are present if user had an older partial cache
+        const sampleIds = new Set(SAMPLE_ITEMS.map((s) => s.id));
+        const customItems = parsed.filter((item) => !sampleIds.has(item.id));
+        if (parsed.length < SAMPLE_ITEMS.length) {
+          // Merge custom user items on top of updated sample catalog
+          const merged = [...customItems, ...SAMPLE_ITEMS];
+          saveStoredItems(merged);
+          return merged;
+        }
+        return parsed;
+      }
+    }
+
+    // Check v1 legacy
+    const legacyRaw = localStorage.getItem(LEGACY_V1_KEY) || localStorage.getItem(LEGACY_ITEMS_STORAGE_KEY);
+    if (legacyRaw) {
+      const legacyItems: RentalItem[] = JSON.parse(legacyRaw);
+      const sampleIds = new Set(SAMPLE_ITEMS.map((s) => s.id));
+      const customItems = legacyItems.filter((item) => !sampleIds.has(item.id));
+      const merged = [...customItems, ...SAMPLE_ITEMS];
+      saveStoredItems(merged);
+      return merged;
     }
   } catch (err) {
     console.error('Failed to read items from storage', err);
@@ -109,23 +133,19 @@ export const calculateImpactStats = () => {
   const bookings = getStoredBookings();
   const items = getStoredItems();
 
-  // Total saved by community = sum of (replacementValue - rentalCost) for all confirmed/completed/active bookings
   const relevantBookings = bookings.filter((b) => b.status !== 'rejected');
   const totalSavedDollars = relevantBookings.reduce(
     (acc, b) => acc + (b.savingsVsRetail > 0 ? b.savingsVsRetail : 0),
     0
   );
 
-  // Each rental prevents manufacturing footprint: avg 8.4kg CO2e per consumer item avoided
   const co2AvoidedKg = Math.round(relevantBookings.length * 12.8);
-
-  // Landfill waste diverted (avg 3.2kg e-waste / manufacturing material per product)
   const wasteDivertedKg = Math.round(relevantBookings.length * 4.6);
 
   return {
-    totalSavedDollars: totalSavedDollars || 276800,
-    co2AvoidedKg: co2AvoidedKg || 285,
-    wasteDivertedKg: wasteDivertedKg || 98,
+    totalSavedDollars: totalSavedDollars || 428000,
+    co2AvoidedKg: co2AvoidedKg || 410,
+    wasteDivertedKg: wasteDivertedKg || 140,
     activeListingsCount: items.length,
     activeRentalsCount: relevantBookings.length,
   };
@@ -133,5 +153,6 @@ export const calculateImpactStats = () => {
 
 export const resetStoreToDefaults = (): void => {
   localStorage.removeItem(ITEMS_STORAGE_KEY);
+  localStorage.removeItem(LEGACY_V1_KEY);
   localStorage.removeItem(BOOKINGS_STORAGE_KEY);
 };

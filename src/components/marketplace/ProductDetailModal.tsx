@@ -10,11 +10,16 @@ import {
   Clock, 
   Share2, 
   Heart,
-  ChevronRight
+  ChevronRight,
+  Calendar,
+  Truck,
+  Package,
+  Info
 } from 'lucide-react';
 import { RentalItem } from '../../types/rental';
 import { RentalPriceCalculator } from './RentalPriceCalculator';
 import { getOptimizedImageUrl } from '../../services/cloudinary';
+import { getCategoryName } from '../../data/categories';
 
 interface ProductDetailModalProps {
   item: RentalItem | null;
@@ -61,6 +66,8 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
     setTimeout(() => setCopiedLink(false), 2000);
   };
 
+  const categoryName = getCategoryName(item.category);
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6 bg-black/85 backdrop-blur-md overflow-y-auto animate-fade-in">
       <div className="relative w-full max-w-5xl bg-slate-900 border border-slate-700/80 rounded-3xl shadow-2xl overflow-hidden my-auto text-slate-100 max-h-[92vh] flex flex-col">
@@ -69,10 +76,16 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
         <div className="sticky top-0 z-20 flex items-center justify-between px-6 py-4 bg-slate-900/95 border-b border-slate-800 backdrop-blur-md">
           <div className="flex items-center gap-2 text-xs text-slate-400">
             <span className="uppercase font-semibold tracking-wider text-emerald-400">
-              {item.category}
+              {categoryName}
             </span>
+            {item.subcategory && (
+              <>
+                <ChevronRight className="w-3.5 h-3.5 text-slate-600" />
+                <span className="text-emerald-300 font-medium">{item.subcategory}</span>
+              </>
+            )}
             <ChevronRight className="w-3.5 h-3.5 text-slate-600" />
-            <span className="truncate max-w-[200px] sm:max-w-md text-slate-300">
+            <span className="truncate max-w-[180px] sm:max-w-md text-slate-300">
               {item.title}
             </span>
           </div>
@@ -136,6 +149,11 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                         <Sparkles className="w-3.5 h-3.5" /> High Demand
                       </span>
                     )}
+                    {item.hygieneCleaned && (
+                      <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-950/90 text-emerald-300 border border-emerald-500/40 backdrop-blur-md flex items-center gap-1">
+                        <Check className="w-3.5 h-3.5" /> Sanitized
+                      </span>
+                    )}
                   </div>
                 </div>
 
@@ -165,7 +183,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
 
               {/* Title & Location Header */}
               <div>
-                <div className="flex items-center gap-2 text-xs text-slate-400 mb-1.5">
+                <div className="flex flex-wrap items-center gap-2 text-xs text-slate-400 mb-1.5">
                   <span className="flex items-center gap-1">
                     <MapPin className="w-3.5 h-3.5 text-emerald-400" />
                     {item.location}
@@ -176,12 +194,56 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                     <span>{item.rating.toFixed(2)}</span>
                     <span className="text-slate-400">({item.reviewCount} reviews)</span>
                   </div>
+                  {item.availableQuantity && item.availableQuantity > 1 && (
+                    <>
+                      <span>•</span>
+                      <span className="text-slate-300 font-semibold flex items-center gap-1">
+                        <Package className="w-3.5 h-3.5 text-emerald-400" />
+                        {item.availableQuantity} units in stock
+                      </span>
+                    </>
+                  )}
                 </div>
 
                 <h2 className="text-2xl sm:text-3xl font-extrabold text-white font-heading leading-tight">
                   {item.title}
                 </h2>
               </div>
+
+              {/* Delivery & Availability Calendar Quick Strip */}
+              <div className="p-3.5 rounded-2xl bg-slate-950/70 border border-slate-800 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                <div>
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-1 flex items-center gap-1">
+                    <Calendar className="w-3.5 h-3.5 text-emerald-400" /> Rental Availability
+                  </span>
+                  <span className="text-slate-200 font-medium">
+                    {item.availableFrom && item.availableUntil
+                      ? `${item.availableFrom} to ${item.availableUntil}`
+                      : 'Available for immediate booking'}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-1 flex items-center gap-1">
+                    <Truck className="w-3.5 h-3.5 text-teal-400" /> Handover Options
+                  </span>
+                  <span className="text-slate-200 font-medium">
+                    {item.deliveryOptions && item.deliveryOptions.length > 0
+                      ? item.deliveryOptions.map(opt => opt.replace('_', ' ')).join(' • ')
+                      : 'Local Pickup & Direct Handover'}
+                  </span>
+                </div>
+              </div>
+
+              {/* Safety notice if applicable */}
+              {(item.safetyNotice || item.category === 'health-wellness' || item.category === 'pet-accessories') && (
+                <div className="p-3 rounded-xl bg-teal-950/30 border border-teal-500/30 text-xs text-teal-200/90 flex items-start gap-2 leading-relaxed">
+                  <Info className="w-4 h-4 text-teal-400 shrink-0 mt-0.5" />
+                  <span>
+                    {item.safetyNotice ||
+                      'Care & Safety Notice: This equipment is disinfected and checked prior to handover. Please review safety rules.'}
+                  </span>
+                </div>
+              )}
 
               {/* Description */}
               <div className="space-y-2">
@@ -258,38 +320,27 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                       <Star className="w-3.5 h-3.5 fill-amber-400" />
                       <span>{item.owner.rating}</span>
                     </div>
-                    <span className="text-[11px] text-slate-400">{item.owner.reviewsCount} lender reviews</span>
+                    <span className="text-[11px] text-slate-400">
+                      {item.owner.reviewsCount} reviews
+                    </span>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-800/80 text-xs text-slate-300">
-                  <div className="flex items-center gap-2">
-                    <Clock className="w-3.5 h-3.5 text-slate-400" />
-                    <span>Response: <strong className="text-emerald-400">{item.owner.responseTime}</strong></span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                    <span>Verified ID & Address</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Community Protection Guarantee Banner */}
-              <div className="p-4 rounded-xl bg-emerald-950/30 border border-emerald-500/30 flex items-start gap-3 text-xs">
-                <ShieldCheck className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
-                <div>
-                  <h4 className="font-bold text-emerald-300">RentBuddy Guarantee & Escrow Protection</h4>
-                  <p className="text-slate-300 text-[11px] mt-0.5 leading-relaxed">
-                    Security deposits are locked safely in escrow and returned to your balance automatically within 24 hours of item return. Up to ₹2,00,000 damage protection included for peace of mind.
-                  </p>
+                <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+                  <span className="flex items-center gap-1">
+                    <Clock className="w-3.5 h-3.5 text-emerald-400" />
+                    Response: <strong className="text-slate-200">{item.owner.responseTime}</strong>
+                  </span>
+                  <span className="flex items-center gap-1 text-emerald-400 font-semibold">
+                    <ShieldCheck className="w-3.5 h-3.5" /> Identity & Bank Verified
+                  </span>
                 </div>
               </div>
-
             </div>
 
-            {/* Right Column: Price Calculator & Booking Action (5 cols) */}
+            {/* Right Column: Pricing & Booking Calculator Widget (5 cols) */}
             <div className="lg:col-span-5">
-              <div className="sticky top-6">
+              <div className="sticky top-20">
                 <RentalPriceCalculator
                   item={item}
                   onProceedToBooking={onProceedToBooking}
@@ -299,7 +350,6 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
 
           </div>
         </div>
-
       </div>
     </div>
   );

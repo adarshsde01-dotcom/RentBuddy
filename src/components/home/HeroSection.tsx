@@ -6,14 +6,12 @@ import {
   Leaf, 
   ArrowRight, 
   IndianRupee, 
-  Camera, 
-  Smartphone, 
-  Wrench, 
-  Luggage,
-  Tent,
-  PlusCircle
+  PlusCircle,
+  Grid2X2
 } from 'lucide-react';
 import { CategoryType } from '../../types/rental';
+import { getPopularCategories } from '../../data/categories';
+import { CategoryIcon } from '../common/CategoryIcon';
 
 interface HeroSectionProps {
   searchQuery: string;
@@ -21,6 +19,7 @@ interface HeroSectionProps {
   onSelectCategory: (cat: CategoryType) => void;
   onOpenListItem: () => void;
   onExploreClick: () => void;
+  onOpenAllCategories?: () => void;
 }
 
 export const HeroSection: React.FC<HeroSectionProps> = ({
@@ -29,7 +28,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   onSelectCategory,
   onOpenListItem,
   onExploreClick,
+  onOpenAllCategories,
 }) => {
+  const popularCategories = getPopularCategories().slice(0, 7);
+
   return (
     <div className="relative pt-6 pb-12 sm:pt-10 sm:pb-16 overflow-hidden">
       {/* Background ambient lighting */}
@@ -41,23 +43,23 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         {/* Tagline Pill */}
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-emerald-500/30 text-emerald-300 text-xs sm:text-sm font-semibold backdrop-blur-md shadow-lg shadow-emerald-500/5 animate-fade-in">
           <Sparkles className="w-4 h-4 text-emerald-400" />
-          <span>Borrow Smart • Save More • Waste Less</span>
+          <span>Universal Rental Marketplace • Rent Anything for a Day, Week, or Longer</span>
         </div>
 
         {/* Hero Title */}
         <div className="max-w-4xl mx-auto space-y-3">
           <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black text-white font-heading tracking-tight leading-[1.08]">
-            Access the gear you need.{' '}
+            Rent almost any physical item.{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400">
               Without buying it.
             </span>
           </h1>
-          <p className="text-base sm:text-xl text-slate-300 max-w-2xl mx-auto font-normal leading-relaxed">
-            Rent high-end cameras, drones, luggage, power tools, textbooks, and kitchen appliances from trusted locals near you for short periods.
+          <p className="text-base sm:text-xl text-slate-300 max-w-3xl mx-auto font-normal leading-relaxed">
+            From cricket gear and designer wedding lehengas to 4K cameras, power tools, academic books, and wheelchairs — access 20 categories of useful physical goods from trusted locals.
           </p>
         </div>
 
-        {/* Hero Search Box with Category Dropdown */}
+        {/* Hero Search Box */}
         <div className="max-w-2xl mx-auto pt-2">
           <div className="p-2 sm:p-2.5 rounded-2xl bg-slate-900/90 border border-slate-700/80 shadow-2xl backdrop-blur-xl flex flex-col sm:flex-row items-center gap-2">
             <div className="relative flex-1 w-full">
@@ -66,63 +68,53 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 type="text"
                 value={searchQuery}
                 onChange={(e) => onSearchChange(e.target.value)}
-                placeholder="What do you want to rent today? (e.g. Sony A7IV, Camping Tent)"
-                className="w-full pl-11 pr-4 py-3 bg-transparent text-slate-100 placeholder-slate-400 text-sm focus:outline-none"
+                placeholder="What do you need? (e.g. Sony A7IV, Cricket bat, Air Fryer, Saree, Tent)"
+                className="w-full pl-11 pr-4 py-3 bg-transparent text-slate-100 placeholder-slate-400 text-xs sm:text-sm focus:outline-none"
               />
             </div>
             <button
               onClick={onExploreClick}
-              className="w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black text-sm tracking-wide shadow-lg shadow-emerald-500/25 transition-all flex items-center justify-center gap-2 shrink-0 active:scale-95"
+              className="w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black text-sm tracking-wide shadow-lg shadow-emerald-500/25 transition-all flex items-center justify-center gap-2 shrink-0 active:scale-95 cursor-pointer"
             >
               <span>Explore Items</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
 
-          <div className="flex flex-wrap items-center justify-center gap-1.5 text-xs text-slate-400 pt-2">
+          <div className="flex flex-wrap items-center justify-center gap-1.5 text-xs text-slate-400 pt-2.5">
             <span>Have gear sitting idle?</span>
             <button
               onClick={onOpenListItem}
               className="text-emerald-400 hover:text-emerald-300 font-semibold underline flex items-center gap-1 transition-colors"
             >
               <PlusCircle className="w-3.5 h-3.5" />
-              <span>List it for rent & earn</span>
+              <span>List it for rent & earn recurring income</span>
             </button>
           </div>
 
-          {/* Quick-Pick Category Pills */}
+          {/* Quick-Pick Category Pills from Central Data */}
           <div className="flex flex-wrap items-center justify-center gap-2 pt-4 text-xs text-slate-400">
             <span className="font-semibold text-slate-400">Popular:</span>
-            <button
-              onClick={() => onSelectCategory('cameras')}
-              className="px-2.5 py-1 rounded-lg bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white flex items-center gap-1 transition-colors"
-            >
-              <Camera className="w-3 h-3 text-emerald-400" /> Cameras
-            </button>
-            <button
-              onClick={() => onSelectCategory('electronics')}
-              className="px-2.5 py-1 rounded-lg bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white flex items-center gap-1 transition-colors"
-            >
-              <Smartphone className="w-3 h-3 text-teal-400" /> Drones & Tech
-            </button>
-            <button
-              onClick={() => onSelectCategory('travel')}
-              className="px-2.5 py-1 rounded-lg bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white flex items-center gap-1 transition-colors"
-            >
-              <Luggage className="w-3 h-3 text-sky-400" /> Luggage
-            </button>
-            <button
-              onClick={() => onSelectCategory('outdoor')}
-              className="px-2.5 py-1 rounded-lg bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white flex items-center gap-1 transition-colors"
-            >
-              <Tent className="w-3 h-3 text-amber-400" /> Camping
-            </button>
-            <button
-              onClick={() => onSelectCategory('tools')}
-              className="px-2.5 py-1 rounded-lg bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white flex items-center gap-1 transition-colors"
-            >
-              <Wrench className="w-3 h-3 text-rose-400" /> Tools
-            </button>
+            {popularCategories.map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => onSelectCategory(cat.id)}
+                className="px-2.5 py-1 rounded-lg bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white flex items-center gap-1.5 transition-colors cursor-pointer"
+              >
+                <CategoryIcon name={cat.iconName} className="w-3 h-3 text-emerald-400" />
+                <span>{cat.shortName || cat.name}</span>
+              </button>
+            ))}
+
+            {onOpenAllCategories && (
+              <button
+                onClick={onOpenAllCategories}
+                className="px-2.5 py-1 rounded-lg bg-emerald-950/40 hover:bg-emerald-900/40 border border-emerald-500/40 text-emerald-300 font-semibold flex items-center gap-1 transition-colors cursor-pointer"
+              >
+                <Grid2X2 className="w-3 h-3 text-emerald-400" />
+                <span>All 20 Categories &rarr;</span>
+              </button>
+            )}
           </div>
         </div>
 
@@ -163,8 +155,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               <Sparkles className="w-5 h-5" />
             </div>
             <div>
-              <span className="text-xs sm:text-sm font-extrabold text-white block">Verified Gear</span>
-              <span className="text-[11px] text-slate-400">ID-checked lenders</span>
+              <span className="text-xs sm:text-sm font-extrabold text-white block">20 Categories</span>
+              <span className="text-[11px] text-slate-400">Daily to enterprise</span>
             </div>
           </div>
         </div>

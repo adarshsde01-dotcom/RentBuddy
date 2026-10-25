@@ -1,12 +1,14 @@
 import React from 'react';
-import { Repeat, ShieldCheck, Leaf, Cloud, Headphones } from 'lucide-react';
+import { Repeat, ShieldCheck, Leaf, Cloud, Headphones, Grid2X2 } from 'lucide-react';
 import { CategoryType } from '../../types/rental';
+import { getPopularCategories } from '../../data/categories';
 
 interface FooterProps {
   onSelectCategory: (cat: CategoryType) => void;
   onOpenCloudinarySettings: () => void;
   onOpenListItem: () => void;
   onNavigateSupport?: () => void;
+  onOpenAllCategories?: () => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({
@@ -14,7 +16,10 @@ export const Footer: React.FC<FooterProps> = ({
   onOpenCloudinarySettings,
   onOpenListItem,
   onNavigateSupport,
+  onOpenAllCategories,
 }) => {
+  const popularCategories = getPopularCategories().slice(0, 8);
+
   return (
     <footer className="mt-20 border-t border-slate-800 bg-slate-950/90 text-slate-400 text-xs">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16 space-y-12">
@@ -29,81 +34,54 @@ export const Footer: React.FC<FooterProps> = ({
                 </div>
               </div>
               <span className="text-xl font-black font-heading tracking-tight text-white">
-                Rent<span className="text-emerald-400">Buddy</span>
+                Rent<span className="text-emerald-400">Loop</span>
               </span>
             </div>
 
             <p className="text-slate-400 text-xs sm:text-sm leading-relaxed max-w-sm">
-              RentBuddy is a modern universal rental marketplace connecting neighbors to share cameras, drones, tools, textbooks, and gear for short durations instead of buying new.
+              RentLoop is a comprehensive, universal peer-to-peer rental marketplace where users can rent almost any useful physical item for a day, a week, or longer across 20 distinct categories.
             </p>
 
             <div className="flex items-center gap-2 text-emerald-400 font-semibold text-xs">
               <Leaf className="w-4 h-4" />
-              <span>Borrow Smart • Save More • Waste Less</span>
+              <span>Borrow Smart • Save 85% • Reduce Landfill Waste</span>
             </div>
           </div>
 
-          {/* Col 3: Categories */}
+          {/* Col 3: Popular Categories */}
           <div className="space-y-3">
             <h4 className="text-xs font-bold uppercase tracking-wider text-white font-heading">
-              Rental Categories
+              Popular Categories
             </h4>
             <ul className="space-y-2">
-              <li>
-                <button
-                  onClick={() => onSelectCategory('cameras')}
-                  className="hover:text-emerald-400 transition-colors"
-                >
-                  Cameras & Optics
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => onSelectCategory('electronics')}
-                  className="hover:text-emerald-400 transition-colors"
-                >
-                  Drones & Electronics
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => onSelectCategory('travel')}
-                  className="hover:text-emerald-400 transition-colors"
-                >
-                  Travel & Luggage
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => onSelectCategory('books')}
-                  className="hover:text-emerald-400 transition-colors"
-                >
-                  Academic Textbooks
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => onSelectCategory('outdoor')}
-                  className="hover:text-emerald-400 transition-colors"
-                >
-                  Camping & Outdoors
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => onSelectCategory('tools')}
-                  className="hover:text-emerald-400 transition-colors"
-                >
-                  Tools & DIY
-                </button>
-              </li>
+              {popularCategories.map((cat) => (
+                <li key={cat.id}>
+                  <button
+                    onClick={() => onSelectCategory(cat.id)}
+                    className="hover:text-emerald-400 transition-colors cursor-pointer text-left"
+                  >
+                    {cat.name}
+                  </button>
+                </li>
+              ))}
+              {onOpenAllCategories && (
+                <li className="pt-1">
+                  <button
+                    onClick={onOpenAllCategories}
+                    className="text-emerald-400 font-bold hover:underline flex items-center gap-1 cursor-pointer"
+                  >
+                    <Grid2X2 className="w-3.5 h-3.5" />
+                    <span>All 20 Categories &rarr;</span>
+                  </button>
+                </li>
+              )}
             </ul>
           </div>
 
-          {/* Col 4: Trust & Platform */}
+          {/* Col 4: Trust, Protection & Support */}
           <div className="space-y-3">
             <h4 className="text-xs font-bold uppercase tracking-wider text-white font-heading">
-              Trust, Escrow & Care
+              Trust & Security
             </h4>
             <ul className="space-y-2">
               <li className="flex items-center gap-1.5 text-slate-300">
@@ -118,7 +96,7 @@ export const Footer: React.FC<FooterProps> = ({
                 <li>
                   <button
                     onClick={onNavigateSupport}
-                    className="flex items-center gap-1.5 text-teal-300 hover:text-white font-semibold transition-colors"
+                    className="flex items-center gap-1.5 text-teal-300 hover:text-white font-semibold transition-colors cursor-pointer"
                   >
                     <Headphones className="w-3.5 h-3.5 text-teal-400" />
                     <span>24/7 Customer Care Desk &rarr;</span>
@@ -128,25 +106,25 @@ export const Footer: React.FC<FooterProps> = ({
               <li>
                 <button
                   onClick={onOpenListItem}
-                  className="text-emerald-400 font-semibold hover:underline"
+                  className="text-emerald-400 font-semibold hover:underline cursor-pointer"
                 >
-                  List an Item for Rent &rarr;
+                  List Your Item for Rent &rarr;
                 </button>
               </li>
             </ul>
           </div>
 
-          {/* Col 5: Cloudinary & Tech */}
+          {/* Col 5: Architecture & Media */}
           <div className="space-y-3">
             <h4 className="text-xs font-bold uppercase tracking-wider text-white font-heading">
-              Technology & Media
+              Media & Integrations
             </h4>
             <p className="text-slate-400 leading-relaxed text-[11px]">
-              Built with React, TypeScript, Vite, Tailwind CSS, and Cloudinary for real-time media transformations.
+              Built with extensible, reusable category architecture, TypeScript, React 19, and Cloudinary media optimization.
             </p>
             <button
               onClick={onOpenCloudinarySettings}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-emerald-500/50 transition-colors"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-emerald-500/50 transition-colors cursor-pointer"
             >
               <Cloud className="w-3.5 h-3.5 text-emerald-400" />
               <span>Cloudinary Pipeline</span>
@@ -158,11 +136,11 @@ export const Footer: React.FC<FooterProps> = ({
         {/* Bottom credits */}
         <div className="pt-8 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-400 text-[11px]">
           <div>
-            &copy; 2026 RentBuddy. Open source hackathon prototype.
+            &copy; 2026 RentLoop Universal Marketplace. All rights reserved.
           </div>
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1">
-              Crafted for sustainability & circular economy
+              Engineered for circular economy & sustainable community sharing
             </span>
           </div>
         </div>
