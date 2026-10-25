@@ -4,11 +4,11 @@ import {
   Calendar, 
   MapPin, 
   Truck, 
-  ShieldCheck, 
   Sparkles, 
   CheckCircle2, 
   ArrowRight,
-  Info
+  Info,
+  AlertCircle
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { RentalItem, RentalBooking } from '../../types/rental';
@@ -46,15 +46,36 @@ export const BookingRequestModal: React.FC<BookingRequestModalProps> = ({
   const [renterMessage, setRenterMessage] = useState(
     'Hi! I will take great care of your equipment. Excited to use this for my upcoming project.'
   );
+  const [errors, setErrors] = useState<{ name?: string; email?: string }>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   if (!isOpen || !item || !calculation) return null;
 
-  const deliverySurcharge = pickupType === 'delivery' ? 12 : 0;
+  const deliverySurcharge = pickupType === 'delivery' ? 199 : 0;
   const finalTotal = Math.round((calculation.totalPayable + deliverySurcharge) * 100) / 100;
+
+  const validateForm = (): boolean => {
+    const newErrors: { name?: string; email?: string } = {};
+
+    if (!renterName.trim() || renterName.trim().length < 2) {
+      newErrors.name = 'Please provide your full name (at least 2 characters).';
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!renterEmail.trim() || !emailRegex.test(renterEmail.trim())) {
+      newErrors.email = 'Please provide a valid email address (e.g., name@example.com).';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleConfirm = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validateForm()) {
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -78,7 +99,7 @@ export const BookingRequestModal: React.FC<BookingRequestModalProps> = ({
         savingsVsRetail: calculation.savingsVsRetail,
         status: 'pending',
         pickupType,
-        renterMessage,
+        renterMessage: renterMessage.trim(),
       });
 
       // Fire celebratory confetti!
@@ -154,27 +175,53 @@ export const BookingRequestModal: React.FC<BookingRequestModalProps> = ({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">
-                Your Full Name
+                Your Full Name *
               </label>
               <input
                 type="text"
                 value={renterName}
-                onChange={(e) => setRenterName(e.target.value)}
+                onChange={(e) => {
+                  setRenterName(e.target.value);
+                  if (errors.name) setErrors((prev) => ({ ...prev, name: undefined }));
+                }}
                 required
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-slate-100 text-xs sm:text-sm focus:outline-none focus:border-emerald-500"
+                className={`w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border text-slate-100 text-xs sm:text-sm focus:outline-none transition-colors ${
+                  errors.name
+                    ? 'border-rose-500/80 focus:border-rose-500'
+                    : 'border-slate-700 focus:border-emerald-500'
+                }`}
               />
+              {errors.name && (
+                <p className="text-[11px] text-rose-400 mt-1 flex items-center gap-1">
+                  <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                  {errors.name}
+                </p>
+              )}
             </div>
             <div>
               <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">
-                Your Contact Email
+                Your Contact Email *
               </label>
               <input
                 type="email"
                 value={renterEmail}
-                onChange={(e) => setRenterEmail(e.target.value)}
+                onChange={(e) => {
+                  setRenterEmail(e.target.value);
+                  if (errors.email) setErrors((prev) => ({ ...prev, email: undefined }));
+                }}
                 required
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-slate-100 text-xs sm:text-sm focus:outline-none focus:border-emerald-500"
+                className={`w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border text-slate-100 text-xs sm:text-sm focus:outline-none transition-colors ${
+                  errors.email
+                    ? 'border-rose-500/80 focus:border-rose-500'
+                    : 'border-slate-700 focus:border-emerald-500'
+                }`}
               />
+              {errors.email && (
+                <p className="text-[11px] text-rose-400 mt-1 flex items-center gap-1">
+                  <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                  {errors.email}
+                </p>
+              )}
             </div>
           </div>
 

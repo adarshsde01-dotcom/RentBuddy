@@ -10,8 +10,8 @@ import {
   Smartphone, 
   Wrench, 
   Luggage,
-  BookOpen,
-  Tent
+  Tent,
+  PlusCircle
 } from 'lucide-react';
 import { CategoryType } from '../../types/rental';
 
@@ -72,10 +72,21 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             </div>
             <button
               onClick={onExploreClick}
-              className="w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black text-sm tracking-wide shadow-lg shadow-emerald-500/25 transition-all flex items-center justify-center gap-2 shrink-0"
+              className="w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black text-sm tracking-wide shadow-lg shadow-emerald-500/25 transition-all flex items-center justify-center gap-2 shrink-0 active:scale-95"
             >
               <span>Explore Items</span>
               <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-1.5 text-xs text-slate-400 pt-2">
+            <span>Have gear sitting idle?</span>
+            <button
+              onClick={onOpenListItem}
+              className="text-emerald-400 hover:text-emerald-300 font-semibold underline flex items-center gap-1 transition-colors"
+            >
+              <PlusCircle className="w-3.5 h-3.5" />
+              <span>List it for rent & earn</span>
             </button>
           </div>
 

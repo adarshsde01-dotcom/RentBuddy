@@ -1,4 +1,4 @@
-# RentLoop 🔄
+# RentBuddy 🔄
 
 > **Borrow Smart. Save More. Waste Less.**  
 > A modern universal rental marketplace connecting neighbors to share cameras, drones, tools, academic textbooks, luggage, and kitchen equipment for short durations instead of purchasing them.
@@ -21,9 +21,9 @@ In today's consumption-driven economy:
 
 ---
 
-## 💡 Proposed Solution: RentLoop
+## 💡 Proposed Solution: RentBuddy
 
-**RentLoop** is a circular economy peer-to-peer marketplace that transforms underutilized personal assets into community resources.
+**RentBuddy** is a circular economy peer-to-peer marketplace that transforms underutilized personal assets into community resources.
 
 - **For Renters / Borrowers:** Access premium gear at up to **85% savings** compared to retail, with transparent daily rates, multi-day discounts, and protected escrow security deposits.
 - **For Lenders / Owners:** Earn passive income from idle equipment safely, backed by damage protection guarantees and verified borrower identities.
@@ -44,55 +44,63 @@ In today's consumption-driven economy:
 
 3. **Product Detail Experience:**
    - Multi-photo gallery preview with thumbnail carousel.
-   - Detailed specifications table, owner rules, verified owner trust score, and escrow protection guarantee.
+   - Detailed specifications table, owner guidelines, verified owner trust badge, and escrow protection guarantee.
+   - One-click link sharing and item favoriting.
 
 4. **Dynamic Rental Duration & Price Calculator:**
-   - Interactive pickup and return date selector.
+   - Interactive pickup and return date selector with automated date validation.
    - Automatic duration calculation in days.
    - Multi-tier progressive discounts: **10% off** for 3+ days, up to **30% off** for weekly rentals.
-   - Itemized transparent breakdown: Base fee, platform protection fee (5%), refundable escrow security deposit, and estimated savings vs retail.
+   - Itemized transparent breakdown: Base rental fee, platform protection fee (5%), refundable escrow security deposit, and estimated savings vs retail.
 
-5. **Booking Request Workflow:**
+5. **Validated Booking Request Workflow:**
+   - Strict field validation (minimum name length, regex email format validation) with inline error alerts.
    - Handover preference selector: *Local In-Person Pickup (Free)* vs *Eco-Courier Delivery (+₹199)*.
-   - Message to lender and borrower contact capture.
+   - Transparent simulation disclaimer informing users that requests enter simulated owner approval in the dashboard rather than misrepresenting payment settlement.
    - Confetti celebratory feedback and automatic redirection to the User Dashboard.
 
 6. **Dual-Perspective Dashboard:**
-   - **Renter View ("My Borrowings"):** View active, pending, and completed bookings, confirm handovers, mark items returned, and view escrow deposit receipts.
-   - **Owner View ("Owner Hub"):** Approve or decline incoming borrower requests in real time and toggle listing availability (*Active* vs *Paused*).
+   - **Renter View ("My Borrowings"):** View active, pending, and completed bookings, confirm handovers, mark items returned, and view printable Escrow Deposit Receipts.
+   - **Owner View ("Owner Hub"):** Approve or decline incoming borrower requests in real time and toggle listing availability (*Listing Active* vs *Paused*).
    - **Impact Tab:** Detailed circular economy metrics (CO₂e saved, equivalent trees planted, financial savings kept in community).
 
 7. **Product Listing Modal & Cloudinary Uploader:**
-   - Form to list any item with title, category, description, rates, deposit, retail value, and condition.
-   - Drag-and-drop Cloudinary photo uploader with real-time preview, progress tracking, and multiple image management.
+   - Complete item creation form with title, category, description, rates, deposit, retail value, condition, and location.
+   - Interactive technical specs adder and custom owner rental rules builder.
+   - Cloudinary image uploader with real-time preview, drag-and-drop, progress tracking, and transparent demo mode status callout when API keys are absent.
 
-8. **Transparent Demo / Simulation Mode:**
-   - Pre-seeded with 8 diverse, realistic items and initial bookings.
-   - Full client-side `localStorage` persistence with one-click reset to factory defaults.
-   - Clear identification that transactions are simulated and no real credit cards are charged.
+8. **24/7 Customer Care Desk:**
+   - Dual-perspective support hub with dedicated tabs for **Borrowers (Receivers)** and **Lenders (Renters)**.
+   - Interactive FAQs addressing deposits, pre-existing damages, late returns, damage claims, and identity verification.
+   - In-app support ticket submission system with urgency tiers and instant confirmation.
+
+9. **Science-Grounded Social Impact Section:**
+   - Transparent circular economy explanations: *Amortizing Embodied Carbon* (70–85% of electronics emissions happen during manufacture), *Extending Usable Lifecycle* (e.g., drills used just 13 minutes in their lifespan), and *Zero Packaging Freight Waste*.
+   - Interactive beneficiary persona case studies (*Students*, *Travelers*, *Indie Creators*) comparing retail MSRP vs rental costs without inventing unverified empirical statistics.
 
 ---
 
 ## 🛠 Technology Stack
 
-- **Frontend Core:** React 19, TypeScript
-- **Build Tool:** Vite 8 (sub-200ms production builds)
+- **Frontend Core:** React 19, TypeScript (~6.0)
+- **Build Tool:** Vite 8.3 (sub-150ms production builds)
 - **Styling:** Tailwind CSS v4, Vanilla CSS tokens, Glassmorphism utilities
+- **Linter & Formatter:** Oxlint (0 warnings, 0 errors across 24 files)
 - **Icons:** Lucide React
 - **Animations & Effects:** Canvas Confetti
 - **Media Management:** Cloudinary API (Unsigned Upload Preset workflow & dynamic URL transformations)
-- **Persistence:** LocalStorage with typed state management engine
+- **Persistence:** LocalStorage with typed state management engine and one-click demo data reset
 
 ---
 
 ## ☁️ Cloudinary Integration
 
-RentLoop utilizes Cloudinary for secure, scalable product image uploads and CDN delivery:
+RentBuddy utilizes Cloudinary for secure, scalable product image uploads and CDN delivery:
 
 ### 1. Direct Unsigned Upload Workflow
-RentLoop implements direct browser-to-Cloudinary uploads via `POST https://api.cloudinary.com/v1_1/<cloud_name>/image/upload` using an **unsigned upload preset**:
-- Eliminates the need to expose private API secrets on the client side.
-- Uploads images directly into a dedicated folder (`rentloop_products`).
+RentBuddy implements direct browser-to-Cloudinary uploads via `POST https://api.cloudinary.com/v1_1/<cloud_name>/image/upload` using an **unsigned upload preset**:
+- Eliminates the need to expose private API secrets in client-side code.
+- Uploads images directly into a dedicated folder (`rentbuddy_products`).
 - Provides real-time upload progress percentage feedback.
 
 ### 2. URL Transformation & Optimization Engine
@@ -103,10 +111,10 @@ The `getOptimizedImageUrl` service automatically rewrites Cloudinary URLs to app
 ```
 - `f_auto`: Automatically serves modern AVIF or WebP format based on the user's browser.
 - `q_auto`: Automatically adjusts compression to achieve the optimal balance between visual fidelity and file size.
-- `c_fill`, `c_thumb`: Generates perfect aspect-ratio thumbnails for gallery strips.
+- `c_fill`, `c_thumb`: Generates responsive thumbnails for gallery strips.
 
-### 3. Graceful Fallback Mode
-When Cloudinary credentials are not yet configured in `.env`, the application automatically falls back to an in-memory client `FileReader` with a clear status indicator, allowing evaluators to test listing and image previews without setup barriers.
+### 3. Transparent Fallback Mode
+When Cloudinary credentials are not yet configured in `.env`, the application automatically falls back to an in-browser `FileReader` with a clear status callout, allowing evaluators to test listing and image previews without setup barriers while explaining exactly what is needed for live CDN hosting.
 
 ---
 
@@ -139,11 +147,11 @@ VITE_CLOUDINARY_CLOUD_NAME=your_cloud_name
 VITE_CLOUDINARY_UPLOAD_PRESET=your_unsigned_preset
 ```
 
-> **Quick Cloudinary Setup (Free):**
-> 1. Sign up at [Cloudinary](https://cloudinary.com/) (free 25GB tier).
+> **Quick Cloudinary Setup (Free 25GB tier):**
+> 1. Sign up at [Cloudinary](https://cloudinary.com/).
 > 2. Navigate to **Settings** &rarr; **Upload** &rarr; scroll to **Upload Presets**.
-> 3. Click **Add upload preset**, choose **Signing Mode: Unsigned**, name it `rentloop_preset`, and click **Save**.
-> *Alternatively, click the **Media: Demo** pill in the RentLoop navbar to test or enter credentials directly in the app UI without restarting Vite!*
+> 3. Click **Add upload preset**, choose **Signing Mode: Unsigned**, name it `rentbuddy_preset`, and click **Save**.
+> *Alternatively, click the **Media: Demo** pill in the RentBuddy navbar to test or enter credentials directly in the app UI without restarting Vite!*
 
 ### 4. Run Development Server
 ```bash
@@ -151,23 +159,22 @@ npm run dev
 ```
 Open [http://localhost:5173](http://localhost:5173) in your browser.
 
-### 5. Build for Production
+### 5. Build for Production & Lint Check
 ```bash
-npm run build
+npm run lint    # Verifies oxlint (0 warnings, 0 errors)
+npm run build   # TypeScript compilation & Vite bundle creation
+npm run preview # Previews the optimized production bundle
 ```
 
 ---
 
-## 📸 Screenshots
+## ♿ Mobile Responsiveness & Accessibility
 
-| View | Description |
-|---|---|
-| **Homepage & Hero** | Hero section with tagline, live impact counter, search bar, and category quick-picks |
-| **Product Catalog** | Filterable grid of rental items with daily rates, savings tags, and availability badges |
-| **Price Calculator** | Interactive date picker calculating multi-day discounts, platform fees, and escrow deposits |
-| **Booking Flow** | Handover preference selector, message to owner, and confetti confirmation |
-| **User & Owner Dashboard** | Dual tabs for managing incoming borrower approvals and active rental returns |
-| **Cloudinary Pipeline** | Drag-and-drop media uploader and in-app Cloudinary configuration dialog |
+- **Responsive Breakpoints:** Tailored fluid layouts across mobile (`<640px`), tablet (`640–1024px`), desktop (`1024–1280px`), and ultra-wide screens (`1280px+`).
+- **Touch-Friendly Controls:** Minimum touch target sizes (≥44×44px) across navigation buttons, filter pills, and modal close triggers.
+- **Accessible Form Elements:** Explicit `<label>` elements connected via `htmlFor` and unique `useId()` identifiers.
+- **Keyboard Navigation & Modal Dismissal:** Native `Escape` key listeners and backdrop click handlers with background scroll lock on all modals.
+- **Color Contrast:** High-contrast dark theme (WCAG AA compliant) with distinct state indicators for availability, errors, and approvals.
 
 ---
 
@@ -191,4 +198,4 @@ npm run build
 
 ## 📄 License & Hackathon Submission
 
-Built for the Hackathon by senior full-stack development team. Open source under the MIT License.
+Built for the **Tech for Social Good Hackathon** by senior full-stack development team. Open source under the MIT License.

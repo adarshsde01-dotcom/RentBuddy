@@ -114,17 +114,39 @@ export const CloudinaryUploader: React.FC<CloudinaryUploaderProps> = ({
           className="flex items-center gap-1 text-[11px] font-medium text-slate-400 hover:text-emerald-400 transition-colors"
         >
           {isCloudinaryActive ? (
-            <span className="text-emerald-400 flex items-center gap-1">
+            <span className="text-emerald-400 flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              Cloudinary: <strong className="font-mono">{config.cloudName}</strong>
+              Cloudinary CDN: <strong className="font-mono">{config.cloudName}</strong>
             </span>
           ) : (
-            <span className="text-amber-400/90 flex items-center gap-1">
-              <Sparkles className="w-3 h-3" /> Demo Uploader (Click to configure)
+            <span className="text-amber-400/90 flex items-center gap-1.5 bg-amber-950/40 border border-amber-500/30 px-2 py-0.5 rounded-md">
+              <Sparkles className="w-3 h-3 text-amber-400" /> Demo Mode (Configure Cloudinary)
             </span>
           )}
         </button>
       </div>
+
+      {/* Cloudinary credentials explanation callout when not active */}
+      {!isCloudinaryActive && (
+        <div className="p-3 rounded-xl bg-amber-950/20 border border-amber-500/30 text-slate-300 text-[11px] space-y-1.5 leading-relaxed">
+          <div className="flex items-center justify-between text-amber-300 font-bold">
+            <span className="flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+              Cloudinary CDN Not Configured — Safe Local Preview Active
+            </span>
+            <button
+              type="button"
+              onClick={onOpenSettings}
+              className="text-emerald-400 hover:text-emerald-300 underline font-semibold text-[11px]"
+            >
+              Configure Keys &rarr;
+            </button>
+          </div>
+          <p className="text-slate-400">
+            Uploaded images are currently rendered instantly in your browser via <code className="text-amber-200">FileReader</code> DataURLs. To enable direct live CDN hosting, add <code className="text-emerald-300">VITE_CLOUDINARY_CLOUD_NAME</code> and an unsigned <code className="text-emerald-300">VITE_CLOUDINARY_UPLOAD_PRESET</code> in <code className="text-slate-200">.env</code> or via the settings dialog above.
+          </p>
+        </div>
+      )}
 
       {/* Drag & Drop Zone */}
       <div

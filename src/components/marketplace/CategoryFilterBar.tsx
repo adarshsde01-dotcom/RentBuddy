@@ -18,7 +18,7 @@ export interface CategoryInfo {
   description: string;
 }
 
-export const CATEGORIES: CategoryInfo[] = [
+const CATEGORIES: CategoryInfo[] = [
   {
     id: 'all',
     label: 'All Items',

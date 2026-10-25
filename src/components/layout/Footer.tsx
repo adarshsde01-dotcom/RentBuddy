@@ -29,12 +29,12 @@ export const Footer: React.FC<FooterProps> = ({
                 </div>
               </div>
               <span className="text-xl font-black font-heading tracking-tight text-white">
-                Rent<span className="text-emerald-400">Loop</span>
+                Rent<span className="text-emerald-400">Buddy</span>
               </span>
             </div>
 
             <p className="text-slate-400 text-xs sm:text-sm leading-relaxed max-w-sm">
-              RentLoop is a modern universal rental marketplace connecting neighbors to share cameras, drones, tools, textbooks, and gear for short durations instead of buying new.
+              RentBuddy is a modern universal rental marketplace connecting neighbors to share cameras, drones, tools, textbooks, and gear for short durations instead of buying new.
             </p>
 
             <div className="flex items-center gap-2 text-emerald-400 font-semibold text-xs">
@@ -158,7 +158,7 @@ export const Footer: React.FC<FooterProps> = ({
         {/* Bottom credits */}
         <div className="pt-8 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-400 text-[11px]">
           <div>
-            &copy; {new Date().getFullYear()} RentLoop. Open source hackathon prototype.
+            &copy; 2026 RentBuddy. Open source hackathon prototype.
           </div>
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1">

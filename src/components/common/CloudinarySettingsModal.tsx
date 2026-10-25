@@ -115,7 +115,7 @@ export const CloudinarySettingsModal: React.FC<CloudinarySettingsModalProps> = (
               type="text"
               value={uploadPreset}
               onChange={(e) => setUploadPreset(e.target.value)}
-              placeholder="e.g. rentloop_preset"
+              placeholder="e.g. rentbuddy_preset"
               className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950/80 border border-slate-700 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-sm font-mono"
             />
             <p className="text-[11px] text-slate-400 mt-1 flex items-center gap-1">
@@ -153,7 +153,7 @@ export const CloudinarySettingsModal: React.FC<CloudinarySettingsModalProps> = (
                 <ol className="list-decimal pl-4 space-y-1 text-slate-300">
                   <li>Log into <a href="https://cloudinary.com" target="_blank" rel="noreferrer" className="text-emerald-400 hover:underline inline-flex items-center gap-0.5">cloudinary.com <ExternalLink className="w-3 h-3" /></a> (free tier has 25GB monthly storage).</li>
                   <li>Go to <strong>Settings</strong> &rarr; <strong>Upload</strong> &rarr; scroll down to <strong>Upload presets</strong>.</li>
-                  <li>Click <strong>Add upload preset</strong>, select <strong>Signing Mode: Unsigned</strong>, name it <code className="text-emerald-300">rentloop_preset</code>, and click <strong>Save</strong>.</li>
+                  <li>Click <strong>Add upload preset</strong>, select <strong>Signing Mode: Unsigned</strong>, name it <code className="text-emerald-300">rentbuddy_preset</code>, and click <strong>Save</strong>.</li>
                 </ol>
                 <p className="text-slate-400 pt-1">
                   You can also add these in a <code className="text-emerald-300">.env.local</code> file as <code className="text-emerald-300">VITE_CLOUDINARY_CLOUD_NAME</code> and <code className="text-emerald-300">VITE_CLOUDINARY_UPLOAD_PRESET</code>.

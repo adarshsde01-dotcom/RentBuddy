@@ -18,6 +18,21 @@ interface RentalPriceCalculatorProps {
   }) => void;
 }
 
+// Helper to calculate initial dates outside render
+const getInitialDates = () => {
+  const now = new Date();
+  const minDate = now.toISOString().split('T')[0];
+  const start = new Date(now);
+  start.setDate(now.getDate() + 1);
+  const end = new Date(start);
+  end.setDate(start.getDate() + 3);
+  return {
+    minDate,
+    startDate: start.toISOString().split('T')[0],
+    endDate: end.toISOString().split('T')[0],
+  };
+};
+
 export const RentalPriceCalculator: React.FC<RentalPriceCalculatorProps> = ({
   item,
   onProceedToBooking,
@@ -30,15 +45,9 @@ export const RentalPriceCalculator: React.FC<RentalPriceCalculatorProps> = ({
     return date.toISOString().split('T')[0];
   };
 
-  const today = new Date();
-  const defaultStart = new Date(today);
-  defaultStart.setDate(today.getDate() + 1);
-
-  const defaultEnd = new Date(defaultStart);
-  defaultEnd.setDate(defaultStart.getDate() + 3);
-
-  const [startDate, setStartDate] = useState(formatDate(defaultStart));
-  const [endDate, setEndDate] = useState(formatDate(defaultEnd));
+  const [dateDefaults] = useState(getInitialDates);
+  const [startDate, setStartDate] = useState(dateDefaults.startDate);
+  const [endDate, setEndDate] = useState(dateDefaults.endDate);
 
   // Compute difference in days
   const start = new Date(startDate);
@@ -125,7 +134,7 @@ export const RentalPriceCalculator: React.FC<RentalPriceCalculatorProps> = ({
             <input
               id={startDateId}
               type="date"
-              min={formatDate(today)}
+              min={dateDefaults.minDate}
               value={startDate}
               onChange={(e) => handleStartChange(e.target.value)}
               className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-slate-100 text-xs sm:text-sm focus:outline-none focus:border-emerald-500 cursor-pointer"

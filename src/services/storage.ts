@@ -1,12 +1,14 @@
 import { RentalItem, RentalBooking, BookingStatus } from '../types/rental';
 import { SAMPLE_ITEMS, INITIAL_BOOKINGS } from '../data/sampleData';
 
-const ITEMS_STORAGE_KEY = 'rentloop_items_v1';
-const BOOKINGS_STORAGE_KEY = 'rentloop_bookings_v1';
+const ITEMS_STORAGE_KEY = 'rentbuddy_items_v1';
+const LEGACY_ITEMS_STORAGE_KEY = 'rentloop_items_v1';
+const BOOKINGS_STORAGE_KEY = 'rentbuddy_bookings_v1';
+const LEGACY_BOOKINGS_STORAGE_KEY = 'rentloop_bookings_v1';
 
 export const getStoredItems = (): RentalItem[] => {
   try {
-    const raw = localStorage.getItem(ITEMS_STORAGE_KEY);
+    const raw = localStorage.getItem(ITEMS_STORAGE_KEY) || localStorage.getItem(LEGACY_ITEMS_STORAGE_KEY);
     if (raw) {
       return JSON.parse(raw);
     }
@@ -26,7 +28,7 @@ export const saveStoredItems = (items: RentalItem[]): void => {
 
 export const getStoredBookings = (): RentalBooking[] => {
   try {
-    const raw = localStorage.getItem(BOOKINGS_STORAGE_KEY);
+    const raw = localStorage.getItem(BOOKINGS_STORAGE_KEY) || localStorage.getItem(LEGACY_BOOKINGS_STORAGE_KEY);
     if (raw) {
       return JSON.parse(raw);
     }

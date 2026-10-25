@@ -1,7 +1,8 @@
 import { CloudinaryConfig } from '../types/rental';
 
 // Default configuration with safe fallback
-const STORAGE_KEY = 'rentloop_cloudinary_config';
+const STORAGE_KEY = 'rentbuddy_cloudinary_config';
+const LEGACY_STORAGE_KEY = 'rentloop_cloudinary_config';
 
 export const getStoredCloudinaryConfig = (): CloudinaryConfig => {
   const envCloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || '';
@@ -9,7 +10,7 @@ export const getStoredCloudinaryConfig = (): CloudinaryConfig => {
   const envApiKey = import.meta.env.VITE_CLOUDINARY_API_KEY || '';
 
   try {
-    const saved = localStorage.getItem(STORAGE_KEY);
+    const saved = localStorage.getItem(STORAGE_KEY) || localStorage.getItem(LEGACY_STORAGE_KEY);
     if (saved) {
       const parsed = JSON.parse(saved);
       if (parsed.cloudName && parsed.uploadPreset) {
@@ -154,7 +155,7 @@ export const uploadImageToCloudinary = async (
     const formData = new FormData();
     formData.append('file', file);
     formData.append('upload_preset', activeConfig.uploadPreset);
-    formData.append('folder', 'rentloop_products');
+    formData.append('folder', 'rentbuddy_products');
 
     const url = `https://api.cloudinary.com/v1_1/${activeConfig.cloudName}/image/upload`;
 

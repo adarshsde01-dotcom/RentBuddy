@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { 
   RentalItem, 
   RentalBooking, 
-  CategoryType, 
   FilterOptions, 
   CloudinaryConfig 
 } from './types/rental';
@@ -27,17 +26,17 @@ import { ListItemModal } from './components/listing/ListItemModal';
 import { UserDashboard } from './components/dashboard/UserDashboard';
 import { CustomerSupportSection } from './components/support/CustomerSupportSection';
 import { CloudinarySettingsModal } from './components/common/CloudinarySettingsModal';
-import { Toast, ToastProps } from './components/common/Toast';
-import { PackageOpen, Sparkles, PlusCircle } from 'lucide-react';
+import { Toast } from './components/common/Toast';
+import { PackageOpen, PlusCircle } from 'lucide-react';
 
 export function App() {
   // Navigation
   const [currentView, setCurrentView] = useState<'marketplace' | 'dashboard' | 'how-it-works' | 'impact' | 'support'>('marketplace');
 
-  // Core Data
-  const [items, setItems] = useState<RentalItem[]>([]);
-  const [bookings, setBookings] = useState<RentalBooking[]>([]);
-  const [cloudinaryConfig, setCloudinaryConfig] = useState<CloudinaryConfig>(getStoredCloudinaryConfig());
+  // Core Data (lazily initialized from localStorage)
+  const [items, setItems] = useState<RentalItem[]>(getStoredItems);
+  const [bookings, setBookings] = useState<RentalBooking[]>(getStoredBookings);
+  const [cloudinaryConfig, setCloudinaryConfig] = useState<CloudinaryConfig>(getStoredCloudinaryConfig);
 
   // Filter & Search State
   const [filters, setFilters] = useState<FilterOptions>({
@@ -69,16 +68,12 @@ export function App() {
     setToasts((prev) => prev.filter((t) => t.id !== id));
   };
 
-  // Load Initial Data
+  // Reload Data after mutations
   const refreshData = () => {
     setItems(getStoredItems());
     setBookings(getStoredBookings());
     setCloudinaryConfig(getStoredCloudinaryConfig());
   };
-
-  useEffect(() => {
-    refreshData();
-  }, []);
 
   // Filter Engine
   const filteredItems = useMemo(() => {
@@ -88,8 +83,8 @@ export function App() {
         return false;
       }
 
-      // Max price filter
-      if (item.dailyPrice > filters.maxPrice) {
+      // Max price filter (when slider is at maximum 3000, it represents "₹3,000+ / Any price")
+      if (filters.maxPrice < 3000 && item.dailyPrice > filters.maxPrice) {
         return false;
       }
 
@@ -151,11 +146,12 @@ export function App() {
 
   // Handle Confirmed Booking
   const handleBookingConfirmed = (newBooking: RentalBooking) => {
+    const ownerName = activeBookingItem?.owner.name || 'item owner';
     setActiveBookingItem(null);
     setBookingCalculation(null);
     refreshData();
     addToast(
-      `Rental request sent to ${selectedItemForDetail?.owner.name || 'owner'}! View status in Dashboard.`,
+      `Rental request for "${newBooking.itemTitle}" sent to ${ownerName}! View status in your Dashboard.`,
       'success'
     );
     setCurrentView('dashboard');

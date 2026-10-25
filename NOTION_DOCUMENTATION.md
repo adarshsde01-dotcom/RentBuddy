@@ -1,4 +1,4 @@
-# RentLoop: Comprehensive Project & Notion Documentation Outline
+# RentBuddy: Comprehensive Project & Notion Documentation Outline
 
 > **Note for Judges & Reviewers:** This document contains the full structured outline and technical write-up ready to be exported/copied directly into a Notion workspace for project showcase and submission.
 
@@ -7,13 +7,13 @@
 ## 🧭 1. Project Journey
 
 ### Ideation & Mission
-The inspiration for RentLoop arose from a common dilemma shared by university students, travelers, and independent creators: **the prohibitive cost of temporary utility**. 
+The inspiration for RentBuddy arose from a common dilemma shared by university students, travelers, and independent creators: **the prohibitive cost of temporary utility**. 
 
 - Why should a student spend $130 on a 1,300-page computer science algorithms textbook they only open for 10 weeks?
 - Why should a backpacker spend $450 on an expedition-grade 100L duffel bag that occupies closet space 355 days a year?
-- Why should a filmmaker or YouTuber take on credit card debt for a $2,500 mirrorless camera setup for a single weekend wedding shoot?
+- Why should a filmmaker or YouTuber take on credit card debt for a $2,50,000 mirrorless camera setup for a single weekend wedding shoot?
 
-RentLoop was conceived during the hackathon to solve this asymmetry: transforming static personal possessions into liquid, community-accessible utility.
+RentBuddy was conceived during the hackathon to solve this asymmetry: transforming static personal possessions into liquid, community-accessible utility.
 
 ### Milestones & Timeline
 - **Hour 0 – 1: Discovery & Planning:** System design, data model definition, state management architecture, and Cloudinary upload strategy.
@@ -27,7 +27,7 @@ RentLoop was conceived during the hackathon to solve this asymmetry: transformin
 
 ## 🔍 2. Problem Identification
 
-| Problem Dimension | Real-World Impact | RentLoop Solution |
+| Problem Dimension | Real-World Impact | RentBuddy Solution |
 |---|---|---|
 | **Hyper-Consumerism** | Power tools are used for an average of 13 minutes over their lifetime. | Shared community equipment pools increasing utilization by 10x. |
 | **Financial Gatekeeping** | High equipment costs exclude underprivileged students & indie creators. | Access premium gear at 80% to 90% below retail purchase costs. |
@@ -133,13 +133,13 @@ Calculates duration between pickup and return dates, applying progressive multi-
 
 ## 🌍 8. Social Impact & Sustainability
 
-RentLoop directly advances **UN Sustainable Development Goal 12 (Responsible Consumption & Production)**:
+RentBuddy directly advances **UN Sustainable Development Goal 12 (Responsible Consumption & Production)**:
 
 1. **Resource Conservation:** By shifting from individual ownership to shared access, product lifecycles are maximized.
 2. **Financial Equity:** Enables students and budget-conscious creators to access high-grade tools, cameras, and educational resources without debt.
 3. **Local Community Resilience:** Connects neighbors in safe, verified exchanges, building social trust and keeping wealth within local economies.
-4. **Quantified Impact:** Every rental on RentLoop saves an estimated average of **12.8 kg of CO₂e** and diverts **4.6 kg of manufacturing waste** from landfills.
+4. **Quantified Impact:** Every rental on RentBuddy saves an estimated average of **12.8 kg of CO₂e** and diverts **4.6 kg of manufacturing waste** from landfills.
 
 ---
 
-*Prepared for Hackathon Submission • RentLoop Documentation*
+*Prepared for Hackathon Submission • RentBuddy Documentation*

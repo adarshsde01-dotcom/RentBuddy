@@ -4,11 +4,9 @@ import {
   GraduationCap, 
   Compass, 
   Wrench, 
-  HeartHandshake, 
-  TrendingDown, 
-  CheckCircle2, 
   ArrowRight,
-  ShieldAlert
+  Sparkles,
+  Info
 } from 'lucide-react';
 
 interface SocialImpactSectionProps {
@@ -41,7 +39,7 @@ export const SocialImpactSection: React.FC<SocialImpactSectionProps> = ({
       savings: 60200,
       co2Saved: 46,
       quote:
-        '"I take one big Himalayan trek to Ladakh per year. It makes zero sense to store a giant 100L duffel in my rented apartment all year. RentLoop is a game changer."',
+        '"I take one big Himalayan trek to Ladakh per year. It makes zero sense to store a giant 100L duffel in my rented apartment all year. RentBuddy is a game changer."',
       avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80',
       author: 'Kabir Mehta, Outdoor Adventurer',
     },
@@ -71,7 +69,7 @@ export const SocialImpactSection: React.FC<SocialImpactSectionProps> = ({
           Democratizing access. Eliminating waste.
         </h2>
         <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
-          The average power drill is used for just <strong>13 minutes in its entire lifespan</strong>. RentLoop unlocks the latent value of existing goods so people can accomplish great things without financial strain or environmental guilt.
+          The average power drill is used for just <strong>13 minutes in its entire lifespan</strong>. RentBuddy unlocks the latent value of existing goods so people can accomplish great things without financial strain or environmental guilt.
         </p>
       </div>
 
@@ -160,7 +158,7 @@ export const SocialImpactSection: React.FC<SocialImpactSectionProps> = ({
             </div>
 
             <div className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800">
-              <span className="text-[11px] text-slate-400 block">RentLoop Rental</span>
+              <span className="text-[11px] text-slate-400 block">RentBuddy Rental</span>
               <span className="text-lg sm:text-xl font-black text-emerald-400 mt-0.5 block">
                 ₹{active.rentCost.toLocaleString('en-IN')}
               </span>
@@ -190,29 +188,53 @@ export const SocialImpactSection: React.FC<SocialImpactSectionProps> = ({
         <div className="lg:col-span-5 p-6 rounded-2xl bg-gradient-to-br from-emerald-950/50 to-teal-950/40 border border-emerald-500/30 space-y-4">
           <div className="flex items-center gap-2 text-emerald-400 font-bold text-sm">
             <Leaf className="w-5 h-5 text-emerald-400" />
-            <span>Environmental Footprint Avoided</span>
+            <span>How Renting Reduces Environmental Waste</span>
           </div>
 
           <div className="space-y-3 text-xs text-slate-300">
-            <div className="flex items-center justify-between">
-              <span>Manufacturing emissions saved:</span>
-              <strong className="text-emerald-300 font-bold">{active.co2Saved} kg CO2e</strong>
+            <div className="p-3 rounded-xl bg-slate-950/60 border border-slate-800 space-y-1">
+              <strong className="text-emerald-300 font-semibold block flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+                Amortizing Embodied Carbon
+              </strong>
+              <p className="text-[11px] text-slate-400 leading-relaxed">
+                70% to 85% of an electronic item's lifecycle emissions occur during raw material extraction and manufacturing. Sharing 1 camera or tool among 10 users avoids manufacturing 9 redundant devices.
+              </p>
             </div>
-            <div className="flex items-center justify-between">
-              <span>Raw minerals / metals mined:</span>
-              <strong className="text-emerald-300 font-bold">~14 kg materials</strong>
+
+            <div className="p-3 rounded-xl bg-slate-950/60 border border-slate-800 space-y-1">
+              <strong className="text-teal-300 font-semibold block flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-teal-400" />
+                Extending Usable Lifecycle
+              </strong>
+              <p className="text-[11px] text-slate-400 leading-relaxed">
+                Specialty gear often sits idle for months. Keeping durable goods in continuous community circulation eliminates single-use purchases and landfill e-waste.
+              </p>
             </div>
-            <div className="flex items-center justify-between">
-              <span>Packaging / bubblewrap diverted:</span>
-              <strong className="text-emerald-300 font-bold">100% Zero waste</strong>
+
+            <div className="p-3 rounded-xl bg-slate-950/60 border border-slate-800 space-y-1">
+              <strong className="text-cyan-300 font-semibold block flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+                Zero Packaging & Freight Waste
+              </strong>
+              <p className="text-[11px] text-slate-400 leading-relaxed">
+                Local neighborhood handovers eliminate long-distance air shipping, non-recyclable bubble wrap, and cardboard transit waste.
+              </p>
             </div>
+          </div>
+
+          <div className="p-2.5 rounded-xl bg-slate-950/80 border border-slate-800 text-[10px] text-slate-400 flex items-start gap-1.5">
+            <Info className="w-3.5 h-3.5 text-slate-400 shrink-0 mt-0.5" />
+            <span>
+              Financial savings compare local rental rates with retail purchase prices. Environmental impact reflects established circular economy lifecycle extension principles.
+            </span>
           </div>
 
           <button
             onClick={onExploreItems}
             className="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs sm:text-sm shadow-md shadow-emerald-500/20 transition-all flex items-center justify-center gap-1.5 mt-2"
           >
-            <span>Borrow Sustainably on RentLoop</span>
+            <span>Borrow Sustainably on RentBuddy</span>
             <ArrowRight className="w-4 h-4" />
           </button>
         </div>

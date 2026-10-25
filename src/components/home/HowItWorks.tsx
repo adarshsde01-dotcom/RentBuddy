@@ -26,13 +26,13 @@ export const HowItWorks: React.FC<HowItWorksProps> = ({
     <section className="py-16 border-t border-slate-800/80 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
       <div className="text-center max-w-2xl mx-auto space-y-3">
         <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 uppercase tracking-wider inline-flex items-center gap-1.5">
-          <Sparkles className="w-3.5 h-3.5" /> How RentLoop Works
+          <Sparkles className="w-3.5 h-3.5" /> How RentBuddy Works
         </span>
         <h2 className="text-3xl sm:text-4xl font-extrabold text-white font-heading">
           Seamless, safe peer-to-peer rentals.
         </h2>
         <p className="text-sm text-slate-400 leading-relaxed">
-          Whether you need a 4K camera for a weekend wedding or have tools sitting idle in your garage, RentLoop keeps the process safe, transparent, and rewarding.
+          Whether you need a 4K camera for a weekend wedding or have tools sitting idle in your garage, RentBuddy keeps the process safe, transparent, and rewarding.
         </p>
 
         {/* Role Toggle Switcher */}
@@ -164,7 +164,7 @@ export const HowItWorks: React.FC<HowItWorksProps> = ({
             <Lock className="w-6 h-6" />
           </div>
           <div>
-            <h4 className="text-base sm:text-lg font-bold text-white">The RentLoop Safety & Escrow Promise</h4>
+            <h4 className="text-base sm:text-lg font-bold text-white">The RentBuddy Safety & Escrow Promise</h4>
             <p className="text-xs sm:text-sm text-slate-300 mt-0.5">
               Every rental is covered by verified user profiles, transparent refundable deposits, and peer reviews.
             </p>

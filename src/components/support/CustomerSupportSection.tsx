@@ -7,14 +7,11 @@ import {
   PhoneCall, 
   Mail, 
   Clock, 
-  AlertTriangle, 
   CheckCircle2, 
   ChevronDown, 
   ChevronUp, 
   Send, 
-  IndianRupee, 
   Sparkles,
-  ArrowRight,
   FileQuestion,
   UserCheck
 } from 'lucide-react';
@@ -72,7 +69,7 @@ export const CustomerSupportSection: React.FC<CustomerSupportSectionProps> = ({
   const renterFaqs = [
     {
       q: 'What protection do I have if a borrower damages or breaks my equipment?',
-      a: 'Every item on RentLoop is backed by the borrower’s refundable security deposit plus RentLoop’s Community Damage Protection Guarantee (covering up to ₹2,00,000). If an item is returned damaged, simply tap "Report Damage" within 48 hours with photos, and our claims team reimburses repair or replacement costs.',
+      a: 'Every item on RentBuddy is backed by the borrower’s refundable security deposit plus RentBuddy’s Community Damage Protection Guarantee (covering up to ₹2,00,000). If an item is returned damaged, simply tap "Report Damage" within 48 hours with photos, and our claims team reimburses repair or replacement costs.',
     },
     {
       q: 'What happens if the borrower returns my gear late?',
@@ -125,7 +122,7 @@ export const CustomerSupportSection: React.FC<CustomerSupportSectionProps> = ({
         origin: { y: 0.7 },
         colors: ['#10b981', '#14b8a6', '#38bdf8'],
       });
-    } catch (e) {
+    } catch {
       // ignore
     }
   };
@@ -197,7 +194,7 @@ export const CustomerSupportSection: React.FC<CustomerSupportSectionProps> = ({
           </div>
           <h3 className="text-sm font-bold text-white">Toll-Free Helpline</h3>
           <p className="text-xs text-slate-400">Instant connection to our support agents</p>
-          <p className="text-sm font-mono font-bold text-emerald-400 pt-1">1800-RENT-LOOP</p>
+          <p className="text-sm font-mono font-bold text-emerald-400 pt-1">1800-RENT-BUDDY</p>
           <span className="text-[10px] text-slate-500 block">Toll-free • Hindi, English & Regional</span>
         </div>
 
@@ -217,7 +214,7 @@ export const CustomerSupportSection: React.FC<CustomerSupportSectionProps> = ({
           </div>
           <h3 className="text-sm font-bold text-white">Direct Email Support</h3>
           <p className="text-xs text-slate-400">Escrow verification & claim requests</p>
-          <p className="text-sm font-mono font-bold text-sky-400 pt-1">care@rentloop.in</p>
+          <p className="text-sm font-mono font-bold text-sky-400 pt-1">care@rentbuddy.in</p>
           <span className="text-[10px] text-slate-500 block">Ticket logged with tracking ID</span>
         </div>
 
@@ -297,7 +294,7 @@ export const CustomerSupportSection: React.FC<CustomerSupportSectionProps> = ({
                     Your Ticket ID is <span className="font-mono font-bold text-emerald-400 text-sm">{submittedTicket.id}</span>
                   </p>
                   <p className="text-xs text-slate-400 mt-2 max-w-md mx-auto">
-                    We have dispatched an email confirmation to <strong>{submittedTicket.userEmail}</strong>. An authorized RentLoop care officer will reach out shortly.
+                    We have dispatched an email confirmation to <strong>{submittedTicket.userEmail}</strong>. An authorized RentBuddy care officer will reach out shortly.
                   </p>
                 </div>
 
@@ -520,7 +517,7 @@ export const CustomerSupportSection: React.FC<CustomerSupportSectionProps> = ({
               <span>Urgent In-Hand Issue?</span>
             </div>
             <p className="text-[11px] leading-relaxed">
-              If you are at the physical pickup point or returning equipment right now, call our toll-free hotline <strong>1800-RENT-LOOP</strong> for instant live override support.
+              If you are at the physical pickup point or returning equipment right now, call our toll-free hotline <strong>1800-RENT-BUDDY</strong> for instant live override support.
             </p>
           </div>
         </div>

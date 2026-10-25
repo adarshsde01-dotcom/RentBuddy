@@ -3,13 +3,7 @@ import {
   X, 
   Plus, 
   Sparkles, 
-  CheckCircle2, 
-  ShieldCheck, 
-  DollarSign, 
-  MapPin, 
-  Tag, 
-  HelpCircle,
-  ArrowRight
+  MapPin
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { CategoryType, ItemCondition, RentalItem } from '../../types/rental';
@@ -336,10 +330,10 @@ export const ListItemModal: React.FC<ListItemModalProps> = ({
             </div>
           </div>
 
-          {/* Specs & Rules Adders */}
+          {/* Technical Specs Adder */}
           <div className="space-y-3 pt-2 border-t border-slate-800">
             <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400">
-              Technical Specs & Rental Rules
+              Technical Specs & Inclusions
             </label>
             
             <div className="flex gap-2">
@@ -347,13 +341,13 @@ export const ListItemModal: React.FC<ListItemModalProps> = ({
                 type="text"
                 value={specInput}
                 onChange={(e) => setSpecInput(e.target.value)}
-                placeholder="Add spec, e.g. Battery Life: 12 Hours or Included: Charger + Bag"
+                placeholder="e.g. Battery Life: 12 Hours or Included: Charger + Carrying Case"
                 className="flex-1 px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-slate-200 focus:outline-none focus:border-emerald-500"
               />
               <button
                 type="button"
                 onClick={handleAddSpec}
-                className="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl flex items-center gap-1"
+                className="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl flex items-center gap-1 transition-colors"
               >
                 <Plus className="w-3.5 h-3.5" /> Add Spec
               </button>
@@ -370,7 +364,51 @@ export const ListItemModal: React.FC<ListItemModalProps> = ({
                     <button
                       type="button"
                       onClick={() => setSpecs(specs.filter((_, i) => i !== idx))}
-                      className="text-slate-500 hover:text-rose-400"
+                      className="text-slate-500 hover:text-rose-400 transition-colors"
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Owner Rental Rules Adder */}
+          <div className="space-y-3 pt-2 border-t border-slate-800">
+            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400">
+              Owner Rental Guidelines & Rules
+            </label>
+            
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={ruleInput}
+                onChange={(e) => setRuleInput(e.target.value)}
+                placeholder="e.g. Clean and inspect before returning or No underwater usage"
+                className="flex-1 px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-slate-200 focus:outline-none focus:border-emerald-500"
+              />
+              <button
+                type="button"
+                onClick={handleAddRule}
+                className="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl flex items-center gap-1 transition-colors"
+              >
+                <Plus className="w-3.5 h-3.5" /> Add Rule
+              </button>
+            </div>
+
+            {rules.length > 0 && (
+              <div className="flex flex-wrap gap-2 pt-1">
+                {rules.map((r, idx) => (
+                  <span
+                    key={idx}
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-950 border border-slate-800 text-xs text-slate-300"
+                  >
+                    <span>{r}</span>
+                    <button
+                      type="button"
+                      onClick={() => setRules(rules.filter((_, i) => i !== idx))}
+                      className="text-slate-500 hover:text-rose-400 transition-colors"
                     >
                       <X className="w-3 h-3" />
                     </button>
@@ -390,7 +428,7 @@ export const ListItemModal: React.FC<ListItemModalProps> = ({
                 className="mt-1 w-4 h-4 rounded text-emerald-500 accent-emerald-500 cursor-pointer"
               />
               <span className="text-xs text-slate-300 leading-relaxed">
-                I confirm this item is in working order and agree to the RentLoop community trust pledge. I understand that security deposits are returned only after I verify the item is received back in good condition.
+                I confirm this item is in working order and agree to the RentBuddy community trust pledge. I understand that security deposits are returned only after I verify the item is received back in good condition.
               </span>
             </label>
           </div>

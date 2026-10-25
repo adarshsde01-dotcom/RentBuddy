@@ -30,12 +30,14 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   onProceedToBooking,
 }) => {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [prevItemId, setPrevItemId] = useState(item?.id);
   const [isFavorited, setIsFavorited] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
 
-  useEffect(() => {
+  if (item?.id !== prevItemId) {
+    setPrevItemId(item?.id);
     setSelectedImageIndex(0);
-  }, [item]);
+  }
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -276,7 +278,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               <div className="p-4 rounded-xl bg-emerald-950/30 border border-emerald-500/30 flex items-start gap-3 text-xs">
                 <ShieldCheck className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
                 <div>
-                  <h4 className="font-bold text-emerald-300">RentLoop Guarantee & Escrow Protection</h4>
+                  <h4 className="font-bold text-emerald-300">RentBuddy Guarantee & Escrow Protection</h4>
                   <p className="text-slate-300 text-[11px] mt-0.5 leading-relaxed">
                     Security deposits are locked safely in escrow and returned to your balance automatically within 24 hours of item return. Up to ₹2,00,000 damage protection included for peace of mind.
                   </p>

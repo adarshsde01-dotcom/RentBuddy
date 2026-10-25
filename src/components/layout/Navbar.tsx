@@ -3,7 +3,6 @@ import {
   Repeat, 
   PlusCircle, 
   LayoutDashboard, 
-  Sparkles, 
   Cloud, 
   Menu, 
   X, 
@@ -61,7 +60,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               </div>
               <div>
                 <span className="text-2xl font-black font-heading tracking-tight text-white flex items-center gap-1">
-                  Rent<span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">Loop</span>
+                  Rent<span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">Buddy</span>
                 </span>
                 <span className="hidden sm:block text-[10px] uppercase font-bold tracking-widest text-emerald-400/80 -mt-1">
                   Borrow Smart • Save More

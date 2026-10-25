@@ -5,19 +5,17 @@ import {
   Clock, 
   CheckCircle2, 
   XCircle, 
-  AlertCircle, 
   ShieldCheck, 
   Leaf, 
   IndianRupee, 
   ArrowUpRight, 
-  Trash2, 
   RefreshCcw, 
   Layers, 
   PlusCircle, 
-  FileText,
-  UserCheck,
-  Check,
-  Headphones
+  FileText, 
+  UserCheck, 
+  Check, 
+  Headphones 
 } from 'lucide-react';
 import { RentalBooking, RentalItem, BookingStatus } from '../../types/rental';
 import { 
