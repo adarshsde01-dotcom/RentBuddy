@@ -5,7 +5,7 @@ import {
   ShieldCheck, 
   Leaf, 
   ArrowRight, 
-  DollarSign, 
+  IndianRupee, 
   Camera, 
   Smartphone, 
   Wrench, 
@@ -119,7 +119,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         <div className="pt-6 max-w-4xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 text-left">
           <div className="p-3.5 rounded-2xl bg-slate-900/70 border border-slate-800/80 flex items-center gap-3">
             <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-400 shrink-0">
-              <DollarSign className="w-5 h-5" />
+              <IndianRupee className="w-5 h-5" />
             </div>
             <div>
               <span className="text-xs sm:text-sm font-extrabold text-white block">85% Cheaper</span>

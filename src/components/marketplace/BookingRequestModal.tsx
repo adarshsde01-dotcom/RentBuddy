@@ -144,7 +144,7 @@ export const BookingRequestModal: React.FC<BookingRequestModalProps> = ({
             <div className="flex items-center gap-2 text-xs text-slate-400 mt-1">
               <span>Lender: <strong className="text-slate-200">{item.owner.name}</strong></span>
               <span>•</span>
-              <span className="text-emerald-400 font-semibold">${item.dailyPrice}/day</span>
+              <span className="text-emerald-400 font-semibold">₹{item.dailyPrice.toLocaleString('en-IN')}/day</span>
             </div>
           </div>
         </div>
@@ -213,7 +213,7 @@ export const BookingRequestModal: React.FC<BookingRequestModalProps> = ({
               >
                 <Truck className="w-5 h-5 text-teal-400 shrink-0 mt-0.5" />
                 <div>
-                  <span className="text-xs font-bold text-white block">Doorstep Delivery (+$12)</span>
+                  <span className="text-xs font-bold text-white block">Doorstep Delivery (+₹199)</span>
                   <span className="text-[11px] text-slate-400 mt-0.5 block">
                     Eco-courier dropoff and pickup at your doorstep
                   </span>
@@ -241,28 +241,28 @@ export const BookingRequestModal: React.FC<BookingRequestModalProps> = ({
             <div className="flex justify-between">
               <span>Rental Fee ({calculation.totalDays} days):</span>
               <span className="font-semibold text-slate-100">
-                ${(calculation.baseTotal - calculation.discountAmount).toFixed(2)}
+                ₹{(calculation.baseTotal - calculation.discountAmount).toFixed(2)}
               </span>
             </div>
             {deliverySurcharge > 0 && (
               <div className="flex justify-between text-teal-300">
                 <span>Courier Delivery Surcharge:</span>
-                <span className="font-semibold">${deliverySurcharge.toFixed(2)}</span>
+                <span className="font-semibold">₹{deliverySurcharge.toFixed(2)}</span>
               </div>
             )}
             <div className="flex justify-between">
               <span>Refundable Deposit (Returned after handback):</span>
               <span className="font-semibold text-slate-100">
-                ${calculation.securityDeposit.toFixed(2)}
+                ₹{calculation.securityDeposit.toFixed(2)}
               </span>
             </div>
             <div className="flex justify-between">
               <span>Protection & Community Fee:</span>
-              <span className="font-semibold text-slate-100">${calculation.serviceFee.toFixed(2)}</span>
+              <span className="font-semibold text-slate-100">₹{calculation.serviceFee.toFixed(2)}</span>
             </div>
             <div className="flex justify-between items-center pt-2 border-t border-slate-800 text-sm font-bold text-white">
               <span>Total Payable</span>
-              <span className="text-emerald-400 font-heading text-lg">${finalTotal.toFixed(2)}</span>
+              <span className="text-emerald-400 font-heading text-lg">₹{finalTotal.toFixed(2)}</span>
             </div>
           </div>
 

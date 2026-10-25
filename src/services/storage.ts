@@ -121,7 +121,7 @@ export const calculateImpactStats = () => {
   const wasteDivertedKg = Math.round(relevantBookings.length * 4.6);
 
   return {
-    totalSavedDollars: totalSavedDollars || 4280,
+    totalSavedDollars: totalSavedDollars || 276800,
     co2AvoidedKg: co2AvoidedKg || 285,
     wasteDivertedKg: wasteDivertedKg || 98,
     activeListingsCount: items.length,

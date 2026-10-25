@@ -40,7 +40,7 @@ export const SearchBarAndFilters: React.FC<SearchBarAndFiltersProps> = ({
       category: 'all',
       searchQuery: '',
       minPrice: 0,
-      maxPrice: 60,
+      maxPrice: 3000,
       condition: 'all',
       onlyAvailable: false,
       sortBy: 'recommended',
@@ -49,7 +49,7 @@ export const SearchBarAndFilters: React.FC<SearchBarAndFiltersProps> = ({
 
   const hasActiveFilters =
     filters.searchQuery !== '' ||
-    filters.maxPrice < 60 ||
+    filters.maxPrice < 3000 ||
     filters.condition !== 'all' ||
     filters.onlyAvailable ||
     filters.category !== 'all';
@@ -122,22 +122,22 @@ export const SearchBarAndFilters: React.FC<SearchBarAndFiltersProps> = ({
           <div className="space-y-2">
             <div className="flex justify-between items-center text-slate-300">
               <span className="font-semibold uppercase tracking-wider text-slate-400">
-                Max Daily Rate: <span className="text-emerald-400 font-bold text-sm">${filters.maxPrice}/day</span>
+                Max Daily Rate: <span className="text-emerald-400 font-bold text-sm">₹{filters.maxPrice.toLocaleString('en-IN')}/day</span>
               </span>
             </div>
             <input
               type="range"
-              min="5"
-              max="60"
-              step="1"
+              min="99"
+              max="3000"
+              step="50"
               value={filters.maxPrice}
               onChange={(e) => handlePriceChange(Number(e.target.value))}
               className="w-full accent-emerald-500 bg-slate-800 h-2 rounded-lg cursor-pointer"
             />
             <div className="flex justify-between text-[11px] text-slate-400">
-              <span>$5/day</span>
-              <span>$30/day</span>
-              <span>$60+/day</span>
+              <span>₹99/day</span>
+              <span>₹1,500/day</span>
+              <span>₹3,000+/day</span>
             </div>
           </div>
 

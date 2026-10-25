@@ -278,7 +278,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 <div>
                   <h4 className="font-bold text-emerald-300">RentLoop Guarantee & Escrow Protection</h4>
                   <p className="text-slate-300 text-[11px] mt-0.5 leading-relaxed">
-                    Security deposits are locked safely in escrow and returned to your balance automatically within 24 hours of item return. Up to $2,500 damage protection included for peace of mind.
+                    Security deposits are locked safely in escrow and returned to your balance automatically within 24 hours of item return. Up to ₹2,00,000 damage protection included for peace of mind.
                   </p>
                 </div>
               </div>

@@ -15,7 +15,7 @@
 ## 📌 Problem Statement
 
 In today's consumption-driven economy:
-1. **Financial Waste:** Consumers frequently spend hundreds or thousands of dollars on expensive products they only need for a few days or weeks (e.g., a $2,500 mirrorless camera for a wedding, a $150 CS algorithm textbook for a single semester, or a $500 6-person tent for one camping trip).
+1. **Financial Waste:** Consumers frequently spend hundreds or thousands of rupees on expensive products they only need for a few days or weeks (e.g., a ₹2,50,000 mirrorless camera for a wedding, a ₹4,500 CS algorithm textbook for a single semester, or a ₹38,000 6-person tent for one camping trip).
 2. **Environmental & Material Waste:** The average power drill is used for **just 13 minutes in its entire lifespan**. Idle manufacturing drives massive CO₂ emissions, e-waste, and landfill accumulation.
 3. **High Barriers for Students & Creators:** Young professionals, indie creators, and students are priced out of high-end equipment necessary for commercial projects, courses, or travel adventures.
 
@@ -35,12 +35,12 @@ In today's consumption-driven economy:
 
 1. **Modern Responsive Homepage:**
    - Dark-mode glassmorphism design with responsive navigation, quick category pills, and community stats.
-   - Live platform impact counters: Dollars saved, CO₂e avoided, landfill waste diverted, and active listings.
+   - Live platform impact counters: Rupees saved, CO₂e avoided, landfill waste diverted, and active listings.
 
 2. **Universal Category Catalog & Search:**
    - 7 Core Categories: *Cameras & Optics*, *Electronics & Drones*, *Travel & Luggage*, *Books & Textbooks*, *Kitchen & Hosting*, *Tools & DIY*, and *Outdoor & Camping*.
    - Dynamic real-time search across titles, descriptions, tags, and neighborhood locations.
-   - Comprehensive filters: Price slider ($5–$60+/day), item condition (*Like New*, *Excellent*, *Good*), availability toggle, and multi-criteria sorting (Price, Rating, Popularity).
+   - Comprehensive filters: Price slider (₹99–₹3,000+/day), item condition (*Like New*, *Excellent*, *Good*), availability toggle, and multi-criteria sorting (Price, Rating, Popularity).
 
 3. **Product Detail Experience:**
    - Multi-photo gallery preview with thumbnail carousel.
@@ -53,7 +53,7 @@ In today's consumption-driven economy:
    - Itemized transparent breakdown: Base fee, platform protection fee (5%), refundable escrow security deposit, and estimated savings vs retail.
 
 5. **Booking Request Workflow:**
-   - Handover preference selector: *Local In-Person Pickup (Free)* vs *Eco-Courier Delivery (+$12)*.
+   - Handover preference selector: *Local In-Person Pickup (Free)* vs *Eco-Courier Delivery (+₹199)*.
    - Message to lender and borrower contact capture.
    - Confetti celebratory feedback and automatic redirection to the User Dashboard.
 

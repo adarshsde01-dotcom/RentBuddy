@@ -32,12 +32,12 @@ export const ListItemModal: React.FC<ListItemModalProps> = ({
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState<CategoryType>('electronics');
   const [description, setDescription] = useState('');
-  const [dailyPrice, setDailyPrice] = useState<number | ''>(25);
+  const [dailyPrice, setDailyPrice] = useState<number | ''>(499);
   const [weeklyDiscountPercent, setWeeklyDiscountPercent] = useState<number>(20);
-  const [securityDeposit, setSecurityDeposit] = useState<number | ''>(80);
-  const [replacementValue, setReplacementValue] = useState<number | ''>(500);
+  const [securityDeposit, setSecurityDeposit] = useState<number | ''>(2000);
+  const [replacementValue, setReplacementValue] = useState<number | ''>(18000);
   const [condition, setCondition] = useState<ItemCondition>('Like New');
-  const [location, setLocation] = useState('New York, NY (Midtown)');
+  const [location, setLocation] = useState('Bengaluru, KA (Koramangala)');
   const [images, setImages] = useState<string[]>([]);
   const [specInput, setSpecInput] = useState('');
   const [ruleInput, setRuleInput] = useState('');
@@ -226,10 +226,10 @@ export const ListItemModal: React.FC<ListItemModalProps> = ({
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-4 rounded-2xl bg-slate-950/70 border border-slate-800">
             <div>
               <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1">
-                Daily Rate ($) *
+                Daily Rate (₹) *
               </label>
               <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">$</span>
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">₹</span>
                 <input
                   type="number"
                   min="1"
@@ -261,14 +261,14 @@ export const ListItemModal: React.FC<ListItemModalProps> = ({
 
             <div>
               <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1">
-                Security Deposit ($) *
+                Security Deposit (₹) *
               </label>
               <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">$</span>
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">₹</span>
                 <input
                   type="number"
-                  min="5"
-                  step="5"
+                  min="50"
+                  step="50"
                   value={securityDeposit}
                   onChange={(e) => setSecurityDeposit(e.target.value === '' ? '' : Number(e.target.value))}
                   required
@@ -279,14 +279,14 @@ export const ListItemModal: React.FC<ListItemModalProps> = ({
 
             <div>
               <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1">
-                Retail Value ($) *
+                Retail Value (₹) *
               </label>
               <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">$</span>
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">₹</span>
                 <input
                   type="number"
-                  min="20"
-                  step="10"
+                  min="100"
+                  step="100"
                   value={replacementValue}
                   onChange={(e) => setReplacementValue(e.target.value === '' ? '' : Number(e.target.value))}
                   required

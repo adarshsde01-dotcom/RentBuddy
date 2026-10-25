@@ -24,38 +24,38 @@ export const SocialImpactSection: React.FC<SocialImpactSectionProps> = ({
     student: {
       title: 'College Students & Learners',
       item: 'CLRS Algorithms Textbook + iPad Pro for Semester Prep',
-      buyCost: 1324,
-      rentCost: 147,
-      savings: 1177,
+      buyCost: 99500,
+      rentCost: 8990,
+      savings: 90510,
       co2Saved: 38,
       quote:
-        '"As a computer science student, I needed the Cormen algorithm book and a tablet for finals. Renting saved me over $1,100 that I can put toward tuition and rent."',
+        '"As a computer science student at IIT Madras, I needed the Cormen algorithm book and an iPad for my semester. Renting saved me over ₹90,000 that I can put toward tuition and living costs."',
       avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=150&q=80',
-      author: 'Aria Chen, Student @ MIT',
+      author: 'Aishwarya Raman, Student @ IIT Madras',
     },
     traveler: {
       title: 'Backpackers & Weekend Explorers',
       item: 'Patagonia 100L Weatherproof Duffel + 6-Person Camping Tent',
-      buyCost: 939,
-      rentCost: 108,
-      savings: 831,
+      buyCost: 66000,
+      rentCost: 5800,
+      savings: 60200,
       co2Saved: 46,
       quote:
-        '"I take one big mountaineering trip per year. It makes zero sense to store a giant 100L duffel in my tiny studio apartment all year. RentLoop is a game changer."',
+        '"I take one big Himalayan trek to Ladakh per year. It makes zero sense to store a giant 100L duffel in my rented apartment all year. RentLoop is a game changer."',
       avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80',
-      author: 'Caleb Walker, Outdoor Adventurer',
+      author: 'Kabir Mehta, Outdoor Adventurer',
     },
     creator: {
       title: 'Indie Creators & DIY Homeowners',
       item: 'Sony Alpha A7 IV 4K Mirrorless Camera + DeWalt Impact Kit',
-      buyCost: 2747,
-      rentCost: 168,
-      savings: 2579,
+      buyCost: 265500,
+      rentCost: 15500,
+      savings: 250000,
       co2Saved: 72,
       quote:
-        '"We shot a commercial pilot for our local small business without spending $3,000 on camera gear upfront. It lowered our production barrier completely."',
+        '"We shot a commercial pilot in Bengaluru without spending ₹2,65,000 on camera gear upfront. It lowered our production barrier completely."',
       avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80',
-      author: 'Marcus Vance, Filmmaker',
+      author: 'Rohan Verma, Filmmaker',
     },
   };
 
@@ -155,21 +155,21 @@ export const SocialImpactSection: React.FC<SocialImpactSectionProps> = ({
             <div className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800">
               <span className="text-[11px] text-slate-400 block">Retail Purchase</span>
               <span className="text-lg sm:text-xl font-bold text-rose-400 line-through mt-0.5 block">
-                ${active.buyCost}
+                ₹{active.buyCost.toLocaleString('en-IN')}
               </span>
             </div>
 
             <div className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800">
               <span className="text-[11px] text-slate-400 block">RentLoop Rental</span>
               <span className="text-lg sm:text-xl font-black text-emerald-400 mt-0.5 block">
-                ${active.rentCost}
+                ₹{active.rentCost.toLocaleString('en-IN')}
               </span>
             </div>
 
             <div className="p-3.5 rounded-2xl bg-emerald-950/40 border border-emerald-500/30">
               <span className="text-[11px] text-emerald-400 block">Cash Kept</span>
               <span className="text-lg sm:text-xl font-black text-emerald-300 mt-0.5 block">
-                +${active.savings}
+                +₹{active.savings.toLocaleString('en-IN')}
               </span>
             </div>
           </div>

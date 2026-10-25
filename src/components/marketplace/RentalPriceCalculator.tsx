@@ -108,7 +108,7 @@ export const RentalPriceCalculator: React.FC<RentalPriceCalculatorProps> = ({
         </div>
         <div className="text-right">
           <span className="text-2xl font-black text-emerald-400 font-heading">
-            ${item.dailyPrice}
+            ₹{item.dailyPrice.toLocaleString('en-IN')}
           </span>
           <span className="text-xs text-slate-400 block -mt-1">/ day</span>
         </div>
@@ -170,15 +170,15 @@ export const RentalPriceCalculator: React.FC<RentalPriceCalculatorProps> = ({
         <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800/80 space-y-2.5 text-xs text-slate-300">
           <div className="flex justify-between items-center">
             <span>
-              ${item.dailyPrice} × {calculatedDays} {calculatedDays === 1 ? 'day' : 'days'}
+              ₹{item.dailyPrice.toLocaleString('en-IN')} × {calculatedDays} {calculatedDays === 1 ? 'day' : 'days'}
             </span>
-            <span className="font-semibold text-slate-100">${baseTotal.toFixed(2)}</span>
+            <span className="font-semibold text-slate-100">₹{baseTotal.toFixed(2)}</span>
           </div>
 
           {discountAmount > 0 && (
             <div className="flex justify-between items-center text-teal-400">
               <span>Multi-Day Discount ({discountPercent}%)</span>
-              <span className="font-semibold">-${discountAmount.toFixed(2)}</span>
+              <span className="font-semibold">-₹{discountAmount.toFixed(2)}</span>
             </div>
           )}
 
@@ -186,7 +186,7 @@ export const RentalPriceCalculator: React.FC<RentalPriceCalculatorProps> = ({
             <span className="flex items-center gap-1">
               Community Protection & Platform Fee (5%)
             </span>
-            <span className="font-semibold text-slate-100">${serviceFee.toFixed(2)}</span>
+            <span className="font-semibold text-slate-100">₹{serviceFee.toFixed(2)}</span>
           </div>
 
           <div className="flex justify-between items-center pt-2 border-t border-slate-800">
@@ -194,7 +194,7 @@ export const RentalPriceCalculator: React.FC<RentalPriceCalculatorProps> = ({
               <span className="font-semibold text-slate-200">Refundable Security Deposit</span>
               <span className="text-[10px] text-emerald-400">100% refunded within 24h of return</span>
             </div>
-            <span className="font-semibold text-slate-100">${securityDeposit.toFixed(2)}</span>
+            <span className="font-semibold text-slate-100">₹{securityDeposit.toFixed(2)}</span>
           </div>
 
           {/* Upfront Total */}
@@ -205,7 +205,7 @@ export const RentalPriceCalculator: React.FC<RentalPriceCalculatorProps> = ({
             </div>
             <div className="text-right">
               <span className="text-xl font-black text-emerald-400 font-heading">
-                ${totalPayable.toFixed(2)}
+                ₹{totalPayable.toFixed(2)}
               </span>
             </div>
           </div>
@@ -216,10 +216,10 @@ export const RentalPriceCalculator: React.FC<RentalPriceCalculatorProps> = ({
           <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
           <div>
             <p className="font-bold text-emerald-300">
-              You save ${Math.round(savingsVsRetail)} by borrowing smart!
+              You save ₹{Math.round(savingsVsRetail).toLocaleString('en-IN')} by borrowing smart!
             </p>
             <p className="text-slate-300 text-[11px] mt-0.5">
-              Retail price is ~${item.replacementValue}. Renting saves cash and keeps manufacturing emissions out of the atmosphere.
+              Retail price is ~₹{item.replacementValue.toLocaleString('en-IN')}. Renting saves cash and keeps manufacturing emissions out of the atmosphere.
             </p>
           </div>
         </div>
@@ -229,7 +229,7 @@ export const RentalPriceCalculator: React.FC<RentalPriceCalculatorProps> = ({
           type="submit"
           className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-400 hover:from-emerald-400 hover:to-teal-300 text-slate-950 font-black text-sm tracking-wide shadow-lg shadow-emerald-500/25 transition-all flex items-center justify-center gap-2 active:scale-[0.99]"
         >
-          <span>Request Rental for ${totalPayable.toFixed(2)}</span>
+          <span>Request Rental for ₹{totalPayable.toFixed(2)}</span>
           <ArrowRight className="w-4 h-4" />
         </button>
 

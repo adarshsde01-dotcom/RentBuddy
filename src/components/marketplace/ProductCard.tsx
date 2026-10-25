@@ -116,14 +116,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           <div className="flex items-baseline justify-between">
             <div>
               <span className="text-2xl font-black text-emerald-400 font-heading">
-                ${item.dailyPrice}
+                ₹{item.dailyPrice.toLocaleString('en-IN')}
               </span>
               <span className="text-xs text-slate-400 font-medium ml-1">/ day</span>
             </div>
 
             <div className="text-right">
               <span className="text-[11px] text-slate-400 block">Refundable Deposit</span>
-              <span className="text-xs font-semibold text-slate-300">${item.securityDeposit}</span>
+              <span className="text-xs font-semibold text-slate-300">₹{item.securityDeposit.toLocaleString('en-IN')}</span>
             </div>
           </div>
 
@@ -132,7 +132,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             <span className="text-emerald-400 font-medium flex items-center gap-1">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> Save vs Buying:
             </span>
-            <span className="font-bold text-emerald-300">~${estimatedSavings}</span>
+            <span className="font-bold text-emerald-300">~₹{estimatedSavings.toLocaleString('en-IN')}</span>
           </div>
 
           {/* Owner info & Action button */}

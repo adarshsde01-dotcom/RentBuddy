@@ -8,7 +8,7 @@ import {
   AlertCircle, 
   ShieldCheck, 
   Leaf, 
-  DollarSign, 
+  IndianRupee, 
   ArrowUpRight, 
   Trash2, 
   RefreshCcw, 
@@ -171,10 +171,10 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({
           <div className="p-4 rounded-2xl bg-slate-950/60 border border-slate-800/80">
             <div className="flex items-center justify-between text-xs text-slate-400">
               <span>Financial Savings</span>
-              <DollarSign className="w-4 h-4 text-emerald-400" />
+              <IndianRupee className="w-4 h-4 text-emerald-400" />
             </div>
             <p className="text-2xl sm:text-3xl font-black text-white font-heading mt-1">
-              ${impact.totalSavedDollars.toLocaleString()}
+              ₹{impact.totalSavedDollars.toLocaleString('en-IN')}
             </p>
             <p className="text-[11px] text-emerald-400 mt-0.5">Saved vs retail purchasing</p>
           </div>
@@ -325,10 +325,10 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({
                   <div className="flex items-center justify-between md:justify-end gap-4 w-full md:w-auto pt-3 md:pt-0 border-t md:border-t-0 border-slate-800">
                     <div className="text-left md:text-right">
                       <span className="text-base sm:text-lg font-black text-emerald-400 font-heading block">
-                        ${b.totalPayable.toFixed(2)}
+                        ₹{b.totalPayable.toFixed(2)}
                       </span>
                       <span className="text-[11px] text-slate-400 block">
-                        Includes ${b.securityDeposit} refundable deposit
+                        Includes ₹{b.securityDeposit.toLocaleString('en-IN')} refundable deposit
                       </span>
                     </div>
 
@@ -410,7 +410,7 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({
                           Requests to rent: {req.itemTitle}
                         </h4>
                         <p className="text-xs text-slate-400 mt-1">
-                          Dates: <strong className="text-slate-200">{req.startDate} to {req.endDate}</strong> ({req.totalDays} days) • Earnings: <strong className="text-emerald-400">${(req.baseTotal - req.discountAmount).toFixed(2)}</strong>
+                          Dates: <strong className="text-slate-200">{req.startDate} to {req.endDate}</strong> ({req.totalDays} days) • Earnings: <strong className="text-emerald-400">₹{(req.baseTotal - req.discountAmount).toFixed(2)}</strong>
                         </p>
                         {req.renterMessage && (
                           <p className="text-xs text-slate-300 italic mt-1 bg-slate-950/80 p-2 rounded-lg border border-slate-800">
@@ -480,7 +480,7 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({
                         {item.title}
                       </h4>
                       <p className="text-xs font-black text-emerald-400 mt-1">
-                        ${item.dailyPrice} <span className="text-[10px] text-slate-400 font-normal">/ day</span>
+                        ₹{item.dailyPrice.toLocaleString('en-IN')} <span className="text-[10px] text-slate-400 font-normal">/ day</span>
                       </p>
                     </div>
                   </div>
@@ -499,7 +499,7 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({
                     </button>
 
                     <span className="text-slate-400 text-[11px]">
-                      Deposit: ${item.securityDeposit}
+                      Deposit: ₹{item.securityDeposit.toLocaleString('en-IN')}
                     </span>
                   </div>
                 </div>
@@ -529,7 +529,7 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({
               <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800">
                 <span className="text-xs text-slate-400 block">Money Kept in Community</span>
                 <span className="text-2xl font-black text-emerald-400 font-heading mt-1 block">
-                  ${impact.totalSavedDollars}
+                  ₹{impact.totalSavedDollars.toLocaleString('en-IN')}
                 </span>
                 <span className="text-[11px] text-slate-400">85% average savings vs purchasing new</span>
               </div>
@@ -590,19 +590,19 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-400">Rental Fee:</span>
-                <span>${(selectedReceiptBooking.baseTotal - selectedReceiptBooking.discountAmount).toFixed(2)}</span>
+                <span>₹{(selectedReceiptBooking.baseTotal - selectedReceiptBooking.discountAmount).toFixed(2)}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-400">Platform & Insurance (5%):</span>
-                <span>${selectedReceiptBooking.serviceFee.toFixed(2)}</span>
+                <span>₹{selectedReceiptBooking.serviceFee.toFixed(2)}</span>
               </div>
               <div className="flex justify-between pt-2 border-t border-slate-800 text-emerald-400 font-bold">
                 <span>Refundable Escrow Deposit:</span>
-                <span>${selectedReceiptBooking.securityDeposit.toFixed(2)}</span>
+                <span>₹{selectedReceiptBooking.securityDeposit.toFixed(2)}</span>
               </div>
               <div className="flex justify-between pt-2 border-t border-slate-800 text-sm font-bold text-white">
                 <span>Total Upfront Amount:</span>
-                <span>${selectedReceiptBooking.totalPayable.toFixed(2)}</span>
+                <span>₹{selectedReceiptBooking.totalPayable.toFixed(2)}</span>
               </div>
             </div>
 
