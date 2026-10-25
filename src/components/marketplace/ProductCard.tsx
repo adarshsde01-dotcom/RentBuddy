@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Star, MapPin, ShieldCheck, Sparkles, Check, ArrowRight, PackageOpen } from 'lucide-react';
+import { Star, MapPin, ShieldCheck, Sparkles, Check, ArrowRight, PackageOpen, Cloud } from 'lucide-react';
 import { RentalItem } from '../../types/rental';
 import { getOptimizedImageUrl } from '../../services/cloudinary';
 import { getCategoryName } from '../../data/categories';
@@ -84,6 +84,15 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           <div className="absolute bottom-3 left-3">
             <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-teal-950/90 border border-teal-500/40 text-teal-300 backdrop-blur-sm">
               Save {item.weeklyDiscountPercent}% for 7+ days
+            </span>
+          </div>
+        )}
+
+        {/* Cloudinary CDN Indicator Badge (when no weekly discount on bottom-left, or placed cleanly) */}
+        {item.images[0]?.includes('res.cloudinary.com') && (
+          <div className={`absolute ${item.weeklyDiscountPercent > 0 ? 'top-12 left-3' : 'bottom-3 left-3'}`}>
+            <span className="px-2 py-0.5 rounded-md text-[9px] font-bold bg-slate-950/90 border border-sky-500/40 text-sky-300 backdrop-blur-sm flex items-center gap-1 shadow-sm">
+              <Cloud className="w-2.5 h-2.5 text-sky-400" /> Cloudinary CDN
             </span>
           </div>
         )}

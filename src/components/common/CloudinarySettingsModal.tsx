@@ -74,9 +74,19 @@ export const CloudinarySettingsModal: React.FC<CloudinarySettingsModalProps> = (
             <>
               <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
               <div>
-                <p className="text-sm font-semibold text-emerald-400">Cloudinary Connected & Active</p>
+                <p className="text-sm font-semibold text-emerald-400">Cloudinary CDN Delivery & Direct Uploads Active</p>
                 <p className="text-xs text-slate-300 mt-0.5">
-                  Direct unsigned uploads are enabled for cloud name <span className="font-mono text-emerald-300 font-bold">{cloudName}</span> using preset <span className="font-mono text-emerald-300 font-bold">{uploadPreset}</span>.
+                  Direct unsigned uploads are enabled for cloud name <span className="font-mono text-emerald-300 font-bold">{cloudName}</span> using unsigned preset <span className="font-mono text-emerald-300 font-bold">{uploadPreset}</span>.
+                </p>
+              </div>
+            </>
+          ) : cloudName.trim() ? (
+            <>
+              <CheckCircle2 className="w-5 h-5 text-sky-400 shrink-0 mt-0.5" />
+              <div>
+                <p className="text-sm font-semibold text-sky-300">Cloudinary Image Delivery & Transformations Active ({cloudName})</p>
+                <p className="text-xs text-slate-300 mt-0.5">
+                  Cloudinary dynamic image transformations, auto-format (AVIF/WebP), and responsive delivery are active for cloud name <span className="font-mono text-emerald-300 font-bold">{cloudName}</span>. To also enable direct uploads from the browser, create an unsigned preset below.
                 </p>
               </div>
             </>
@@ -86,7 +96,7 @@ export const CloudinarySettingsModal: React.FC<CloudinarySettingsModalProps> = (
               <div>
                 <p className="text-sm font-semibold text-amber-300">Simulated Upload Mode (Safe Demo Active)</p>
                 <p className="text-xs text-slate-300 mt-0.5">
-                  Currently in high-fidelity demo mode. Image uploads use instantaneous browser client readers with image transformations. You can plug in your Cloudinary keys below or in your <code className="text-amber-200">.env</code> file anytime!
+                  Currently in high-fidelity demo mode. Enter your Cloudinary cloud name below to enable live CDN optimization.
                 </p>
               </div>
             </>

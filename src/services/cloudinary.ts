@@ -1,11 +1,13 @@
 import { CloudinaryConfig } from '../types/rental';
 
-// Default configuration with safe fallback
+// Default configuration with user's Cloudinary cloud name
+export const DEFAULT_CLOUD_NAME = 'dqczk3bz';
+
 const STORAGE_KEY = 'rentbuddy_cloudinary_config';
 const LEGACY_STORAGE_KEY = 'rentloop_cloudinary_config';
 
 export const getStoredCloudinaryConfig = (): CloudinaryConfig => {
-  const envCloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || '';
+  const envCloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || DEFAULT_CLOUD_NAME;
   const envUploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || '';
   const envApiKey = import.meta.env.VITE_CLOUDINARY_API_KEY || '';
 
@@ -13,10 +15,10 @@ export const getStoredCloudinaryConfig = (): CloudinaryConfig => {
     const saved = localStorage.getItem(STORAGE_KEY) || localStorage.getItem(LEGACY_STORAGE_KEY);
     if (saved) {
       const parsed = JSON.parse(saved);
-      if (parsed.cloudName && parsed.uploadPreset) {
+      if (parsed.cloudName) {
         return {
           cloudName: parsed.cloudName,
-          uploadPreset: parsed.uploadPreset,
+          uploadPreset: parsed.uploadPreset || envUploadPreset,
           apiKey: parsed.apiKey || envApiKey,
           isCustomConfigured: true,
         };
@@ -30,7 +32,7 @@ export const getStoredCloudinaryConfig = (): CloudinaryConfig => {
     cloudName: envCloudName,
     uploadPreset: envUploadPreset,
     apiKey: envApiKey,
-    isCustomConfigured: Boolean(envCloudName && envUploadPreset),
+    isCustomConfigured: Boolean(envCloudName),
   };
 };
 
@@ -40,6 +42,11 @@ export const saveCloudinaryConfig = (config: Partial<CloudinaryConfig>): void =>
   } catch (e) {
     console.error('Failed to save Cloudinary config', e);
   }
+};
+
+export const isCloudinaryUploadReady = (): boolean => {
+  const cfg = getStoredCloudinaryConfig();
+  return Boolean(cfg.cloudName && cfg.uploadPreset);
 };
 
 export interface TransformationOptions {
@@ -54,6 +61,7 @@ export interface TransformationOptions {
 
 /**
  * Transforms Cloudinary URLs with dynamic optimizations (auto format, quality, dimensions).
+ * Applies responsive sizing, WebP/AVIF auto-format selection, and intelligent content-aware cropping.
  * Gracefully handles non-Cloudinary fallback images (like Unsplash).
  */
 export const getOptimizedImageUrl = (
@@ -62,45 +70,62 @@ export const getOptimizedImageUrl = (
 ): string => {
   if (!imageUrl) return '';
 
-  // Check if it is a Cloudinary URL
-  if (imageUrl.includes('res.cloudinary.com')) {
-    const {
-      width = 800,
-      height,
-      crop = 'fill',
-      quality = 'auto',
-      format = 'auto',
-      gravity = 'auto',
-      blur,
-    } = options;
+  const {
+    width = 800,
+    height,
+    crop = 'fill',
+    quality = 'auto',
+    format = 'auto',
+    gravity = 'auto',
+    blur,
+  } = options;
 
+  const transformations = [
+    `c_${crop}`,
+    width ? `w_${width}` : null,
+    height ? `h_${height}` : null,
+    `q_${quality}`,
+    `f_${format}`,
+    gravity ? `g_${gravity}` : null,
+    blur ? `e_blur:${blur}` : null,
+  ]
+    .filter(Boolean)
+    .join(',');
+
+  // 1. Direct Cloudinary URL
+  if (imageUrl.includes('res.cloudinary.com')) {
     const parts = imageUrl.split('/upload/');
     if (parts.length === 2) {
-      const transformations = [
-        `c_${crop}`,
-        `w_${width}`,
-        height ? `h_${height}` : null,
-        `q_${quality}`,
-        `f_${format}`,
-        gravity ? `g_${gravity}` : null,
-        blur ? `e_blur:${blur}` : null,
-      ]
-        .filter(Boolean)
-        .join(',');
-
-      return `${parts[0]}/upload/${transformations}/${parts[1]}`;
+      // Clean existing transformation segments to avoid stacking
+      const cleanPath = parts[1].replace(/^(?:[a-z]{1,2}_[^/,]+,?)+\//, '');
+      return `${parts[0]}/upload/${transformations}/${cleanPath}`;
     }
   }
 
-  // If Unsplash, append Unsplash dynamic resizing parameters
+  // 2. Relative Cloudinary sample or public ID
+  if (
+    imageUrl.startsWith('samples/') ||
+    imageUrl.startsWith('cld-sample') ||
+    imageUrl.startsWith('sample.') ||
+    imageUrl.startsWith('rentbuddy_')
+  ) {
+    const config = getStoredCloudinaryConfig();
+    return `https://res.cloudinary.com/${config.cloudName}/image/upload/${transformations}/${imageUrl}`;
+  }
+
+  // 3. If Unsplash, append Unsplash dynamic resizing parameters
   if (imageUrl.includes('images.unsplash.com')) {
-    const url = new URL(imageUrl);
-    if (options.width) url.searchParams.set('w', options.width.toString());
-    if (options.height) url.searchParams.set('h', options.height.toString());
-    url.searchParams.set('auto', 'format');
-    url.searchParams.set('fit', options.crop === 'thumb' ? 'crop' : 'max');
-    url.searchParams.set('q', '80');
-    return url.toString();
+    try {
+      const url = new URL(imageUrl);
+      if (width) url.searchParams.set('w', width.toString());
+      if (height) url.searchParams.set('h', height.toString());
+      url.searchParams.set('auto', 'format');
+      url.searchParams.set('fit', crop === 'thumb' ? 'crop' : 'max');
+      url.searchParams.set('q', '80');
+      return url.toString();
+    } catch {
+      return imageUrl;
+    }
   }
 
   return imageUrl;
@@ -126,7 +151,7 @@ export const uploadImageToCloudinary = async (
 ): Promise<{ success: boolean; url: string; error?: string; isSimulated?: boolean }> => {
   const activeConfig = config || getStoredCloudinaryConfig();
 
-  // If not configured, provide high-fidelity local reader with clear status
+  // If upload preset is not yet created, provide high-fidelity local reader with clear status
   if (!activeConfig.cloudName || !activeConfig.uploadPreset) {
     return new Promise((resolve) => {
       const reader = new FileReader();

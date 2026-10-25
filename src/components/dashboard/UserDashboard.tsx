@@ -24,6 +24,7 @@ import {
   calculateImpactStats,
   resetStoreToDefaults 
 } from '../../services/storage';
+import { getOptimizedImageUrl } from '../../services/cloudinary';
 
 interface UserDashboardProps {
   bookings: RentalBooking[];
@@ -469,7 +470,7 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({
                 >
                   <div className="flex items-start gap-3">
                     <img
-                      src={item.images[0]}
+                      src={getOptimizedImageUrl(item.images[0] || '', { width: 140, height: 140, crop: 'thumb', quality: 'auto', format: 'auto' })}
                       alt={item.title}
                       className="w-16 h-16 rounded-xl object-cover border border-slate-800 shrink-0"
                     />

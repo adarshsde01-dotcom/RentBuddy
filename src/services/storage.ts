@@ -1,7 +1,8 @@
 import { RentalItem, RentalBooking, BookingStatus } from '../types/rental';
 import { SAMPLE_ITEMS, INITIAL_BOOKINGS } from '../data/sampleData';
 
-const ITEMS_STORAGE_KEY = 'rentbuddy_items_v2';
+const ITEMS_STORAGE_KEY = 'rentbuddy_items_v3';
+const LEGACY_V2_KEY = 'rentbuddy_items_v2';
 const LEGACY_V1_KEY = 'rentbuddy_items_v1';
 const LEGACY_ITEMS_STORAGE_KEY = 'rentloop_items_v1';
 const BOOKINGS_STORAGE_KEY = 'rentbuddy_bookings_v2';
@@ -26,8 +27,8 @@ export const getStoredItems = (): RentalItem[] => {
       }
     }
 
-    // Check v1 legacy
-    const legacyRaw = localStorage.getItem(LEGACY_V1_KEY) || localStorage.getItem(LEGACY_ITEMS_STORAGE_KEY);
+    // Check v2 & v1 legacy
+    const legacyRaw = localStorage.getItem(LEGACY_V2_KEY) || localStorage.getItem(LEGACY_V1_KEY) || localStorage.getItem(LEGACY_ITEMS_STORAGE_KEY);
     if (legacyRaw) {
       const legacyItems: RentalItem[] = JSON.parse(legacyRaw);
       const sampleIds = new Set(SAMPLE_ITEMS.map((s) => s.id));

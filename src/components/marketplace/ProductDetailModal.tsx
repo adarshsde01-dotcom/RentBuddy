@@ -14,7 +14,8 @@ import {
   Calendar,
   Truck,
   Package,
-  Info
+  Info,
+  Cloud
 } from 'lucide-react';
 import { RentalItem } from '../../types/rental';
 import { RentalPriceCalculator } from './RentalPriceCalculator';
@@ -152,6 +153,11 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                     {item.hygieneCleaned && (
                       <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-950/90 text-emerald-300 border border-emerald-500/40 backdrop-blur-md flex items-center gap-1">
                         <Check className="w-3.5 h-3.5" /> Sanitized
+                      </span>
+                    )}
+                    {(item.images[selectedImageIndex] || item.images[0])?.includes('res.cloudinary.com') && (
+                      <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-sky-950/90 text-sky-300 border border-sky-500/40 backdrop-blur-md flex items-center gap-1">
+                        <Cloud className="w-3.5 h-3.5 text-sky-400" /> Cloudinary CDN
                       </span>
                     )}
                   </div>

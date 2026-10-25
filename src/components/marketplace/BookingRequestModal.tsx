@@ -13,6 +13,7 @@ import {
 import confetti from 'canvas-confetti';
 import { RentalItem, RentalBooking } from '../../types/rental';
 import { createNewBooking } from '../../services/storage';
+import { getOptimizedImageUrl } from '../../services/cloudinary';
 
 interface BookingRequestModalProps {
   item: RentalItem | null;
@@ -150,7 +151,7 @@ export const BookingRequestModal: React.FC<BookingRequestModalProps> = ({
         {/* Selected Item Summary Card */}
         <div className="my-5 p-4 rounded-2xl bg-slate-950/70 border border-slate-800 flex items-center gap-4">
           <img
-            src={item.images[0]}
+            src={getOptimizedImageUrl(item.images[0] || '', { width: 160, height: 160, crop: 'thumb', quality: 'auto', format: 'auto' })}
             alt={item.title}
             className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl object-cover border border-slate-700 shrink-0"
           />

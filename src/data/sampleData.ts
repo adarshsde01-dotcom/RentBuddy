@@ -116,7 +116,7 @@ export const SAMPLE_ITEMS: RentalItem[] = [
     subcategory: 'Duffel Bags',
     description: 'Heavy-duty 100-liter wheeled duffel built from 100% recycled ripstop polyester with TPU laminate. Rugged oversized wheels roll smoothly through gravel, airports, and cobblestone streets. Perfect for 2-3 week adventures, Ladakh trips, or Himalayan trekking gear.',
     images: [
-      'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=1000&q=80',
+      'https://res.cloudinary.com/dqczk3bz/image/upload/samples/ecommerce/leather-bag-gray.jpg',
       'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=1000&q=80'
     ],
     dailyPrice: 349,
@@ -1013,7 +1013,7 @@ export const SAMPLE_ITEMS: RentalItem[] = [
     subcategory: 'Sarees & Lehengas',
     description: 'Showstopper designer raw silk lehenga featuring intricate hand-embroidered dabka, cutdana, and zardozi floral motifs. Comes with dual organza dupattas and customizable drawstring fit (Waist 28" - 36").',
     images: [
-      'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=1000&q=80',
+      'https://res.cloudinary.com/dqczk3bz/image/upload/cld-sample.jpg',
       'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=1000&q=80'
     ],
     dailyPrice: 1499,
@@ -1121,7 +1121,7 @@ export const SAMPLE_ITEMS: RentalItem[] = [
     subcategory: 'Winter Wear',
     description: 'Iconic water-repellent baffle puffer jacket packed with 700-fill certified goose down. Engineered to retain heat in sub-zero alpine conditions, Kashmir winter trips, and Manali snowy getaways.',
     images: [
-      'https://images.unsplash.com/photo-1548883354-7622d03aca27?auto=format&fit=crop&w=1000&q=80',
+      'https://res.cloudinary.com/dqczk3bz/image/upload/samples/people/boy-snow-hoodie.jpg',
       'https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=1000&q=80'
     ],
     dailyPrice: 349,
@@ -1489,7 +1489,7 @@ export const SAMPLE_ITEMS: RentalItem[] = [
     subcategory: 'Camping Tents',
     description: 'Instant assembly freestanding 3-person pop-up tent. Pitches in literally 2 seconds with patented easy folding system. Lab-tested against 200mm/sqm/hr tropical downpours and 50km/h winds.',
     images: [
-      'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=1000&q=80',
+      'https://res.cloudinary.com/dqczk3bz/image/upload/samples/landscapes/nature-mountains.jpg',
       'https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?auto=format&fit=crop&w=1000&q=80'
     ],
     dailyPrice: 299,
@@ -1746,6 +1746,257 @@ export const SAMPLE_ITEMS: RentalItem[] = [
     ],
     tags: ['Health', 'Wheelchair', 'Mobility', 'Wellness', 'Senior Care', 'Accessibility'],
     createdAt: '2026-04-25'
+  // --- Cloudinary CDN Hosted Assets (Verified on dqczk3bz) ---
+  {
+    id: 'item-shoes-nike',
+    title: 'Nike Air Max 270 React Premium Streetwear & Running Sneakers (UK 9)',
+    category: 'shoes',
+    subcategory: 'Designer Sneakers & Streetwear',
+    description: 'Ultra-cushioned lifestyle and running sneakers combining Nike React foam with a massive 270 Max Air heel unit. Lightweight, breathable mesh upper in pristine, sanitized condition.',
+    images: [
+      'https://res.cloudinary.com/dqczk3bz/image/upload/samples/ecommerce/shoes.jpg',
+      'https://res.cloudinary.com/dqczk3bz/image/upload/cld-sample-5.jpg'
+    ],
+    dailyPrice: 299,
+    weeklyPrice: 1499,
+    weeklyDiscountPercent: 28,
+    securityDeposit: 1500,
+    replacementValue: 14995,
+    condition: 'Like New',
+    location: 'Bengaluru, KA (Indiranagar / Koramangala)',
+    city: 'Bengaluru',
+    pickupLocation: '100ft Road, Indiranagar',
+    availableQuantity: 2,
+    availableFrom: '2026-10-01',
+    availableUntil: '2026-12-31',
+    deliveryOptions: ['local_pickup', 'home_delivery'],
+    hygieneCleaned: true,
+    owner: {
+      id: 'owner-shoes',
+      name: 'Aditya Nair',
+      avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',
+      rating: 4.95,
+      reviewsCount: 34,
+      joinedDate: 'February 2024',
+      responseTime: 'Under 15 mins',
+      verified: true,
+      location: 'Bengaluru, KA'
+    },
+    isAvailable: true,
+    rating: 4.93,
+    reviewCount: 26,
+    featured: true,
+    specs: [
+      { label: 'Size', value: 'UK 9 / US 10 / EU 44' },
+      { label: 'Cushioning', value: 'Nike React Foam + Max Air Heel' },
+      { label: 'Hygiene', value: 'UV Sterilized & Sanitized with fresh cedar inserts' }
+    ],
+    rules: [
+      'Wear with clean socks only',
+      'Avoid muddy or unpaved trail running',
+      'Return in original protective shoebox'
+    ],
+    tags: ['Nike', 'Sneakers', 'Shoes', 'Streetwear', 'Fashion', 'Running', 'Cloudinary'],
+    createdAt: '2026-05-01'
+  },
+  {
+    id: 'item-watch-tissot',
+    title: 'Tissot Le Locle Automatic Classic Analog Chronograph Wristwatch',
+    category: 'accessories',
+    subcategory: 'Luxury & Smart Watches',
+    description: 'Swiss-made automatic masterpiece with guilloché dial, scratch-resistant sapphire crystal, and traditional Roman numeral indices. Ideal for corporate galas, weddings, and formal celebrations.',
+    images: [
+      'https://res.cloudinary.com/dqczk3bz/image/upload/samples/ecommerce/analog-classic.jpg'
+    ],
+    dailyPrice: 499,
+    weeklyPrice: 2499,
+    weeklyDiscountPercent: 28,
+    securityDeposit: 3000,
+    replacementValue: 48000,
+    condition: 'Like New',
+    location: 'Mumbai, MH (Bandra / BKC)',
+    city: 'Mumbai',
+    pickupLocation: 'BKC Complex, Mumbai',
+    availableQuantity: 1,
+    availableFrom: '2026-10-01',
+    availableUntil: '2026-12-31',
+    deliveryOptions: ['local_pickup', 'home_delivery'],
+    owner: {
+      id: 'owner-watch',
+      name: 'Sameer Singhania',
+      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80',
+      rating: 4.97,
+      reviewsCount: 52,
+      joinedDate: 'November 2023',
+      responseTime: 'Under 30 mins',
+      verified: true,
+      location: 'Mumbai, MH'
+    },
+    isAvailable: true,
+    rating: 4.96,
+    reviewCount: 19,
+    featured: true,
+    specs: [
+      { label: 'Movement', value: 'Swiss Automatic Powermatic 80' },
+      { label: 'Crystal', value: 'Scratch-Resistant Sapphire Crystal' },
+      { label: 'Case Material', value: '316L Stainless Steel (39.3mm)' }
+    ],
+    rules: [
+      'Store in padded watch roll when not worn',
+      'Do not submerge in water or wear in swimming pools'
+    ],
+    tags: ['Watch', 'Luxury', 'Accessories', 'Formal', 'Swiss Made', 'Cloudinary'],
+    createdAt: '2026-05-02'
+  },
+  {
+    id: 'item-bike-trek',
+    title: 'Trek Marlin 7 All-Terrain Hardtail Mountain Bike (29er, Medium/Large)',
+    category: 'sports-fitness',
+    subcategory: 'Cycling & Accessories',
+    description: 'Race-ready cross-country mountain bike with RockShox Judy suspension fork, 1x10 Shimano Deore drivetrain, and hydraulic disc brakes. Perfect for Bangalore trails, Nandi Hills rides, and weekend gravel grinding.',
+    images: [
+      'https://res.cloudinary.com/dqczk3bz/image/upload/samples/bike.jpg'
+    ],
+    dailyPrice: 599,
+    weeklyPrice: 2999,
+    weeklyDiscountPercent: 28,
+    securityDeposit: 2500,
+    replacementValue: 56000,
+    condition: 'Excellent',
+    location: 'Bengaluru, KA (HSR Layout / Sarjapur)',
+    city: 'Bengaluru',
+    pickupLocation: 'HSR Layout Sector 2',
+    availableQuantity: 1,
+    availableFrom: '2026-10-01',
+    availableUntil: '2026-12-31',
+    deliveryOptions: ['local_pickup', 'home_delivery'],
+    owner: {
+      id: 'owner-bike',
+      name: 'Rishi Patel',
+      avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=200&q=80',
+      rating: 4.91,
+      reviewsCount: 41,
+      joinedDate: 'December 2023',
+      responseTime: 'Under 1 hour',
+      verified: true,
+      location: 'Bengaluru, KA'
+    },
+    isAvailable: true,
+    rating: 4.9,
+    reviewCount: 24,
+    featured: true,
+    specs: [
+      { label: 'Frame', value: 'Alpha Silver Aluminum Internal Routing' },
+      { label: 'Suspension', value: 'RockShox Judy 100mm with Hydraulic Lockout' },
+      { label: 'Brakes', value: 'Shimano MT200 Hydraulic Disc Brakes' },
+      { label: 'Accessories', value: 'Includes Helmet, High-Pressure Pump & Cable Lock' }
+    ],
+    rules: [
+      'Wear helmet at all times when riding',
+      'Do not jump downhill ramps exceeding 1 meter',
+      'Return with tires inflated and lock intact'
+    ],
+    tags: ['Bicycle', 'Mountain Bike', 'Trek', 'Cycling', 'Fitness', 'Sports', 'Cloudinary'],
+    createdAt: '2026-05-03'
+  },
+  {
+    id: 'item-basketball-spalding',
+    title: 'Spalding NBA Official Full-Grain Leather Game Basketball + Pump Kit',
+    category: 'sports-fitness',
+    subcategory: 'Sports Equipment',
+    description: 'Official indoor tournament basketball engineered with genuine Horween full-grain leather for optimal moisture management, tactile grip, and true bounce consistency.',
+    images: [
+      'https://res.cloudinary.com/dqczk3bz/image/upload/cld-sample-3.jpg'
+    ],
+    dailyPrice: 149,
+    weeklyPrice: 699,
+    weeklyDiscountPercent: 33,
+    securityDeposit: 600,
+    replacementValue: 7999,
+    condition: 'Like New',
+    location: 'Delhi NCR (Gurugram Cyber Hub)',
+    city: 'Delhi NCR',
+    pickupLocation: 'DLF Phase 2, Gurugram',
+    availableQuantity: 2,
+    availableFrom: '2026-10-01',
+    availableUntil: '2026-12-31',
+    deliveryOptions: ['local_pickup', 'home_delivery'],
+    owner: {
+      id: 'owner-basketball',
+      name: 'Kabir Oberoi',
+      avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=200&q=80',
+      rating: 4.88,
+      reviewsCount: 17,
+      joinedDate: 'January 2024',
+      responseTime: 'Under 15 mins',
+      verified: true,
+      location: 'Delhi NCR'
+    },
+    isAvailable: true,
+    rating: 4.85,
+    reviewCount: 12,
+    featured: false,
+    specs: [
+      { label: 'Size', value: 'Official Size 7 (29.5")' },
+      { label: 'Material', value: 'Horween Full-Grain Composite Leather' },
+      { label: 'Includes', value: 'Dual-Action Hand Pump & Mesh Carrying Bag' }
+    ],
+    rules: [
+      'Best used on hardwood indoor courts or smooth synthetic flooring',
+      'Do not store deflated in direct sunlight'
+    ],
+    tags: ['Basketball', 'Spalding', 'Sports', 'Fitness', 'Game', 'Cloudinary'],
+    createdAt: '2026-05-04'
+  },
+  {
+    id: 'item-dining-banquet',
+    title: 'Artisanal Ceramic Dining Banquet & Event Tableware Service (Set for 12)',
+    category: 'home-kitchen',
+    subcategory: 'Home Decor & Lighting',
+    description: 'Handcrafted stoneware ceramic dinner set including dinner plates, quarter plates, dessert bowls, soup bowls, and serving platters. Perfect for hosting dinner parties, family festive gatherings, and celebration dinners.',
+    images: [
+      'https://res.cloudinary.com/dqczk3bz/image/upload/cld-sample-4.jpg'
+    ],
+    dailyPrice: 399,
+    weeklyPrice: 1899,
+    weeklyDiscountPercent: 32,
+    securityDeposit: 1500,
+    replacementValue: 18000,
+    condition: 'Excellent',
+    location: 'Pune, MH (Koregaon Park)',
+    city: 'Pune',
+    pickupLocation: 'Lane 7, Koregaon Park',
+    availableQuantity: 1,
+    availableFrom: '2026-10-01',
+    availableUntil: '2026-12-31',
+    deliveryOptions: ['local_pickup', 'home_delivery'],
+    hygieneCleaned: true,
+    owner: {
+      id: 'owner-dinner',
+      name: 'Radhika Deshmukh',
+      avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80',
+      rating: 4.94,
+      reviewsCount: 39,
+      joinedDate: 'October 2023',
+      responseTime: 'Under 45 mins',
+      verified: true,
+      location: 'Pune, MH'
+    },
+    isAvailable: true,
+    rating: 4.92,
+    reviewCount: 21,
+    featured: false,
+    specs: [
+      { label: 'Capacity', value: 'Full Dinner Service for 12 Persons (48 Pieces)' },
+      { label: 'Material', value: 'High-Fired Glazed Stoneware Ceramic' },
+      { label: 'Safety', value: 'Microwave Safe, Dishwasher Safe & Lead-Free' }
+    ],
+    rules: [
+      'Handle with care and return in original foam-lined storage crates',
+      'Rinse food residues before repacking'
+    ],
+    tags: ['Dining', 'Tableware', 'Kitchen', 'Party', 'Plates', 'Events', 'Cloudinary'],
+    createdAt: '2026-05-05'
   }
 ];
 

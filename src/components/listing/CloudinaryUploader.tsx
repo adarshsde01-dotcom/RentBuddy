@@ -5,7 +5,8 @@ import {
   X, 
   CheckCircle2, 
   Loader2, 
-  Sparkles 
+  Sparkles,
+  Cloud 
 } from 'lucide-react';
 import { uploadImageToCloudinary, getStoredCloudinaryConfig } from '../../services/cloudinary';
 
@@ -111,12 +112,17 @@ export const CloudinaryUploader: React.FC<CloudinaryUploaderProps> = ({
         <button
           type="button"
           onClick={onOpenSettings}
-          className="flex items-center gap-1 text-[11px] font-medium text-slate-400 hover:text-emerald-400 transition-colors"
+          className="flex items-center gap-1 text-[11px] font-medium transition-colors"
         >
           {isCloudinaryActive ? (
             <span className="text-emerald-400 flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              Cloudinary CDN: <strong className="font-mono">{config.cloudName}</strong>
+              Cloudinary CDN Uploads: <strong className="font-mono">{config.cloudName}</strong>
+            </span>
+          ) : config.cloudName ? (
+            <span className="text-sky-300 flex items-center gap-1.5 bg-sky-950/60 border border-sky-500/40 px-2 py-0.5 rounded-md hover:border-sky-400">
+              <Cloud className="w-3 h-3 text-sky-400" />
+              Cloud: <strong className="font-mono">{config.cloudName}</strong> (Setup Preset)
             </span>
           ) : (
             <span className="text-amber-400/90 flex items-center gap-1.5 bg-amber-950/40 border border-amber-500/30 px-2 py-0.5 rounded-md">
@@ -126,24 +132,28 @@ export const CloudinaryUploader: React.FC<CloudinaryUploaderProps> = ({
         </button>
       </div>
 
-      {/* Cloudinary credentials explanation callout when not active */}
+      {/* Cloudinary credentials explanation callout when upload preset is not active */}
       {!isCloudinaryActive && (
-        <div className="p-3 rounded-xl bg-amber-950/20 border border-amber-500/30 text-slate-300 text-[11px] space-y-1.5 leading-relaxed">
-          <div className="flex items-center justify-between text-amber-300 font-bold">
+        <div className="p-3 rounded-xl bg-slate-900 border border-slate-700/80 text-slate-300 text-[11px] space-y-1.5 leading-relaxed">
+          <div className="flex items-center justify-between text-sky-300 font-bold">
             <span className="flex items-center gap-1.5">
-              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-              Cloudinary CDN Not Configured — Safe Local Preview Active
+              <Cloud className="w-3.5 h-3.5 text-sky-400" />
+              {config.cloudName
+                ? `Cloudinary CDN Connected (${config.cloudName}) • Local Preview Active`
+                : 'Cloudinary CDN Not Configured — Safe Local Preview Active'}
             </span>
             <button
               type="button"
               onClick={onOpenSettings}
-              className="text-emerald-400 hover:text-emerald-300 underline font-semibold text-[11px]"
+              className="text-emerald-400 hover:text-emerald-300 underline font-semibold text-[11px] cursor-pointer"
             >
-              Configure Keys &rarr;
+              Configure Preset &rarr;
             </button>
           </div>
           <p className="text-slate-400">
-            Uploaded images are currently rendered instantly in your browser via <code className="text-amber-200">FileReader</code> DataURLs. To enable direct live CDN hosting, add <code className="text-emerald-300">VITE_CLOUDINARY_CLOUD_NAME</code> and an unsigned <code className="text-emerald-300">VITE_CLOUDINARY_UPLOAD_PRESET</code> in <code className="text-slate-200">.env</code> or via the settings dialog above.
+            {config.cloudName
+              ? `Cloud name ${config.cloudName} is active for image transformations & responsive delivery. New listing uploads are safely previewed in your browser. To upload directly to your Cloudinary media library, create a free unsigned upload preset and enter it in Settings.`
+              : `Uploaded images are rendered instantly in your browser via FileReader DataURLs. To enable direct live CDN hosting, add VITE_CLOUDINARY_CLOUD_NAME and an unsigned VITE_CLOUDINARY_UPLOAD_PRESET in .env or via the settings dialog above.`}
           </p>
         </div>
       )}
